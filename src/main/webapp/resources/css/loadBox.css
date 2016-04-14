@@ -1,0 +1,57 @@
+@charset "utf-8";
+/* CSS Document */
+
+body,p,div,h1,ul,li,a,table,tr,td,input{margin: 0;padding: 0;}
+ul li{list-style: none;}
+h3{margin: 0;padding: 0;}
+a{text-decoration: none;}
+a:hover{text-decoration: none;}
+body{font-family:Arial, "微软雅黑"}
+button,textarea,input,select{font-family:Arial, "微软雅黑"}
+input,select,option,textarea{outline: none;}
+textarea{resize:none;}
+input,select,textarea{border: 1px solid #C6C6C6;}
+button{border: 0 none;}
+.clearfix:before,.clearfix:after{
+	display:table;
+	content:"";}
+.clearfix:after{
+	clear:both;}
+.clearfix{zoom:1;}
+
+
+
+
+/*录入弹窗盒子*/
+.loadBox{width: 770px;height: 410px;background: #fff;box-shadow: #999 0px 0px 22px;position: absolute;z-index: 20;left: 210px;top: 180px;}
+.load-blue{color: #52C6F7;}
+.load-top{overflow: hidden;}
+.loadBox-content{width: 690px;height: 235px;background: #F5F5F3;margin: 30px 0px 0px 40px;position: relative;}
+.load-left{width: 132px;height: 235px;position: relative;float: left;}
+.load-left span{font-size: 16px;}
+.load-num{position: absolute;left: 51px;top: 80px;}
+.load-ip-ad{position: absolute;left: 25px;top: 109px;}
+.load-right{width: 558px;height: 235px;overflow: auto;float: right;}
+.load-right li{width: 100%;height: 30px;margin-bottom: 25px;margin-top: 25px;}
+.load-right li label{font-size: 15px;color: #B5B5B7;margin-right: 5px;}
+.load-right li input{width: 190px;height: 30px;border: 1px solid #CCCCCC;border-radius: 3px;margin-right: 10px;}
+
+.load-bottom{width: 100%;height: 54px;background: #F5F5F3;clear: both;margin-top: 20px;}
+.load-b-right{margin-left: 132px;}
+.load-b-right li{position: relative;}
+.load-user{position: absolute;left: -1px;top: 17px;}
+.load-user-c{position: absolute;left:69px;top: 13px;}
+.load-key{position: absolute;left: 285px;top: 17px;}
+.load-key-c{position: absolute;left: 340px;top: 13px;}
+.load-b-right li label{font-size: 15px;color: #B5B5B7;}
+.load-b-right li input{width: 190px;height: 30px;border: 1px solid #CCCCCC;border-radius: 3px;}
+.load-submit,.load-cancel{width: 110px;height: 35px;font-size: 15px;border-radius: 3px;margin-top: 20px;}
+.load-submit{background: #169ADB;color: #fff;border: 1px solid #036B9E;margin-left: 240px;}
+.load-cancel{border: 1px solid #BCC0C3;color: #333;background: #DBE3E6;margin-left: 20px;}
+.cover{width: 100%;height: 806px;background: #fff;z-index: 5;position: absolute;left: 0;top: 0;opacity: 0.7}
+
+
+
+
+
+
