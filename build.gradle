@@ -157,6 +157,8 @@ dependencies{
     
     compile 'redis.clients:jedis:3.0.0'
     compile 'com.alibaba:fastjson:1.2.6'
+	
+	compile 'com.ai.runner.xss.filter:xss-firewall:1.6'
 }
 
 war {
