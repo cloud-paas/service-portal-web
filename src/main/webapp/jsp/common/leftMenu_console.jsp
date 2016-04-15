@@ -153,7 +153,7 @@ var productType = "${productType}";
              	
              	</li>
                 <li class="list_xinx"  id="content5" >
-                <p ><A href="/iPaas-Portal/jsp/maintain/main.jsp"  id="leftmenu_16_1" onclick=changeUrl("/iPaas-Portal/jsp/maintain/main.jsp");><span id="spanleftmenu_16" style="margin-top:2px;">配置管理详情</span></A></p>
+                <p ><A href="${_base }/jsp/maintain/main.jsp"  id="leftmenu_16_1" onclick=changeUrl("${_base }/jsp/maintain/main.jsp");><span id="spanleftmenu_16" style="margin-top:2px;">配置管理详情</span></A></p>
                 </li>
              </ul>
                          

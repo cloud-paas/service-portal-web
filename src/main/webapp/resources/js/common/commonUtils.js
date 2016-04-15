@@ -29,7 +29,7 @@ function getContextPath(){
     var localhostPaht=curWwwPath.substring(0,pos);
     //获取带"/"的项目名，如：/payweb
     var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
-    if(projectName=='/iPaas-Portal'){
+    if(projectName=='/service-portal-web'){
     	return localhostPaht+projectName;
     }
     return localhostPaht;
