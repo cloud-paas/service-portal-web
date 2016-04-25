@@ -1,5 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
+<%      
+	String userId = request.getParameter("userId");
+	request.getSession().setAttribute("userId", userId);
+%>
 <html lang="zh-cn">
 <head>
     <%@ include file="/jsp/maintain/common.jsp" %>
@@ -23,7 +27,7 @@
     <div class="herd">
         <div class="wrap">
             <ul class="wrap_left">
-                <li>欢迎来到IpaaS</li>
+                <li>欢迎来到IpaaS-->"${userId}"</li>
             </ul>
         </div>
     </div>
