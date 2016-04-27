@@ -39,6 +39,35 @@
 		});	
 	}
 	
+	//验证mds服务
+	function checkService(userServIpaasId,topicId)
+	{
+	    var svcPwd=prompt("请输入服务密码：");
+	    if(svcPwd)
+	    {
+	    	var pid= "${userInfoVO.pid}";
+	        alert("服务ID: "+userServIpaasId+" & 服务密码: "+ svcPwd+ " & PID："+pid+ " & topicId："+topicId);       
+	    }
+	    $.ajax({
+			type : "POST",
+			url : "${_base}/ServiceCheck/toCheckMdsService",
+			dataType : "json",
+			data:"serviceId="+userServIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd+"&topicId="+ topicId,
+			
+			success : function(msg) {
+				if (msg.mdsCode == '111111') {
+					alert("恭喜，MDS服务 "+userServIpaasId +" 验证成功 ! \n MDSMessage is ：\n"
+							+msg.mdsSenderMsg+" && "+msg.mdsConsumerMsg);
+				} else {
+					alert("MDS服务 "+userServIpaasId +" 验证失败 !");
+				}
+			},
+			error : function() {
+				alert("MDS服务 "+userServIpaasId +" 验证失败 !");
+			}
+		});
+	}
+	
 </script>
   
 </head> 
@@ -81,7 +110,9 @@
 								<td>${prod.userProdByname }</td>
 								<td>${prod.userServParamMap.topicEnName } </td>
 								<td>${prod.userServParamMap.topicPartitions }</td>
-								<td><a href="queryMdsInstById?userServId=${prod.userServId }">查看</a><br><br><a id="cancle_back" onclick="cancle('${prod.userServId }');" href="javascript:void(0)">注销</a></td>
+								<td><a href="queryMdsInstById?userServId=${prod.userServId }">查看</a><br><br>
+								<a id="cancle_back" onclick="cancle('${prod.userServId }');" href="javascript:void(0)">注销</a><br><br>
+								<a id="check_svc" onclick="checkService('${prod.userServIpaasId }','${prod.userServParamMap.topicEnName }');" href="javascript:void(0)">服务验证</a></td>
 								
 							</tr>
 						</c:forEach>					

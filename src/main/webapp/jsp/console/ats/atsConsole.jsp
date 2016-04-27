@@ -121,6 +121,7 @@
 							html += '<td>'
 								+'<a href="#" onclick=searchUsage("'+item.userServId+'"); >查看详情</a>/'
 								+'<a href="#" onclick=modifyServPwd("'+ item.userServId +'"); >修改服务密码</a>'
+								+'<a href="#" onclick=checkService("'+ item.userServIpaasId +'","'+ item.signatureId +'"); >服务验证</a>'
 								+ '</td>';
 							html += '</tr>';
 						});
@@ -138,8 +139,36 @@
 	 
 		location.href="${_base}/atsConsole/searchUsages?userServId="+userServId+"";
 	}
- 
 	
+	//验证ats服务
+	function checkService(userServIpaasId,signatureId)
+	{
+	    var svcPwd=prompt("请输入服务密码：");
+	    if(svcPwd)
+	    {
+	    	var pid= "${userInfoVO.pid}";
+	        alert("服务ID: "+userServIpaasId+" & 服务密码: "+ svcPwd+ " & PID："+pid
+	        		+ " \n & signatureId："+signatureId);       
+	    }
+	    $.ajax({
+			type : "POST",
+			url : "${_base}/ServiceCheck/toCheckAtsService",
+			dataType : "json",
+			data : "serviceId="+userServIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd +"&signatureId="+ signatureId,
+			
+			success : function(msg) {
+				if (msg.sesCode == '111111') {
+					alert("恭喜，ATS服务 "+userServIpaasId +" 验证成功 ! \n PAAS签名 is "+ signatureId
+							+"\n ATSMessage is ："+msg.txsMsg);
+				} else {
+					alert("ATS服务 "+userServIpaasId +" 验证失败 ! \n PAAS签名 is "+ signatureId");
+				}
+			},
+			error : function() {
+				alert("ATS服务 "+userServIpaasId +" 验证失败 !\n PAAS签名 is "+ signatureId");
+			}
+		});
+	}
 </script>
   
 </head> 

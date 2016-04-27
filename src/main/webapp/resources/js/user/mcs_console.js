@@ -33,7 +33,8 @@ function queryMcsList() {
 							+ "|<a href='javascript:;' onclick='toMethodPage(\""+obj.userServId+"\",\"toExpanseCapacity\")'>扩容</a>";
 						}
 						tableContents += "|<a href='javascript:;' onclick='operatServ(\""+obj.userId + "\", \"" + obj.userServId+ "\",\"/mcs/manage/cancel\", \"" + obj.userServIpaasId + "\", \"" + obj.capacity+"\", \"" + userServParamMap.haMode +  "\", \"" + userServParamMap.serviceName +  "\", \"注销\")'>注销</a>"
-							+ "</td></tr><tr id='mcs_server_"+obj.userServId+"'></tr>";
+						+ "|<a href='javascript:;' onclick='checkService(\""+obj.userServIpaasId+"\")'>服务验证</a>"
+						+ "</td></tr><tr id='mcs_server_"+obj.userServId+"'></tr>";
 					}
 				} else {
 					tableContents += "<tr><td style='vertical-align:middle; text-align:center; color:red' colspan='5'>没有查询到相关结果</td></tr>";
@@ -165,4 +166,33 @@ function selectTypeChange(selectType) {
 		 $("#mapfiledname").hide();
 	}
 		
+}
+
+//验证mcs服务
+function checkService(userServIpaasId)
+{
+	//+ "|<a href='javascript:;' onclick=checkService('"+ obj.userServIpaasId +"'); >服务验证</a>"
+    var svcPwd=prompt("请输入服务密码：");
+    if(svcPwd)
+    {
+    	var pid= "${userInfoVO.pid}";
+        alert("服务ID: "+userServIpaasId+" & 服务密码: "+ svcPwd+ " & PID："+pid);       
+    }
+    $.ajax({
+		type : "POST",
+		url : getContextPath() + "/ServiceCheck/toCheckMcsService",
+		dataType : "json",
+		data : "serviceId="+userServIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd,
+		
+		success : function(msg) {
+			if (msg.mcsCode == '111111') {
+				alert("恭喜，MCS服务 "+userServIpaasId +" 验证成功 ! \n MCSMessage is ："+msg.mcsMsg);
+			} else {
+				alert("MCS服务 "+userServIpaasId +" 验证失败 ! ");
+			}
+		},
+		error : function() {
+			alert("MCS服务 "+userServIpaasId +" 验证失败 !");
+		}
+	});
 }

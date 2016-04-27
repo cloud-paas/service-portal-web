@@ -130,6 +130,7 @@
 							html += '<td>' 
 								+'<a href="#" onclick=modifyServPwd("'+ item.userServId +'"); >修改服务密码</a>'
 								+'|<a href="#" onclick=toMUI("'+ item.userServId +'"); >MUI工具</a>'
+								+'|<a href="#" onclick=checkService("'+ item.userServIpaasId +'"); >服务验证</a>'
 								+ '</td>';
 							html += '</tr>';
 						});
@@ -147,6 +148,33 @@
 		window.open (muiUrl);
 	}
 	
+	//验证dbs服务
+	function checkService(userServIpaasId)
+	{
+	    var svcPwd=prompt("请输入服务密码：");
+	    if(svcPwd)
+	    {
+	    	var pid= "${userInfoVO.pid}";
+	        alert("服务ID: "+userServIpaasId+" & 服务密码: "+ svcPwd+ " & PID："+pid);       
+	    }
+	    $.ajax({
+			type : "POST",
+			url : "${_base}/ServiceCheck/toCheckDbsService",
+			dataType : "json",
+			data:"serviceId="+userServIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd,
+			
+			success : function(msg) {
+				if (msg.dbsCode == '111111') {
+					alert("恭喜，DBS服务 "+userServIpaasId +" 验证成功 ! \n DBSMessage is ："+msg.dbsMsg);
+				} else {
+					alert("DBS服务 "+userServIpaasId +" 验证失败 !");
+				}
+			},
+			error : function() {
+				alert("DBS服务 "+userServIpaasId +" 验证失败 !");
+			}
+		});
+	}
 </script>
   
 </head> 

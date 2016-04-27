@@ -121,18 +121,21 @@
 									+'<a href="#" onclick=modifyServPwd("'+ item.userServId+'"); >修改服务密码</a>'
 									+'|<a href="#" onclick=toStop("'+ item.userServId +'","'+item.serviceName+'"); >停止</a>'
 									+'|<a href="#" onclick=toCancle("'+ item.userServId +'","'+item.serviceName+'"); >注销</a>'
+									+'|<a href="#" onclick=checkService("'+ item.userServIpaasId +'"); >服务验证</a>'
 									+ '</td>';
 							}else if(item.userServRunState=='1'){
 								html += '<td>' 
 									+'<a href="#" onclick=modifyServPwd("'+ item.userServId +'"); >修改服务密码</a>'
 									+'|<a href="#" onclick=toStart("'+ item.userServId +'","'+item.serviceName+'"); >启动</a>'
 									+'|<a href="#" onclick=toCancle("'+ item.userServId+'","'+item.serviceName +'"); >注销</a>'	
+									+'|<a href="#" onclick=checkService("'+ item.userServIpaasId +'"); >服务验证</a>'
 									+ '</td>';
 							}else{
 								html += '<td>' 
 									+'<a href="#" onclick=modifyServPwd("'+ item.userServId +'"); >修改服务密码</a>'
 									+'|<a href="#" onclick=toStop("'+ item.userServId +'","'+item.serviceName+'"); >停止</a>'
 									+'|<a href="#" onclick=toCancle("'+ item.userServId +'","'+item.serviceName+'"); >注销</a>'
+									+'|<a href="#" onclick=checkService("'+ item.userServIpaasId +'"); >服务验证</a>'
 									+ '</td>';
 							}
 						
@@ -235,6 +238,33 @@
 	    		})
 			}
     	}) ;
+	}
+	
+	function checkService(userServIpaasId)
+	{
+		var svcPwd=prompt("请输入服务密码：");
+	    if(svcPwd)
+	    {
+	    	var pid= "${userInfoVO.pid}";
+	        alert("服务ID: "+userServIpaasId+" & 服务密码: "+ svcPwd+ " & PID："+pid);       
+	    }
+	    $.ajax({
+			type : "POST",
+			url : "${_base}/ServiceCheck/toCheckSesService",
+			dataType : "json",
+			data:"serviceId="+userServIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd,
+			
+			success : function(msg) {
+				if (msg.sesCode == '111111') {
+					alert("恭喜，SES服务 "+userServIpaasId +" 验证成功 ! \n SESMessage is ："+msg.sesMsg);
+				} else {
+					alert("SES服务 "+userServIpaasId +" 验证失败 !");
+				}
+			},
+			error : function() {
+				alert("SES服务 "+userServIpaasId +" 验证失败 !");
+			}
+		});
 	}
 	
 </script>
