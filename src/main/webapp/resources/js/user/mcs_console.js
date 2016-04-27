@@ -1,7 +1,7 @@
 function queryMcsList() {
 	$.ajax({
 		type : "POST",
-		url : getContextPath() + "/mcsConsole/queryMcsList",
+		url :  _base+"/mcsConsole/queryMcsList",
 		dataType : "json",
 		data : {},
 		success : function(data) {
@@ -171,18 +171,17 @@ function selectTypeChange(selectType) {
 //验证mcs服务
 function checkService(userServIpaasId)
 {
-	//+ "|<a href='javascript:;' onclick=checkService('"+ obj.userServIpaasId +"'); >服务验证</a>"
     var svcPwd=prompt("请输入服务密码：");
     if(svcPwd)
     {
-    	var pid= "${userInfoVO.pid}";
-        alert("服务ID: "+userServIpaasId+" & 服务密码: "+ svcPwd+ " & PID："+pid);       
+    	//var pid= "${userInfoVO.pid}";
+        alert("服务ID: "+userServIpaasId+" & 服务密码: "+ svcPwd+ " & PID："+ _pid);       
     }
     $.ajax({
 		type : "POST",
-		url : getContextPath() + "/ServiceCheck/toCheckMcsService",
+		url : _base + "/ServiceCheck/toCheckMcsService",
 		dataType : "json",
-		data : "serviceId="+userServIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd,
+		data : "serviceId="+userServIpaasId+"&pid="+ _pid +"&servicePwd="+ svcPwd,
 		
 		success : function(msg) {
 			if (msg.mcsCode == '111111') {
