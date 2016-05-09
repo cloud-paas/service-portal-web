@@ -113,6 +113,7 @@
 					+ "<a href='javascript:;' onclick='toMethodPage(\""+item.userServId+"\",\"toModifyCcsServPwd\")'>修改服务密码</a>"
 					+ '|<a href="${_base }/config/main/'+ item.userServIpaasId +'?pathUrl='+location.pathname+'" >配置</a>'
 					+ '|<a href="#" data-toggle="modal" data-target="#cancle_model" onclick=userServId("'+ item.userServId +'"); >注销</a>'
+					+ "|<a href='javascript:;' onclick='checkService(\""+item.userServIpaasId+"\")'>服务验证</a>"
 					+ '</td>';
 				html += '</tr>';
 			});
@@ -152,6 +153,39 @@
 	function toMethodPage(userServId, method) {
 		postRequest(getContextPath() + '/ccs/' + method, {
 			userServId : userServId
+		});
+	}
+	
+	//验证css服务
+	function checkService(userServIpaasId)
+	{
+	    var svcPwd=prompt("请输入服务密码：");
+	    if(svcPwd)
+	    {
+	    	var pid= "${userInfoVO.pid}";
+	        alert("服务ID: "+userServIpaasId+" & 服务密码: "+ svcPwd+ " & PID："+pid);       
+	    }
+	    $.ajax({
+			type : "POST",
+			url : "${_base}/ServiceCheck/toCheckCcsService",
+			dataType : "json",
+			data:"serviceId="+userServIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd,
+			
+			success : function(msg) {
+				if (msg.innerCode == '111111') {
+					alert("恭喜，内部CCS服务验证成功 ! \n 内部CCSMessage is ："+msg.innerMsg);
+				} else {
+					alert("内部CCS服务 "+userServIpaasId +" 验证失败 !");
+				}
+				if (msg.ccsCode == '111111') {
+					alert("恭喜，外部CCS服务 "+userServIpaasId +" 验证成功 ! \n CCSMessage is ："+msg.ccsMsg);
+				} else {
+					alert("外部CCS服务 "+userServIpaasId +" 验证失败 !");
+				}
+			},
+			error : function() {
+				alert("CCS服务 "+userServIpaasId +" 验证失败 !");
+			}
 		});
 	}
 </script>

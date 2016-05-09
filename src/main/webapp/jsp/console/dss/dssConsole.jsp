@@ -143,7 +143,8 @@
 								+'|<a href="#"  onclick=cancle("'+ item.userServId +'"); >注销</a>'
 								+'<br><a href="#"  onclick=cleanAll("'+ item.userServId +'"); >格式化</a>'
 								+'|<a href="#" onclick=modifyServPwd("'+ item.userServId +'"); >修改服务密码</a>'
-								 +'<br><a href="#"  onclick=modifyConfiguration("'+item.userServId +'") >扩容</a>'  
+								 +'<br><a href="#"  onclick=modifyConfiguration("'+item.userServId +'") >扩容</a>' 
+								 +'|<a href="#" onclick=checkService("'+ item.userServIpaasId +'"); >服务验证</a>'
 								+ '</td>';
 							html += '</tr>';
 						});
@@ -224,6 +225,39 @@
 	function modifyServPwd(userServId) {
 		var parentUrl = location.pathname;
 		location.href="${_base}/dssConsole/toModifyDssServPwd?userServId="+userServId+"&parentUrl="+parentUrl+"&productType=1";;
+	}
+	
+	function modifyServPwd(userServId) {
+		var parentUrl = location.pathname;
+		location.href="${_base}/dssConsole/toModifyDssServPwd?userServId="+userServId+"&parentUrl="+parentUrl+"&productType=1";;
+	}
+	
+	//验证dss服务
+	function checkService(userServIpaasId)
+	{
+	    var svcPwd=prompt("请输入服务密码：");
+	    if(svcPwd)
+	    {
+	    	var pid= "${userInfoVO.pid}";
+	        alert("服务ID: "+userServIpaasId+" & 服务密码: "+ svcPwd+ " & PID："+pid);       
+	    }
+	    $.ajax({
+			type : "POST",
+			url : "${_base}/ServiceCheck/toCheckDssService",
+			dataType : "json",
+			data:"serviceId="+userServIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd,
+			
+			success : function(msg) {
+				if (msg.dssCode == '111111') {
+					alert("恭喜，DSS服务 "+userServIpaasId +" 验证成功 ! \n DSSMessage is ："+msg.dssMsg);
+				} else {
+					alert("DSS服务 "+userServIpaasId +" 验证失败 !");
+				}
+			},
+			error : function() {
+				alert("DSS服务 "+userServIpaasId +" 验证失败 !");
+			}
+		});
 	}
 	
 </script>

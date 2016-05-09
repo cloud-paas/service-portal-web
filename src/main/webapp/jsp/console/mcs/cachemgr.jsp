@@ -6,6 +6,9 @@
 <%@ include file="/jsp/common/common.jsp"%>
 <script src="${_base }/resources/js/common/commonUtils.js"></script>
 <script src="${_base }/resources/js/user/mcs_console.js"></script>
+<script>
+var _pid = "${userInfoVO.pid}";
+</script>
 <style type="text/css">
 /**头部菜单**/
 .mune_1 {
