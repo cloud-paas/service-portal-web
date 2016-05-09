@@ -160,6 +160,9 @@ dependencies{
 	
 	compile 'com.ai.runner.xss.filter:xss-firewall:1.6'
 	
+	compile 'org.jasypt:jasypt:1.9.2'
+	compile 'org.jasypt:jasypt-spring31:1.9.2'
+	
 	compile 'com.ai:ipaas-sdk:0.2.1'
 	compile 'com.ai:ipaas-idps:0.1-SNAPSHOT'
 }
