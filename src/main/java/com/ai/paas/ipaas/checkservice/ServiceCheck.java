@@ -320,6 +320,7 @@ public class ServiceCheck {
 				e.printStackTrace();
 			}
 		}
+		msgConsumer.stop();
 		System.out.println("MDS COMSUMER TEST SUCCESS");
 		result.put("mdsConsumerMsg", "MDS CONSUMER TEST SUCCESS !");
 		
