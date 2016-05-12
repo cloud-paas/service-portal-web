@@ -90,10 +90,10 @@ configManager.prototype.formatvalue = function (data, defaultvalue) {
 configManager.prototype.initaddconfigvalue = function() {
 	var container = document.getElementById('jsonContent');
 	var options = {
-		mode : 'tree',
+		mode : 'text',
 		modes : [ 'text', 'tree', 'view' ], // allowed modes
-		error : function(err) {
-			this.showerrormessage("输入的值必须是JSON格式的数据");
+		onError : function(err) {
+			configManager.showerrormessage("输入的值必须是JSON格式的数据");
 		}
 	};
 	var addEditor = new JSONEditor(container, options);
@@ -115,8 +115,18 @@ configManager.prototype.addConfig = function () {
 }
 configManager.prototype.postaddconfigrequest = function (path, editor) {
     var pathValue = this.appendpathvalue(path);
-	var dataValue = editor.get();
-	var text = JSON.stringify(dataValue);
+    //处理jsoneditor中获得的值=================================start
+    var modeVal = editor.getMode();
+    var dataValue = '';
+    var text = ''
+    if('text'===modeVal){
+    	dataValue = $(".jsoneditor-text").val();
+    	text =dataValue;
+    }else{
+    	dataValue = editor.get();
+    	text =JSON.stringify(dataValue);
+    }
+    //处理jsoneditor中获得的值=================================end
 	var data = {
 		serviceId: this.currentserviceId,	
 		path : pathValue,
