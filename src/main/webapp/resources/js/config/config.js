@@ -192,14 +192,14 @@ configManager.prototype.appendjsonview = function(data) {
 			try{	
 				json = JSON.parse(data);
 			}catch(e){
-				json = {};
+				json = data;
 			}
 		}else{
 			json = {};
 		}
 		var container = document.getElementById('jsonContent');
 		var options = {
-			mode : 'tree',
+			mode : 'text',
 			modes : [ 'text', 'tree', 'view' ], // allowed modes
 			error : function(err) {
 				configManager.showerrormessage("输入的值必须是JSON格式的数据");
