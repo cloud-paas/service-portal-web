@@ -187,26 +187,28 @@ configManager.prototype.validateAddConfig = function (formName) {
 /**************************************************     修改   *******************************************/
 configManager.prototype.appendjsonview = function(data) {
 	try {
-		var json;
-		if(data!=''&&data!=undefined&&data!=null){
-			try{	
-				json = JSON.parse(data);
-			}catch(e){
-				json = data;
-			}
-		}else{
-			json = {};
-		}
 		var container = document.getElementById('jsonContent');
 		var options = {
 			mode : 'text',
 			modes : [ 'text', 'tree', 'view' ], // allowed modes
-			error : function(err) {
+			onError : function(err) {
 				configManager.showerrormessage("输入的值必须是JSON格式的数据");
 			}
 		};
 		var addEditor = new JSONEditor(container, options);
-		addEditor.set(json);
+		var json;
+		if(data!=''&&data!=undefined&&data!=null){
+			try{	
+				json = JSON.parse(data);
+				addEditor.set(json);
+			}catch(e){
+				json = data;
+			$(".jsoneditor-text").val(json);
+			}
+		}else{
+			json = {};
+			$(".jsoneditor-text").val(json);
+		}
 		return addEditor;
 	} catch (ex) {
 	}
@@ -237,8 +239,18 @@ configManager.prototype.editConfig = function (path) {
 
 configManager.prototype.modifyconfig = function (editor) {
     var pathValue = $("#pathValue").text();
-	var pathData = editor.get();
-	var text = JSON.stringify(pathData);
+    //处理jsoneditor中获得的值=================================start
+    var modeVal = editor.getMode();
+    var dataValue = '';
+    var text = ''
+    if('text'===modeVal){
+    	dataValue = $(".jsoneditor-text").val();
+    	text =dataValue;
+    }else{
+    	dataValue = editor.get();
+    	text =JSON.stringify(dataValue);
+    }
+    //处理jsoneditor中获得的值=================================end
 	var data = {
 		path : pathValue,
 		serviceId: this.currentserviceId,
