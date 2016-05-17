@@ -624,7 +624,7 @@ box-shadow: #666 0px 0px 8px;}
 /**下载中心**/
 .download{ width:860px; float:left; margin-top:30px; background:#f6f6f6; padding:20px 0;}
 .download ul{ width:860px; float:left;}
-.download ul li{ float:left; margin-left:80px; margin-right:150px; line-height:40px; font-size:14px; width:20%;}
+.download ul li{ float:left; margin-left:80px; margin-right:150px; line-height:40px; font-size:14px; width:60%;}
 .download ul li span{ float:left; margin-right:6px; color:#169adc}
 .download ul li a:hover{color:#169adc}
 
