@@ -25,6 +25,8 @@ public class Constants {
 		
 		public final static String DES_CENTER="14";
 		public final static String SES_CENTER="15";
+		public final static String IDPS_CENTER="16";
+		
 	}
 	
 	
@@ -44,6 +46,7 @@ public class Constants {
 		public final static String TSC = "TSC";
 		public final static String DES = "DES";
 		public final static String SES = "SES";
+		public final static String IDPS = "IDPS";
 		
 		public final static String IAAS_PHYSICAL = "IAAS_PHYSICAL";
 		public final static String IAAS_VIRTAL = "IAAS_VIRTAL";

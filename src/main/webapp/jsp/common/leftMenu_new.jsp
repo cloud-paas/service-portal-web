@@ -48,6 +48,7 @@
 		        <p><A href="${_base }/mds/introduce"><span><img src="${_base }/resources/images/icon6.png"></span><span style="margin-top:2px;" id="list_4">消息中心MDS</span></A></p> 
 				<p><A href="${_base }/mcs/introduce"><span><img src="${_base }/resources/images/icon6.png"></span><span style="margin-top:2px;" id="list_5">缓存中心MCS</span></A></p>
 				<p><A href="${_base }/dss/introduce"><span><img src="${_base }/resources/images/icon6.png"></span><span style="margin-top:2px;" id="list_8">文档存储服务DSS</span></A></p>
+				<p><A href="${_base }/idps/introduce"><span><img src="${_base }/resources/images/icon6.png"></span><span style="margin-top:2px;" id="list_12">图片服务</span></A></p>
 	        </li>
 	    </ul>
       </div> 

@@ -94,6 +94,7 @@
 				<li><a href="${_base }/mcs/introduce">缓存中心MCS</a></li>
 				<li><a href="${_base }/mds/introduce">消息中心MDS</a></li>
 				<li><a href="${_base }/dss/introduce">文档存储服务DSS</a></li>
+				<li><a href="${_base }/idps/introduce">图片服务</a></li>
 	        </li>
 			</ul>
 		</div>
