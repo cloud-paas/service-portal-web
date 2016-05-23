@@ -25,7 +25,7 @@ public class Constants {
 		
 		public final static String DES_CENTER="14";
 		public final static String SES_CENTER="15";
-		public final static String IDPS_CENTER="16";
+		public final static int IDPS_CENTER=16;
 		
 	}
 	
