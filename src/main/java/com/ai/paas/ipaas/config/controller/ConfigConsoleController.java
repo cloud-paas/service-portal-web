@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +46,8 @@ import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping(value = "/config")
@@ -90,9 +93,9 @@ public class ConfigConsoleController {
 	public ModelAndView managerMain(HttpServletRequest request ,HttpServletResponse response,@PathVariable String serviceId) {
 		UserInfoVo userVo = UserUtil.getUserSession(request.getSession());
 		String userId = userVo.getUserId();	
-		request.getSession().setAttribute("serviceId", serviceId);
-		request.getSession().setAttribute("userId", userId);
-		request.getSession().setAttribute("parentUrl", request.getParameter("pathUrl"));
+		request.setAttribute("serviceId", serviceId);
+		request.setAttribute("userId", userId);
+		request.setAttribute("parentUrl", request.getParameter("pathUrl"));
 		ModelAndView view = new ModelAndView("config/manage");
 		return view;
 	}
@@ -116,10 +119,7 @@ public class ConfigConsoleController {
 	public String getCustomChildren(HttpSession session,@RequestBody ConfigRequestParam param) {
 //		UserInfoVo userSession = UserUtil.getUserSession(session);
 //		String userId = userSession.getUserId();
-		String userId = (String) session.getAttribute("userId");
-		String serviceId = (String) session.getAttribute("serviceId");
-        param.setUserId(userId);
-        param.setServiceId(serviceId);
+		 
         String result = "";
 		try {
 			
@@ -140,10 +140,6 @@ public class ConfigConsoleController {
 	@ResponseBody
 	@RequestMapping(value = "/custom/add")
 	public String customAdd(HttpSession session,@RequestBody ConfigRequestParam param) {
-		String userId = (String) session.getAttribute("userId");
-		String serviceId = (String) session.getAttribute("serviceId");
-        param.setUserId(userId);
-        param.setServiceId(serviceId);
         String result = "";
 		try {			
 			String address = CacheUtils.getOptionByKey("PASS.SERVICE","IP_PORT_SERVICE")+CacheUtils.getOptionByKey("CCS_CUST.ADD","url");
@@ -163,10 +159,6 @@ public class ConfigConsoleController {
 	@ResponseBody
 	@RequestMapping(value = "/custom/modify")
 	public String customModify(HttpSession session,@RequestBody ConfigRequestParam param) {
-		String userId = (String) session.getAttribute("userId");
-		String serviceId = (String) session.getAttribute("serviceId");
-        param.setUserId(userId);
-        param.setServiceId(serviceId);
         String result = "";
 		try {			
 			String address = CacheUtils.getOptionByKey("PASS.SERVICE","IP_PORT_SERVICE")+CacheUtils.getOptionByKey("CCS_CUST.MODIFY","url");
@@ -185,15 +177,13 @@ public class ConfigConsoleController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/custom/get")
-	public String getCustomConfig(HttpSession session,@RequestBody ConfigRequestParam param) {
-		String userId = (String) session.getAttribute("userId");
-		String serviceId = (String) session.getAttribute("serviceId");
-        param.setUserId(userId);
-        param.setServiceId(serviceId);
+	public String getCustomConfig(HttpServletRequest req,@RequestBody ConfigRequestParam param) {
         String result = "";
 		try {			
 			String address = CacheUtils.getOptionByKey("PASS.SERVICE","IP_PORT_SERVICE")+CacheUtils.getOptionByKey("CCS_CUST.GET","url");
+			System.out.println("address---yinzf:"+address);
 			result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(param));
+			System.out.println("result---yinzf:"+result);
 		} catch (IOException | URISyntaxException  e) {
 			e.printStackTrace();
 		}
@@ -209,12 +199,6 @@ public class ConfigConsoleController {
 	@ResponseBody
 	@RequestMapping(value = "/custom/deleteBatch")
 	public String customDelete(HttpSession session,@RequestBody List<ConfigRequestParam> paramList) {
-		String userId = (String) session.getAttribute("userId");
-		String serviceId = (String) session.getAttribute("serviceId");
-		for(ConfigRequestParam param : paramList){
-			param.setUserId(userId);
-		    param.setServiceId(serviceId);
-		}
         String result = "";
 		try {			
 			String address = CacheUtils.getOptionByKey("PASS.SERVICE","IP_PORT_SERVICE")+CacheUtils.getOptionByKey("CCS_CUST.DELETE_BATCH","url");
