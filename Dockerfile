@@ -25,7 +25,7 @@ ADD ./script/service-portal-web.sh /service-portal-web.sh
 RUN chmod 755 /*.sh
 
 # Expose ports.  
-EXPOSE 19901 
+EXPOSE 8080
 
 RUN rm -fr /pkg
   
