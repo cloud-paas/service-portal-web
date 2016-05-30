@@ -26,6 +26,8 @@
       
    <div class="container chanp">
    <%@ include file="/jsp/common/leftMenu_console.jsp"%>
+   <input type='hidden' name='serviceId' id='serviceId' value='${serviceId}'>
+   <input type='hidden' name='userId' id='userId' value='${userId}'>
 <div class="row chnap_row">
     <div class="col-md-6 right_list">
         <div class="Open_cache">

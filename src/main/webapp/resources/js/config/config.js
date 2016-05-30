@@ -34,18 +34,21 @@ configManager.prototype.gotolevel = function (parentPath, level) {
 configManager.prototype.reviceconfigdata = function (path, keyword) {
     clearTimeout(this.pagetimeout);
     //$("#keyword").val("");
+    var userIdVal = $("#userId").val();
+    var serviceIdVal = $("#serviceId").val();
     this.loaddatacontent();
-    var data = {
+    var dataVals = {
         path: path,
         keyword: keyword,
-        serviceId: this.currentserviceId
+        userId:userIdVal,
+        serviceId:serviceIdVal
     };
     $.ajax({
         type: 'POST',
         url: _base + '/config/children/all',
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(data),
+        data: JSON.stringify(dataVals),
         success: function (data) {
 			if (keyword != '' && keyword != null) {
 				var dataCache = new Array();
@@ -114,6 +117,8 @@ configManager.prototype.addConfig = function () {
     this.bindeventforcenterbtn("centerConfigBtn");
 }
 configManager.prototype.postaddconfigrequest = function (path, editor) {
+	var userIdVal = $("#userId").val();
+    var serviceIdVal = $("#serviceId").val();
     var pathValue = this.appendpathvalue(path);
     //处理jsoneditor中获得的值=================================start
     var modeVal = editor.getMode();
@@ -128,9 +133,10 @@ configManager.prototype.postaddconfigrequest = function (path, editor) {
     }
     //处理jsoneditor中获得的值=================================end
 	var data = {
-		serviceId: this.currentserviceId,	
 		path : pathValue,
-		data : text
+		data : text,
+        userId:userIdVal,
+        serviceId:serviceIdVal
 	};
     $.ajax({
         type: 'POST',
@@ -215,9 +221,12 @@ configManager.prototype.appendjsonview = function(data) {
 };
 configManager.prototype.editConfig = function (path) {
     var pathValue = this.appendpathvalue(path);
+    var userIdVal = $("#userId").val();
+    var serviceIdVal = $("#serviceId").val();
     var data = {
         path: pathValue,
-        serviceId: this.currentserviceId
+        userId:userIdVal,
+        serviceId:serviceIdVal
     };
     $.ajax({
         type: 'POST',
@@ -238,6 +247,8 @@ configManager.prototype.editConfig = function (path) {
 }
 
 configManager.prototype.modifyconfig = function (editor) {
+	var userIdVal = $("#userId").val();
+    var serviceIdVal = $("#serviceId").val();
     var pathValue = $("#pathValue").text();
     //处理jsoneditor中获得的值=================================start
     var modeVal = editor.getMode();
@@ -253,8 +264,9 @@ configManager.prototype.modifyconfig = function (editor) {
     //处理jsoneditor中获得的值=================================end
 	var data = {
 		path : pathValue,
-		serviceId: this.currentserviceId,
-		data : text
+		data : text,
+        userId:userIdVal,
+        serviceId:serviceIdVal
 	};
     $.ajax({
         type: 'POST',
@@ -327,12 +339,15 @@ configManager.prototype.delConfig = function () {
 }
 configManager.prototype.getallcheckpath = function () {
     var arrObject = new Array();
+    var userIdVal = $("#userId").val();
+    var serviceIdVal = $("#serviceId").val();
     $("input[name='selectFlag']:checkbox").each(function () {
         if (this.checked) {
             var pathValue = configManager.appendpathvalue($(this).val());
             var path = {
                 path: pathValue,
-                serviceId: configManager.currentserviceId
+                userId:userIdVal,
+                serviceId:serviceIdVal
             }
             arrObject.push(path);
         }
