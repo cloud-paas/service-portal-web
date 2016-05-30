@@ -31,7 +31,6 @@
 					CPUNUM_ID : "#cpuNum",
 					MEMSIZE_ID : "#memSize",
 					NODENUM_ID : "#nodeNum",
-					DSSPID_ID : "#dssPid",
 					DSSSERVICEPWD_ID : "#dssServicePwd",
 					DSSSERVICEID_ID : "#dssServiceId",
 					SERVICENAME_ID : "#serviceName",
@@ -51,7 +50,6 @@
 							var memSize=$(_this.settings.MEMSIZE_ID).val();							
 							var nodeNum=$(_this.settings.NODENUM_ID).val();							
 							var dssServicePwd=$(_this.settings.DSSSERVICEPWD_ID).val();
-							var dssPid=$(_this.settings.DSSPID_ID).val();
 							var dssServiceId=$(_this.settings.DSSSERVICEID_ID).val();
 							var serviceName=$(_this.settings.SERVICENAME_ID).val();
 							$('.waitCover').show();
@@ -65,7 +63,6 @@
 									cpuNum	: cpuNum,
 									memSize : memSize,
 									nodeNum : nodeNum,
-									dssPid : dssPid,
 									dssServicePwd : dssServicePwd,
 									dssServiceId : dssServiceId,
 									serviceName : serviceName
@@ -94,11 +91,6 @@
 		                        required: true,
 		                        rangelength:[1,128]
 		                    }, 		 
-		                    dssPid: {
-		                		regexpName: false,
-		                        required: true,
-		                        rangelength:[1,128]
-		                    }, 	
 		                    dssServiceId: {
 		                		regexpName: false,
 		                        required: true,
@@ -115,17 +107,13 @@
 		                		required:"请输入服务名称",
 		                		rangelength:"服务名称最大长度不超过50"
 		                	},
-		                	dssPid:{
-		                		required:"请输入dssPid",
-		                		rangelength:"dssPid最大长度不超过50"
-		                	},
 		                	dssServiceId:{
-		                		required:"请输入dssServiceId",
-		                		rangelength:"dssServiceId最大长度不超过50"
+		                		required:"请输入dss服务id",
+		                		rangelength:"dss服务id最大长度不超过50"
 		                	},
 		                	dssServicePwd:{
-		                		required:"请输入dssService密码",
-		                		rangelength:"密码长度应为6~16个字符"
+		                		required:"请输入dss服务密码",
+		                		rangelength:"dss服务密码长度应为6~16个字符"
 		                	}
 		                	
 		                },
@@ -224,27 +212,22 @@
 			          </li>	
 			           <li  style="padding-top:0.5%;font-size:18px;font-weight:400">个</li>			          		          
 		          	</ul>
-		          	
-	         		<ul>
-			          <li class="font-title" style="margin-left:43px;">dssPId：</li>
-			          <li ><input id="dssPid" name="dssPid" type="text" class="form-control"aria-describedby="sizing-addon2"></li>
-			          <li><label style="color:red;" id="dssPid_error"></label></li>
-		          	</ul>
-	         		<ul>
-			          <li class="font-title" style="margin-left:-10px;">dssServicePwd：</li>
-			          <li ><input name="dssServicePwd" id="dssServicePwd" type="text" class="form-control"aria-describedby="sizing-addon2"></li>
-			          <li><label style="color:red;" id="dssServicePwd_error"></label></li>
-		          	</ul>
 		          	<ul>
-			          <li class="font-title" style="margin-left:4px;">dssServiceId：</li>
-			          <li ><input name="dssServiceId" id="dssServiceId" type="text" class="form-control"aria-describedby="sizing-addon2"></li>
-			          <li><label style="color:red;" id="dssServiceId_error"></label></li>
-		          	</ul>
-		          	<ul>
-			          <li class="font-title" style="margin-left:4px;">serviceName：</li>
+			          <li class="font-title" style="margin-left:30px;">服务名称：</li>
 			          <li ><input name="serviceName" id="serviceName" type="text" class="form-control"aria-describedby="sizing-addon2"></li>
 			          <li><label style="color:red;" id="serviceName_error"></label></li>
 		          	</ul>
+		          	<ul>
+			          <li class="font-title" style="margin-left:25px;">dss服务id：</li>
+			          <li ><input name="dssServiceId" id="dssServiceId" type="text" class="form-control"aria-describedby="sizing-addon2"></li>
+			          <li><label style="color:red;" id="dssServiceId_error"></label></li>
+		          	</ul>
+	         		<ul>
+			          <li class="font-title" style="margin-left:8px;">dss服务密码：</li>
+			          <li ><input name="dssServicePwd" id="dssServicePwd" type="text" class="form-control"aria-describedby="sizing-addon2"></li>
+			          <li><label style="color:red;" id="dssServicePwd_error"></label></li>
+		          	</ul>
+		          	
 					<ul style="padding-left:10%">   
 			          <li>
 						<a A href="javascript:void(0);" id="my_submit"><div style="margin-top:20px;text-align:center;-moz-border-radius: 15px;border-radius: 15px;width:130px;height:30px;background:rgb(121,189,90);line-height:30px;vertical-align:middle;color:#fff">立即开通</div></a>

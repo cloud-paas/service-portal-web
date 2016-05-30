@@ -81,12 +81,11 @@ public class IdpsController {
 		String cpuNum = request.getParameter("cpuNum");
 		String memSize = request.getParameter("memSize");
 		String nodeNum = request.getParameter("nodeNum");
-		String dssPid = request.getParameter("dssPid");
 		String dssServicePwd = request.getParameter("dssServicePwd");
 		String dssServiceId = request.getParameter("dssServiceId");
 		String serviceName = request.getParameter("serviceName");
 		if (!StringUtil.isBlank(cpuNum) && !StringUtil.isBlank(memSize)
-				&& !StringUtil.isBlank(nodeNum) && !StringUtil.isBlank(dssPid)&& !StringUtil.isBlank(dssServicePwd)&& !StringUtil.isBlank(dssServiceId)
+				&& !StringUtil.isBlank(nodeNum) && !StringUtil.isBlank(dssServicePwd)&& !StringUtil.isBlank(dssServiceId)
 				&& !StringUtil.isBlank(serviceName)) {
 			OrderDetailRequest orderDetailRequest = new OrderDetailRequest();
 			orderDetailRequest.setOperateType(Constants.OperateType.APPLY);// 操作类型
@@ -102,7 +101,7 @@ public class IdpsController {
 			serviceMap.put("cpuNum", cpuNum);
 			serviceMap.put("mem", memSize);
 			serviceMap.put("nodeNum", nodeNum);
-			serviceMap.put("dssPId", dssPid);
+			serviceMap.put("dssPId", userVo.getPid());
 			serviceMap.put("dssServicePwd", dssServicePwd);
 			serviceMap.put("dssServiceId", dssServiceId);
 			serviceMap.put("serviceName", serviceName);
