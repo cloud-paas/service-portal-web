@@ -218,12 +218,12 @@
 			          <li><label style="color:red;" id="serviceName_error"></label></li>
 		          	</ul>
 		          	<ul>
-			          <li class="font-title" style="margin-left:25px;">dss服务id：</li>
+			          <li class="font-title" style="margin-left:25px;">DSS服务ID：</li>
 			          <li ><input name="dssServiceId" id="dssServiceId" type="text" class="form-control"aria-describedby="sizing-addon2"></li>
 			          <li><label style="color:red;" id="dssServiceId_error"></label></li>
 		          	</ul>
 	         		<ul>
-			          <li class="font-title" style="margin-left:8px;">dss服务密码：</li>
+			          <li class="font-title" style="margin-left:8px;">DSS服务密码：</li>
 			          <li ><input name="dssServicePwd" id="dssServicePwd" type="text" class="form-control"aria-describedby="sizing-addon2"></li>
 			          <li><label style="color:red;" id="dssServicePwd_error"></label></li>
 		          	</ul>
