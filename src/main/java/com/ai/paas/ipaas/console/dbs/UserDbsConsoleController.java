@@ -10,12 +10,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.PaasException;
-import com.ai.paas.ipaas.cache.CacheUtils;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IAtsConsoleDubboSv;
@@ -39,7 +39,6 @@ import com.alibaba.dubbo.config.annotation.Reference;
 @RequestMapping(value = "/dbsConsole")
 @Controller
 public class UserDbsConsoleController {
-
 	private static final Logger logger = LogManager
 			.getLogger(UserDbsConsoleController.class.getName());
 
@@ -54,6 +53,9 @@ public class UserDbsConsoleController {
 
 	@Reference
 	private ISysParamDubbo iSysParam;
+	
+	@Value("#{sysConfig['IPAAS-MUI.SERVICE.IP_PORT_SERVICE']}")
+	String muiUrl;
 	
 	@RequestMapping(value = "/toDbsConsole")
 	public String toManageConsole(HttpServletRequest req,
@@ -110,23 +112,19 @@ public class UserDbsConsoleController {
 					 userProdInstVo.setUserServParamMap(jsonMap);
 				}
 			}
-								
-	        String muiUrl = CacheUtils.getOptionByKey("IPAAS-MUI.SERVICE","IP_PORT_SERVICE");
+			
 			result.put("resultCode", resultCode);
 			result.put("resultMessage", response.getResponseHeader().getResultMessage());
 			result.put("resultList", resultList);
 			result.put("muiUrl", muiUrl);
-			
 		} catch (Exception e) {
 			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
 			result.put("resultMessage", "查询出现异常！");
 			logger.error(e);
-
 		}
 
 		return result;
 	}	
-	
 	
 	@RequestMapping(value = "/toModifyDbsServPwd")
 	public String toModifyDbsServPwd(HttpServletRequest req,HttpServletResponse resp) {

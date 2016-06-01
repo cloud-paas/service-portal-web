@@ -20,18 +20,17 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ai.paas.ipaas.PaasRuntimeException;
-import com.ai.paas.ipaas.cache.CacheUtils;
 import com.ai.paas.ipaas.config.param.ConfigRequestParam;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.HttpClientUtil;
@@ -47,8 +46,6 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import net.sf.json.JSONObject;
-
 @Controller
 @RequestMapping(value = "/config")
 public class ConfigConsoleController {
@@ -59,6 +56,30 @@ public class ConfigConsoleController {
 	
 	@Reference
 	private ISysParamDubbo iSysParam;
+	
+	@Value("#{sysConfig['PASS.SERVICE.IP_PORT_SERVICE']}")
+	String iPaasDubboUrl;
+	
+	@Value("#{sysConfig['CCS_CUST.LIST_PATH_DATA.url']}")
+	String ccsListUrl;
+	
+	@Value("#{sysConfig['CCS_CUST.ADD.url']}")
+	String ccsAddUrl;
+	
+	@Value("#{sysConfig['CCS_CUST.MODIFY.url']}")
+	String ccsModifyUrl;
+	
+	@Value("#{sysConfig['CCS_CUST.GET.url']}")
+	String ccsGetUrl;
+	
+	@Value("#{sysConfig['CCS_CUST.DELETE_BATCH.url']}")
+	String ccsBatchDelUrl;
+	
+	@Value("#{sysConfig['CCS_CUST.DOWNLOAD.url']}")
+	String ccsDownloadUrl;
+	
+	@Value("#{sysConfig['CCS_CUST.ADD_BATCH.url']}")
+	String ccsBatchAddUrl;
 	
 	@RequestMapping("/showService")
 	public ModelAndView showService(HttpServletRequest request ,HttpServletResponse response) {
@@ -100,14 +121,6 @@ public class ConfigConsoleController {
 		return view;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * 用户自定义配置--获取子节点，不分页传参数serviceId,path,keyword
 	 *
@@ -117,13 +130,9 @@ public class ConfigConsoleController {
 	@ResponseBody
 	@RequestMapping(value = "/children/all")
 	public String getCustomChildren(HttpSession session,@RequestBody ConfigRequestParam param) {
-//		UserInfoVo userSession = UserUtil.getUserSession(session);
-//		String userId = userSession.getUserId();
-		 
         String result = "";
 		try {
-			
-			String address = CacheUtils.getOptionByKey("PASS.SERVICE","IP_PORT_SERVICE")+CacheUtils.getOptionByKey("CCS_CUST.LIST_PATH_DATA","url");
+			String address = iPaasDubboUrl + ccsListUrl;
 			result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(param));
 		} catch (IOException | URISyntaxException e ) {
 			e.printStackTrace();
@@ -142,7 +151,7 @@ public class ConfigConsoleController {
 	public String customAdd(HttpSession session,@RequestBody ConfigRequestParam param) {
         String result = "";
 		try {			
-			String address = CacheUtils.getOptionByKey("PASS.SERVICE","IP_PORT_SERVICE")+CacheUtils.getOptionByKey("CCS_CUST.ADD","url");
+			String address = iPaasDubboUrl + ccsAddUrl;
 			result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(param));
 		} catch (IOException | URISyntaxException  e) {
 			e.printStackTrace();
@@ -161,7 +170,7 @@ public class ConfigConsoleController {
 	public String customModify(HttpSession session,@RequestBody ConfigRequestParam param) {
         String result = "";
 		try {			
-			String address = CacheUtils.getOptionByKey("PASS.SERVICE","IP_PORT_SERVICE")+CacheUtils.getOptionByKey("CCS_CUST.MODIFY","url");
+			String address = iPaasDubboUrl + ccsModifyUrl;
 			result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(param));
 		} catch (IOException | URISyntaxException  e) {
 			e.printStackTrace();
@@ -180,7 +189,7 @@ public class ConfigConsoleController {
 	public String getCustomConfig(HttpServletRequest req,@RequestBody ConfigRequestParam param) {
         String result = "";
 		try {			
-			String address = CacheUtils.getOptionByKey("PASS.SERVICE","IP_PORT_SERVICE")+CacheUtils.getOptionByKey("CCS_CUST.GET","url");
+			String address = iPaasDubboUrl + ccsGetUrl;
 			System.out.println("address---yinzf:"+address);
 			result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(param));
 			System.out.println("result---yinzf:"+result);
@@ -201,7 +210,7 @@ public class ConfigConsoleController {
 	public String customDelete(HttpSession session,@RequestBody List<ConfigRequestParam> paramList) {
         String result = "";
 		try {			
-			String address = CacheUtils.getOptionByKey("PASS.SERVICE","IP_PORT_SERVICE")+CacheUtils.getOptionByKey("CCS_CUST.DELETE_BATCH","url");
+			String address = iPaasDubboUrl + ccsBatchDelUrl;
 			result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(paramList));
 		} catch (IOException | URISyntaxException  e) {
 			e.printStackTrace();
@@ -232,7 +241,7 @@ public class ConfigConsoleController {
 		String result = "";
 		Gson gson = new Gson();
 		try {			
-			String address = CacheUtils.getOptionByKey("PASS.SERVICE","IP_PORT_SERVICE")+CacheUtils.getOptionByKey("CCS_CUST.DOWNLOAD","url");
+			String address = iPaasDubboUrl + ccsDownloadUrl;
 			result = HttpClientUtil.sendPostRequest(address, gson.toJson(param));	
 			Map<String,Object> map = gson.fromJson(result, new TypeToken<Map<String,Object>>(){}.getType());
 			if(map.get("resultCode").equals("000000")){
@@ -312,7 +321,7 @@ public class ConfigConsoleController {
 			    paramList.add(param);
 			}		
 			try {
-				String address = CacheUtils.getOptionByKey("PASS.SERVICE","IP_PORT_SERVICE") + CacheUtils.getOptionByKey("CCS_CUST.ADD_BATCH","url");
+				String address = iPaasDubboUrl + ccsBatchAddUrl;
 				result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(paramList));
 			} catch (IOException | URISyntaxException e) {
 				e.printStackTrace();

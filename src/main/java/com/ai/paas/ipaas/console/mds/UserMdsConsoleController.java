@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.PaasException;
-import com.ai.paas.ipaas.cache.CacheUtils;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.HttpClientUtil;
 import com.ai.paas.ipaas.system.util.UserUtil;
@@ -38,18 +38,15 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 
 /**
- * DSS用户控制台
- * 
+ * MDS用户控制台
  * @author mapl
- * 
  */
 
 @RequestMapping(value = "/mdsConsole")
 @Controller
 public class UserMdsConsoleController {
-
-	private static final Logger logger = LogManager
-			.getLogger(UserMdsConsoleController.class.getName());
+	private static final Logger logger = LogManager.getLogger(UserMdsConsoleController.class.getName());
+	
 	@Reference
 	private ISysParamDubbo iSysParam;
 
@@ -62,9 +59,11 @@ public class UserMdsConsoleController {
 	@Reference
 	private IDssConsoleDubboSv dssConsoleDubboSv;
 	
+	@Value("#{sysConfig['CONTROLLER.CONTROLLER.url']}")
+	String portalDubboUrl;
+	
 	@RequestMapping(value = "/toMdsConsole")
 	public String toMdsConsole(ModelMap model, HttpServletRequest request, HttpServletResponse response) {
-		
 		SelectWithNoPageRequest<UserProdInstVo> req = new SelectWithNoPageRequest<UserProdInstVo>();
 		UserProdInstVo selectRequestVo = new UserProdInstVo();
 		UserInfoVo userVo = UserUtil.getUserSession(request.getSession());
@@ -113,7 +112,6 @@ public class UserMdsConsoleController {
 		return "console/mds/mdsDetail";
 	}
 	
-	
 	@RequestMapping(value = "/cancleMds",produces = {"application/json;charset=UTF-8"})
 	@ResponseBody
 	public Map<String, Object> cancleDss(HttpServletRequest req,
@@ -124,7 +122,8 @@ public class UserMdsConsoleController {
 		ResponseHeader responseHeader = new ResponseHeader();
 		UserProdInstVo vo = new UserProdInstVo();
 		vo.setUserId(userVo.getUserId());
-		vo.setUserServId(Long.parseLong(userServId));;
+		vo.setUserServId(Long.parseLong(userServId));
+		
 		try {
 			// 注销
 			responseHeader = dssConsoleDubboSv.cancleUserProdInst(vo);
@@ -135,6 +134,7 @@ public class UserMdsConsoleController {
 			result.put("resultMessage", "注销异常！");
 			logger.error(e.getMessage(),e);
 		}
+		
 		return result;
 	}
 	
@@ -166,9 +166,9 @@ public class UserMdsConsoleController {
 			result.put("resultMessage", "注销异常！");
 			logger.error(e.getMessage(),e);
 		}
+		
 		return result;
 	}
-	
 	
 	@RequestMapping(value="/resendMessage",method={RequestMethod.POST})
 	public @ResponseBody Map<String, String> resendMessage(HttpServletRequest request,HttpServletResponse response) throws PaasException, IOException, URISyntaxException{
@@ -181,24 +181,14 @@ public class UserMdsConsoleController {
 		params.put("topicEnName", request.getParameter("topicEnName"));
 		params.put("partition", request.getParameter("partition"));
 		String data=JSonUtil.toJSon(params);
-		String address = CacheUtils.getOptionByKey("CONTROLLER.CONTROLLER","url");
+//		String address = CacheUtils.getOptionByKey("CONTROLLER.CONTROLLER","url");
 		String result="";
-		result=HttpClientUtil.sendPostRequest(address+"/mds/console/resendMessage", data);
-		JSONObject object=new JSONObject(result);
-		if(result==""&&result==null){
-			resultMap.put("resultCode", Constants.OPERATE_CODE_FAIL);
-			resultMap.put("resultMsg", "请求失败！");
-			return  resultMap ;
-		}
+		result=HttpClientUtil.sendPostRequest(portalDubboUrl+"/mds/console/resendMessage", data);
 		
+		JSONObject object=new JSONObject(result);
 		resultMap.put("resultCode", object.getString("resultCode"));
 		resultMap.put("resultMsg", object.getString("resultMsg"));
 		return resultMap;
-		
-		
-		
-	 
-		
 	}
 	
 	@RequestMapping(value="/skipMessage",method={RequestMethod.POST})
@@ -213,22 +203,13 @@ public class UserMdsConsoleController {
 		params.put("partition", request.getParameter("partition"));
 		params.put("offset", request.getParameter("offset"));
 		String data=JSonUtil.toJSon(params);
-		String address = CacheUtils.getOptionByKey("CONTROLLER.CONTROLLER","url");
 		String result="";
-		result=HttpClientUtil.sendPostRequest(address+"/mds/console/skipMessage", data);
+		result=HttpClientUtil.sendPostRequest(portalDubboUrl + "/mds/console/skipMessage", data);
 		//result=HttpClientUtil.sendPostRequest("http://127.0.0.1:20881/ipaas/mds/console/skipMessage", data);
 		JSONObject object=new JSONObject(result);
-		if(result==""&&result==null){
-			resultMap.put("resultCode", Constants.OPERATE_CODE_FAIL);
-			resultMap.put("resultMsg", "请求失败！");
-			return resultMap;
-		}
 		resultMap.put("resultCode", object.getString("resultCode"));
 		resultMap.put("resultMsg", object.getString("resultMsg"));
-		return resultMap;
 		
-		 
+		return resultMap;
 	}
-	
-
 }

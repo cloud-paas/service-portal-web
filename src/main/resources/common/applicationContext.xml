@@ -18,4 +18,8 @@
     <dubbo:annotation package="com.ai.paas.ipaas"/>
 
     <dubbo:reference id="iUser" interface="com.ai.paas.ipaas.user.dubbo.interfaces.IUser"/>
+    
+    <bean id="sysConfig"  class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
+	    <property name="locations" value="classpath:init.properties"/>
+	</bean> 
 </beans>

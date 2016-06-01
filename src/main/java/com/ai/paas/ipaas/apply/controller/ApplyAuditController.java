@@ -13,9 +13,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import backtype.storm.security.auth.AuthUtils;
 
 import com.ai.paas.ipaas.PaasException;
 import com.ai.paas.ipaas.apply.vo.OrderDetailLocalVo;
@@ -52,6 +55,15 @@ public class ApplyAuditController {
 	@Reference
 	private ISysParamDubbo iSysParam;
 
+	@Value("#{sysConfig['iPaas-Auth.SERVICE.IP_PORT_SERVICE']}")
+	String authServiceUrl;
+	
+	@Value("#{sysConfig['AUTH.SDKUrl.1']}")
+	String authSdkUrl;
+	
+	@Value("#{sysConfig['OA.SEE_CHECK_URL.url']}")
+	String oaCheckUrl;
+	
 	/**
 	 * 服务申请审核
 	 * 
@@ -174,7 +186,7 @@ public class ApplyAuditController {
     public String toMyAccount(HttpServletRequest request) {
         UserInfoVo userInfo = UserUtil.getUserSession(request.getSession());
         request.setAttribute("user", userInfo);
-        request.setAttribute("SDKUrl", CacheUtils.getOptionByKey("iPaas-Auth.SERVICE","IP_PORT_SERVICE")  + CacheUtils.getOptionByKey("AUTH.SDKUrl","1"));
+        request.setAttribute("SDKUrl", authServiceUrl + authSdkUrl);
         return "apply/myAccount";
     }
     @RequestMapping(value="/passwordUpadte")
@@ -262,7 +274,7 @@ public class ApplyAuditController {
                 }
                 localVo.setOrderAppDateStr(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(vo
                         .getOrderAppDate()));
-                localVo.setOaCheckUrl(CacheUtils.getValueByKey("OA.SEE_CHECK_URL"));
+                localVo.setOaCheckUrl(oaCheckUrl);
                 resultListSplit.add(localVo);
             }
             returnList.add(resultListSplit);

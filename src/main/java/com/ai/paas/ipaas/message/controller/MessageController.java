@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.PaasException;
-import com.ai.paas.ipaas.cache.CacheUtils;
 import com.ai.paas.ipaas.message.param.MessageInfo;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
@@ -39,15 +39,20 @@ import com.google.gson.JsonObject;
 @Controller
 @RequestMapping(value = "/mds")
 public class MessageController {
-	@Reference
-	private IOrder iOrder;
-	@Reference
-	private ISysParamDubbo iSysParam;
-	@Reference
-	private MessageDisplayDubboSv messageDisplayDubboSv;
 	private static final Logger log = LogManager
 			.getLogger(MessageController.class.getName());
 	
+	@Reference
+	private IOrder iOrder;
+	
+	@Reference
+	private ISysParamDubbo iSysParam;
+	
+	@Reference
+	private MessageDisplayDubboSv messageDisplayDubboSv;
+	
+	@Value("#{sysConfig['System.Admin.No1']}")
+	String sysAdminInfo;
 	
 	@RequestMapping(value="/introduce")
 	public String toIndex(HttpServletRequest request,HttpServletResponse response){
@@ -92,7 +97,7 @@ public class MessageController {
 		String queuePwd = request.getParameter("queuePwd");
 		UserInfoVo userVo = UserUtil.getUserSession(request.getSession());
 		String userId=userVo.getUserId();
-		MessageInfo messageInfo = new MessageInfo();
+		
 		OrderDetailRequest orderDetailRequest=new OrderDetailRequest();
 		orderDetailRequest.setProdByname(Constants.serviceName.MDS);
 		orderDetailRequest.setUserId(userId);								//用户ID
@@ -100,6 +105,7 @@ public class MessageController {
 		orderDetailRequest.setProdId(Constants.serviceType.MESSAGE_CENTER+"");	//产品ID
 		orderDetailRequest.setProdType(Constants.ProductType.IPAAS_CunChu);		//产品类型  PROD_IPAAS
 		orderDetailRequest.setUserServIpaasPwd(queuePwd);
+		
 		JsonObject prodParamJson = new JsonObject();
 		prodParamJson.addProperty("userId", userId);
 		prodParamJson.addProperty("applyType", "create");
@@ -136,7 +142,7 @@ public class MessageController {
 		pageEntity.setParams(param);
 		UserMessageRequest userMessageRequest = new UserMessageRequest();
 		userMessageRequest.setPageEntity(pageEntity);
-		String[] Admin = CacheUtils.getValueByKey("System.Admin").split(";");
+		String[] Admin = sysAdminInfo.split(";");
 		try {
 			UserMessageResponse userMessageResponse = messageDisplayDubboSv.searchPage(userMessageRequest);
 			PageResult<UserMessageVo> pageResult = new PageResult<UserMessageVo>();
@@ -152,8 +158,8 @@ public class MessageController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return str;
 		
+		return str;
 	}
 
 }

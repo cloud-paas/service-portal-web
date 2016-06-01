@@ -1,8 +1,5 @@
 package com.ai.paas.ipaas.cache;
 
-import java.util.List;
-import java.util.ResourceBundle;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,7 +7,6 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-import com.ai.paas.ipaas.config.controller.ConfigController;
 import com.ai.paas.ipaas.utils.ConfigUtil;
 import com.alibaba.fastjson.JSON;
 
@@ -151,26 +147,4 @@ public class RedisClient {
         }
     }
 
-public static void main(String[] args){
-		
-		List<CodeValueObject> list1;
-		for(int i=0; i< 2; i++){
-			System.out.println("==============="+i);
-			list1 = CacheUtils.getCodeValueListByKey("WORKFLOW.URL_PREFIX");
-			System.out.println("vmCPULoading...list1>>>>:"+list1);
-		}
-}
-
-    
-    
-    
-//    public static void main(String[] args) throws Exception {
-//        String key = "s";
-//        RedisClient.set4Json(key, "test");
-//        System.out.println(RedisClient.get4Json(key));
-//        RedisClient.set4Json(key, "test2");
-//        System.out.println(RedisClient.get4Json(key));
-//        RedisClient.del(key);
-//        System.out.println(RedisClient.get4Json(key));
-//    }
 }

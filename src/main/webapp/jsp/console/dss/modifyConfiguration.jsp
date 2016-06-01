@@ -40,11 +40,11 @@
 			          <li >			          
 			          		<select id="capacity" name="capacity"  class="ch_select" >
 									<c:forEach items="${capacityList}" var="optionVo">
-										<c:if test="${optionVo.value==capacity}">
-										<option value="${optionVo.value }" selected="selected">${optionVo.code }</option>
+										<c:if test="${optionVo==capacity}">
+										<option value="${optionVo }" selected="selected">${optionVo }</option>
 										</c:if> 
-										<c:if test="${optionVo.value!=capacity}">
-										<option value="${optionVo.value }">${optionVo.code }</option>
+										<c:if test="${optionVo!=capacity}">
+										<option value="${optionVo }">${optionVo }</option>
 										</c:if> 
 									</c:forEach>								
 								</select>
@@ -57,11 +57,11 @@
 			          <li class="font-title">			          
 			          		<select id="singleFileSize" name="singleFileSize" class="ch_select" >
 								<c:forEach items="${fileSizeList }" var="optionVo">
-									<c:if test="${optionVo.value==singleFileSize}">
-										<option value="${optionVo.value }" selected="selected">${optionVo.code }</option>
+									<c:if test="${optionVo==singleFileSize}">
+										<option value="${optionVo }" selected="selected">${optionVo }</option>
 									</c:if> 
-									<c:if test="${optionVo.value!=singleFileSize}">
-										<option value="${optionVo.value }">${optionVo.code }</option>
+									<c:if test="${optionVo!=singleFileSize}">
+										<option value="${optionVo }">${optionVo }</option>
 									</c:if> 
 										
 								</c:forEach> 
