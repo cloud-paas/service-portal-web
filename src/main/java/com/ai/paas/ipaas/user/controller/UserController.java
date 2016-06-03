@@ -23,7 +23,6 @@ import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +51,7 @@ import com.ai.paas.ipaas.util.CiperUtil;
 import com.ai.paas.ipaas.util.StringUtil;
 import com.ai.paas.ipaas.util.UUIDTool;
 import com.ai.paas.ipaas.utils.GsonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -64,14 +64,11 @@ public class UserController {
 	private static final String SECURITY_KEY = "7331c9b6b1a1d521363f7bca8acb095f";// md5
 	private static String directory = SFTPConfig.getString("SFTP.REQ.DIRECTORY");
 	
-	@Value("#{sysConfig['iPaas-Auth.SERVICE.IP_PORT_SERVICE']}")
-	String authServiceUrl;
+	String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
 	
-	@Value("#{sysConfig['AUTH.AUTH_URL.url']}")
-	String authUrl;
+	String authUrl = SystemConfigHandler.configMap.get("AUTH.AUTH_URL.url");
 	
-	@Value("#{sysConfig['CONTROLLER.CONTROLLER.url']}")
-	String portalDubboUrl;
+	String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 	
 	@Reference
 	private IUser iUser;

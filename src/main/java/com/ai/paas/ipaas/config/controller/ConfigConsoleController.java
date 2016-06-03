@@ -20,7 +20,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +41,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -57,29 +57,21 @@ public class ConfigConsoleController {
 	@Reference
 	private ISysParamDubbo iSysParam;
 	
-	@Value("#{sysConfig['PASS.SERVICE.IP_PORT_SERVICE']}")
-	String iPaasDubboUrl;
+	String iPaasDubboUrl = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
 	
-	@Value("#{sysConfig['CCS_CUST.LIST_PATH_DATA.url']}")
-	String ccsListUrl;
+	String ccsListUrl =SystemConfigHandler.configMap.get("CCS_CUST.LIST_PATH_DATA.url");
 	
-	@Value("#{sysConfig['CCS_CUST.ADD.url']}")
-	String ccsAddUrl;
+	String ccsAddUrl =SystemConfigHandler.configMap.get("CCS_CUST.ADD.url");
 	
-	@Value("#{sysConfig['CCS_CUST.MODIFY.url']}")
-	String ccsModifyUrl;
+	String ccsModifyUrl = SystemConfigHandler.configMap.get("CCS_CUST.MODIFY.url");
 	
-	@Value("#{sysConfig['CCS_CUST.GET.url']}")
-	String ccsGetUrl;
+	String ccsGetUrl = SystemConfigHandler.configMap.get("CCS_CUST.GET.url");
 	
-	@Value("#{sysConfig['CCS_CUST.DELETE_BATCH.url']}")
-	String ccsBatchDelUrl;
+	String ccsBatchDelUrl = SystemConfigHandler.configMap.get("CCS_CUST.DELETE_BATCH.url");
 	
-	@Value("#{sysConfig['CCS_CUST.DOWNLOAD.url']}")
-	String ccsDownloadUrl;
+	String ccsDownloadUrl = SystemConfigHandler.configMap.get("CCS_CUST.DOWNLOAD.url");
 	
-	@Value("#{sysConfig['CCS_CUST.ADD_BATCH.url']}")
-	String ccsBatchAddUrl;
+	String ccsBatchAddUrl = SystemConfigHandler.configMap.get("CCS_CUST.ADD_BATCH.url");
 	
 	@RequestMapping("/showService")
 	public ModelAndView showService(HttpServletRequest request ,HttpServletResponse response) {

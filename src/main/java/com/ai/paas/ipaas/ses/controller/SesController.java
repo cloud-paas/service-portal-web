@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +27,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 
@@ -40,20 +40,15 @@ public class SesController {
 	@Reference
 	private ISysParamDubbo iSysParam;
 
-	@Value("#{sysConfig['CONTROLLER.CONTROLLER.url']}")
-	String portalDubboUrl;
+	String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 	
-	@Value("#{sysConfig['SES.clusterNum.param']}")
-	String sesClusterNum;
+	String sesClusterNum= SystemConfigHandler.configMap.get("SES.clusterNum.param");
 	
-	@Value("#{sysConfig['SES.replicasNum.param']}")
-	String sesReplicasNum;
+	String sesReplicasNum= SystemConfigHandler.configMap.get("SES.replicasNum.param");
 	
-	@Value("#{sysConfig['SES.sesMem.param']}")
-	String sesMemNum;
+	String sesMemNum= SystemConfigHandler.configMap.get("SES.sesMem.param");
 	
-	@Value("#{sysConfig['SES.shardNum.param']}")
-	String sesSharedNum;
+	String sesSharedNum= SystemConfigHandler.configMap.get("SES.shardNum.param");
 			
 	@RequestMapping(value = "/SesApplyPage", method = { RequestMethod.GET })
 	public String SesApplyPage(HttpServletRequest request,

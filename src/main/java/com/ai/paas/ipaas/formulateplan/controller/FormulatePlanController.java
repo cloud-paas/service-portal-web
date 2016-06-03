@@ -1,36 +1,13 @@
 package com.ai.paas.ipaas.formulateplan.controller;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import junit.textui.ResultPrinter;
-
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.ai.paas.ipaas.cache.CacheUtils;
-import com.ai.paas.ipaas.cache.CodeValueObject;
-import com.ai.paas.ipaas.system.util.HttpClientUtil;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 
 @Controller
 @RequestMapping(value = "/formulate")
 public class FormulatePlanController {
 //	@Value("#{sysConfig['CONTROLLER.CONTROLLER.url']}")
-//	String portalDubboUrl;
+//	String portalDubboUrl= SystemConfigHandler.configMap.get("");
 //
 //	@RequestMapping(value = "/formulateDetail")
 //	public String searchplan(HttpServletRequest request,

@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +21,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 @Controller
@@ -30,8 +30,7 @@ public class DesController {
 	@Reference
 	private ISysParamDubbo iSysParam;
 
-	@Value("#{sysConfig['CONTROLLER.CONTROLLER.url']}")
-	String portalDubboUrl;
+	String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 	
 	@RequestMapping(value = "/initapply", method = { RequestMethod.GET })
 	public String initApply(HttpServletRequest request,

@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +33,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -62,8 +62,7 @@ public class UserAtsConsoleController {
 	@Reference
 	private IProdProductDubboSv prodProductDubboSv;
 
-	@Value("#{sysConfig['CONTROLLER.CONTROLLER.url']}")
-	String iPaasDubboUrl;
+	String iPaasDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 
 	@RequestMapping(value = "/toAtsConsole")
 	public String toManageConsole(HttpServletRequest req,

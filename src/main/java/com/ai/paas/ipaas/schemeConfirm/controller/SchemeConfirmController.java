@@ -13,7 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ai.paas.ipaas.PaasException;
 import com.ai.paas.ipaas.system.util.HttpClientUtil;
 import com.ai.paas.ipaas.system.util.UserUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
@@ -31,8 +31,7 @@ public class SchemeConfirmController {
 	private static final Logger logger = LogManager
 			.getLogger(SchemeConfirmController.class);
 
-	@Value("#{sysConfig['CONTROLLER.CONTROLLER.url']}")
-	String portalDubboUrl;
+	String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 	
 	/**
 	 * 查询方案确认列表

@@ -18,11 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import backtype.storm.security.auth.AuthUtils;
-
 import com.ai.paas.ipaas.PaasException;
 import com.ai.paas.ipaas.apply.vo.OrderDetailLocalVo;
-import com.ai.paas.ipaas.cache.CacheUtils;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IOrder;
@@ -39,6 +36,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.StringUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 @Controller
@@ -55,14 +53,11 @@ public class ApplyAuditController {
 	@Reference
 	private ISysParamDubbo iSysParam;
 
-	@Value("#{sysConfig['iPaas-Auth.SERVICE.IP_PORT_SERVICE']}")
-	String authServiceUrl;
+	String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
 	
-	@Value("#{sysConfig['AUTH.SDKUrl.1']}")
-	String authSdkUrl;
+	String authSdkUrl = SystemConfigHandler.configMap.get("AUTH.SDKUrl.1");
 	
-	@Value("#{sysConfig['OA.SEE_CHECK_URL.url']}")
-	String oaCheckUrl;
+	String oaCheckUrl = SystemConfigHandler.configMap.get("OA.SEE_CHECK_URL.url");
 	
 	/**
 	 * 服务申请审核

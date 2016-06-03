@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,6 +37,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.CiperUtil;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 /**
@@ -50,32 +50,23 @@ public class UserDssConsoleController {
 	private static final Logger logger = LogManager
 			.getLogger(UserDssConsoleController.class.getName());
 	
-	@Value("#{sysConfig['CONTROLLER.CONTROLLER.url']}")
-	String portalDubboUrl;
+	String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 	
-	@Value("#{sysConfig['DSS.capacity.1024']}")
-	String capacity_1024;
+	String capacity_1024 = SystemConfigHandler.configMap.get("DSS.capacity.1024");
 	
-	@Value("#{sysConfig['DSS.capacity.1536']}")
-	String capacity_1536;
+	String capacity_1536 = SystemConfigHandler.configMap.get("DSS.capacity.1536");
 	
-	@Value("#{sysConfig['DSS.capacity.2048']}")
-	String capacity_2048;
+	String capacity_2048 = SystemConfigHandler.configMap.get("DSS.capacity.2048");
 	
-	@Value("#{sysConfig['DSS.capacity.512']}")
-	String capacity_512;
+	String capacity_512 = SystemConfigHandler.configMap.get("DSS.capacity.512");
 			
-	@Value("#{sysConfig['DSS.singleFileSize.1']}")
-	String singleFile_1;
+	String singleFile_1 = SystemConfigHandler.configMap.get("DSS.singleFileSize.1");
 	
-	@Value("#{sysConfig['DSS.singleFileSize.5']}")
-	String singleFile_5;
+	String singleFile_5 = SystemConfigHandler.configMap.get("DSS.singleFileSize.5");
 	
-	@Value("#{sysConfig['DSS.singleFileSize.10']}")
-	String singleFile_10;
+	String singleFile_10 = SystemConfigHandler.configMap.get("DSS.singleFileSize.10");
 	
-	@Value("#{sysConfig['DSS.singleFileSize.20']}")
-	String singleFile_20;
+	String singleFile_20 = SystemConfigHandler.configMap.get("DSS.singleFileSize.20");
 	
 	@Reference
 	private ISysParamDubbo iSysParam;

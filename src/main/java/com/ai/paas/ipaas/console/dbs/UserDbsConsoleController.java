@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +27,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 /**
@@ -54,8 +54,7 @@ public class UserDbsConsoleController {
 	@Reference
 	private ISysParamDubbo iSysParam;
 	
-	@Value("#{sysConfig['IPAAS-MUI.SERVICE.IP_PORT_SERVICE']}")
-	String muiUrl;
+	String muiUrl = SystemConfigHandler.configMap.get("IPAAS-MUI.SERVICE.IP_PORT_SERVICE");
 	
 	@RequestMapping(value = "/toDbsConsole")
 	public String toManageConsole(HttpServletRequest req,

@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tapestry5.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +19,7 @@ import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.util.CiperUtil;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 @Controller
@@ -33,11 +33,9 @@ public class EmailUtil {
 	@Reference
 	private ISysParamDubbo iSysParam;
 	
-	@Value("#{sysConfig['IPAAS-WEB.SERVICE.IP_PORT_SERVICE']}")
-	String iPaasDubboUrl;
+	String iPaasDubboUrl= SystemConfigHandler.configMap.get("IPAAS-WEB.SERVICE.IP_PORT_SERVICE");
 	
-	@Value("#{sysConfig['AUTH.VERIFY.url']}")
-	String authVerifyUrl;
+	String authVerifyUrl= SystemConfigHandler.configMap.get("AUTH.VERIFY.url");
 	
 	@ResponseBody
 	@RequestMapping(value = "/sendEmail")

@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +33,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 
@@ -59,8 +59,7 @@ public class UserMdsConsoleController {
 	@Reference
 	private IDssConsoleDubboSv dssConsoleDubboSv;
 	
-	@Value("#{sysConfig['CONTROLLER.CONTROLLER.url']}")
-	String portalDubboUrl;
+	String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 	
 	@RequestMapping(value = "/toMdsConsole")
 	public String toMdsConsole(ModelMap model, HttpServletRequest request, HttpServletResponse response) {

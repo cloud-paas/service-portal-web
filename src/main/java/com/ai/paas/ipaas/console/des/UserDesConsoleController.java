@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +32,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.CiperUtil;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -44,14 +44,11 @@ public class UserDesConsoleController {
 	private ISysParamDubbo iSysParam;
 	private static final String SECURITY_KEY = "7331c9b6b1a1d521363f7bca8acb095f";// md5
 
-	@Value("#{sysConfig['CONTROLLER.CONTROLLER.url']}")
-	String iPaasDubboUrl;
+	String iPaasDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 	
-	@Value("#{sysConfig['iPaas-Auth.SERVICE.IP_PORT_SERVICE']}")
-	String authUrl;
+	String authUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
 	
-	@Value("#{sysConfig['AUTH.AUTH_PWD.url']}")
-	String authPwd;
+	String authPwd = SystemConfigHandler.configMap.get("AUTH.AUTH_PWD.url");
 	
 	@RequestMapping(value = "/toDesConsole", method = { RequestMethod.GET })
 	public String toManageConsole(HttpServletRequest request,

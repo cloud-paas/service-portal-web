@@ -5,6 +5,7 @@
 		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 		http://code.alibabatech.com/schema/dubbo
         http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+        
     <bean id="dubboConsumerConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="order" value="1"/>
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
@@ -19,7 +20,25 @@
 
     <dubbo:reference id="iUser" interface="com.ai.paas.ipaas.user.dubbo.interfaces.IUser"/>
     
-    <bean id="sysConfig"  class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
+	<bean id="zookeeperConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="order" value="1" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="locations" value="classpath:zookeeper.properties" />
+	</bean>
+    
+    <bean id="configStore" class="com.ai.paas.ipaas.zookeeper.SysConfigStore" >
+    	<property name="zkAddress" value="${zookeeper.address}" />
+		<property name="zkUser" value="${zookeeper.user}" />
+		<property name="zkPasswd" value="${zookeeper.passwd}" />
+		<property name="timeOut" value="${zookeeper.timeout}" />
+		<property name="storePath" value="${zookeeper.storePath}" />
+    </bean>
+    
+    <bean id="loadConfig" class="com.ai.paas.ipaas.zookeeper.SystemConfigHandler" >
+    </bean>
+    
+    <!-- <bean id="sysConfig"  class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
 	    <property name="locations" value="classpath:init.properties"/>
-	</bean> 
+	</bean>  -->
 </beans>

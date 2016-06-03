@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +32,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.UserMessageResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.UserMessageVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.StringUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.JsonObject;
 
@@ -51,8 +51,7 @@ public class MessageController {
 	@Reference
 	private MessageDisplayDubboSv messageDisplayDubboSv;
 	
-	@Value("#{sysConfig['System.Admin.No1']}")
-	String sysAdminInfo;
+	String sysAdminInfo= SystemConfigHandler.configMap.get("System.Admin.No1");
 	
 	@RequestMapping(value="/introduce")
 	public String toIndex(HttpServletRequest request,HttpServletResponse response){

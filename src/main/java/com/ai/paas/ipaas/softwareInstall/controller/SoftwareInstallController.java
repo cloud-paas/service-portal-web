@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.system.util.HttpClientUtil;
 import com.ai.paas.ipaas.user.utils.gson.GsonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 
 @Controller
 @RequestMapping(value = "/softwareInstall")
@@ -26,8 +26,7 @@ public class SoftwareInstallController {
 	private static final Logger logger = LogManager
 			.getLogger(SoftwareInstallController.class);
 	
-	@Value("#{sysConfig['CONTROLLER.CONTROLLER.url']}")
-	String portalDubboUrl;
+	String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 	
 	@RequestMapping(value="/softInit")
 	public String openInit(HttpServletRequest request,HttpServletResponse response) {
