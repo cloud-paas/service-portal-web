@@ -67,7 +67,9 @@
                         <ul>
                             <li><input name="keyword" id="keyword" type="text" class="search_ch"></li>
                             <li class="open_btn"><a href="javascript:void(0);" onclick="javascript:configManager.searchConfig();">搜索</a></li>
-                            <li class="xil_A" style="margin-left:300px;"><A href="javascript:void(0);" class="gy_btn" onclick="javascript:configManager.addConfig();">增加</A></li>
+                            <% if(session.getAttribute("userAccessRole")=="okAccess"){ %>
+                            	<li class="xil_A" style="margin-left:300px;"><A href="javascript:void(0);" class="gy_btn" onclick="javascript:configManager.addConfig();">增加</A></li>
+                            <%} %>
 <!--                             <li class="xil"><A href="javascript:void(0);" class="gy_btn" onclick="javascript:configManager.uploadFile();">导入</A></li> -->
                         </ul>
                     </div>
@@ -120,7 +122,11 @@
                                     <tr data-link="class{:#index%2==0?'':'bjtr'}">
                                         <td width="20%" style="word-break:break-all;"><a href="javascript:void(0)" onclick="javascript:configManager.gotochild('{{:path}}')">{{:path}}</a></td>
                                         <td width="60%" style="word-break:break-all;">{{:data}}</td>
-                                        <td width="10%" style="word-break:break-all;"><a href="javascript:void(0)" onclick="javascript:configManager.editConfig('{{:path}}')">编辑</a></td>
+                                        <td width="10%" style="word-break:break-all;">
+										<% if(session.getAttribute("userAccessRole")=="okAccess"){ %>
+											<a href="javascript:void(0)" onclick="javascript:configManager.editConfig('{{:path}}')">编辑</a>
+										<%} %>
+										</td>
                                     </tr>
                                 {{/for}}
                             </tbody>

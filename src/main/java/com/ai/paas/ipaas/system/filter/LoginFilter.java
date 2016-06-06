@@ -19,8 +19,10 @@ import org.apache.logging.log4j.Logger;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
 
+import com.ai.paas.ipaas.maintain.util.ConfigUtil;
 import com.ai.paas.ipaas.storm.sys.utils.StringUtils;
 import com.ai.paas.ipaas.system.constants.ConstantsForSession;
+import com.ai.paas.ipaas.system.util.UserUtil;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 
 
@@ -123,6 +125,19 @@ public class LoginFilter implements Filter{
 			chain.doFilter(servletRequest, servletResponse);
 		}
 		
+        //获得配置文件里的值
+  		String userAccessList = ConfigUtil.getParameterValue("/common/userAccess.properties", "userAccessList");
+  		log.debug("获得配置文件里用户信息------"+userAccessList);
+  		//判断当前用户的邮箱，userid是否都在配置文件中，有一个不存在，就跳向没有权限页面
+		if(userVo !=null && !"".equals(userVo)){
+			if(userAccessList.indexOf(userVo.getUserEmail()) !=-1 && userAccessList.indexOf(userVo.getUserId()) !=-1){
+				log.debug("当前用户有权编辑增加元素------"+userVo.getUserEmail());
+				session.setAttribute("userAccessRole", "okAccess");
+			}else{
+				log.debug("当前用户无权编辑增加元素------"+userVo.getUserEmail());
+				session.setAttribute("userAccessRole", "noAccess");
+			}
+		}
 
 	}
 	
