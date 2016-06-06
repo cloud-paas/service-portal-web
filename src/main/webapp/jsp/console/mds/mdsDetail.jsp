@@ -197,7 +197,7 @@
 	       			
 	       			</c:forEach>
 	       		</div>
-	       		<div class="xia_center_right">
+	       		<div class="xia_center_right" style="float: none;">
 	       			<div id="xuanz_search_div" class="xia_center_right_shuzi">P0</div>
 	       			<div class="xia_center_right_input">
 			           <ul>
@@ -216,10 +216,12 @@
 			            </div>
 			          <div class="xia_center_right_shuzi xx_nrie">消息内容：</div>
 			          <div class="xia_center_right_dabg">
-			            <textarea name="" id="topic_msg"></textarea>
+			            <textarea name="" id="topic_msg" style="width:860px;"></textarea>
 			          </div>
-			          <button class="again-send" onclick="resendMessage()" type="button">重发</button>
-			          <button class="jump" onclick="skipMessage()" type="button">跳过</button>
+			          <div style="float:left;width:650px;text-align:center;">
+				          <button class="again-send" onclick="resendMessage()" type="button" style="margin-left:220px;">重发</button>
+				          <button class="jump" onclick="skipMessage()" type="button">跳过</button>
+			          </div>
 	       		</div>
 	       </div>
 	       </form>
