@@ -44,7 +44,7 @@ public class ApplyAuditFilter implements Filter {
 		//获得session里值
 		HttpSession session = ((HttpServletRequest) request).getSession();
 		UserInfoVo userVo = UserUtil.getUserSession(session);
-		log.debug("获得session里用户信息------"+userVo.getUserEmail());
+//		log.debug("获得session里用户信息------"+userVo.getUserEmail());
 		
 		//判断当前用户的邮箱，userid是否都在配置文件中，有一个不存在，就跳向没有权限页面
 		if(userVo !=null && !"".equals(userVo)){
