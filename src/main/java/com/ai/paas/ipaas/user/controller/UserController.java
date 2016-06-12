@@ -35,6 +35,7 @@ import com.ai.paas.ipaas.config.ftp.SFTPConfig;
 import com.ai.paas.ipaas.config.ftp.SFTPConstants;
 import com.ai.paas.ipaas.config.ftp.SFTPException;
 import com.ai.paas.ipaas.config.ftp.SFTPUtils;
+import com.ai.paas.ipaas.email.EmailServiceImpl;
 import com.ai.paas.ipaas.storm.sys.utils.StringUtils;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.constants.ConstantsForSession;
@@ -79,6 +80,8 @@ public class UserController {
 	@Autowired
 	protected HttpSession session;
 
+	@Autowired
+	private EmailServiceImpl emailSrv;
 	
 	@RequestMapping(value = "/toLogin")
 	public String toLogin(HttpServletRequest request,
@@ -389,6 +392,11 @@ public class UserController {
 			uv.setPid( UUIDTool.genId32() );
 			
 			RegisterResult rr = iUser.registerUser(uv);
+			
+			/** 通过portal发送邮件 **/
+			if (rr.isNeedSend() && rr.getEmail() != null) {
+				emailSrv.sendEmail(rr.getEmail());
+			}
 			
 			HttpSession session = request.getSession(); 
 	        session.setAttribute("email", email); 

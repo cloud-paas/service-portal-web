@@ -13,7 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -145,6 +144,9 @@ public class ApplyAuditController {
 			checkOrdersRequest.setUserId(userVo.getUserId());// userId
 			checkOrdersRequest.setCheckResult(checkResult);// 审批结果；1：通过，2：驳回			
 			CheckOrdersResponse checkOrdersResponse= iOrder.checkOrders(checkOrdersRequest);
+			
+			/** 根据应答结果，进行邮件发送 **/
+			
 			resultMap.put("resultCode", checkOrdersResponse.getResponseHeader().getResultCode());
 			resultMap.put("resultMessage", checkOrdersResponse.getResponseHeader().getResultMessage());
 			logger.info("!!!!!!!!apply audit end，apply result："+ checkOrdersResponse.getResponseHeader().getResultCode());
@@ -157,9 +159,11 @@ public class ApplyAuditController {
 		return resultMap;
 	}
 	
-	/*
-	 * 我的申请
-	 * 尹笑
+	/**
+	 * 获取申请列表
+	 * @param request
+	 * @param modelmap
+	 * @return
 	 */
 	@RequestMapping(value = "/purchaseRecords")
     public String purchaseRecords(HttpServletRequest request,Map <String ,Object>modelmap) {
@@ -199,7 +203,6 @@ public class ApplyAuditController {
     }
 
     private Map<String ,Object> getPurchsRecordsList(HttpServletRequest request) {
-    	    	
     	Map<String ,Object> returnMap =new HashMap<String, Object>();
         List<List<OrderDetailLocalVo>> returnList = new ArrayList<List<OrderDetailLocalVo>>();
         String userId = UserUtil.getUserSession(request.getSession()).getUserId();
