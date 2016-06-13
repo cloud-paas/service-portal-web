@@ -38,10 +38,4 @@
     <bean id="loadConfig" class="com.ai.paas.ipaas.zookeeper.SystemConfigHandler" >
     </bean>
     
-    <bean id="emailSrv" class="com.ai.paas.ipaas.email.EmailServiceImpl" >
-    </bean>
-    
-    <!-- <bean id="sysConfig"  class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
-	    <property name="locations" value="classpath:init.properties"/>
-	</bean>  -->
 </beans>

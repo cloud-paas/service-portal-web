@@ -12,15 +12,14 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
-import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
 import com.ai.paas.ipaas.system.util.EmailTemplUtil;
+import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
 
 /**
  * 发送邮件
@@ -28,23 +27,17 @@ import com.ai.paas.ipaas.system.util.EmailTemplUtil;
 @Service
 public class EmailServiceImpl {
 	private static final Logger logger = LogManager.getLogger(EmailServiceImpl.class.getName());
-	private SqlSessionTemplate sqlSessionTemplate;
-	private DataSourceTransactionManager transactionManager;
 
+	private JavaMailSender javaMailSender;
+	private SimpleMailMessage simpleMailMessage;
+	
 	public String sendEmail(EmailDetail emailDetail) throws SQLException,
 			InterruptedException, ExecutionException {
+		logger.info("-------------email.toAddress:"+emailDetail.getToAddress()+"---------");
+		logger.info("-------------email.title:"+emailDetail.getEmailTitle()+"---------");
+		logger.info("-------------email.content:"+emailDetail.getEmailContent()+"---------");
+		
 		String returnFlag = "发送成功！";
-
-		if ("".equals(emailDetail.getFromAddress())
-				|| emailDetail.getFromAddress() == null) {
-			returnFlag = "发送失败，失败原因：发件人地址为空！";
-			emailDetail.setFailReason(returnFlag);
-		}
-		if ("".equals(emailDetail.getFromPwd())
-				|| emailDetail.getFromPwd() == null) {
-			returnFlag = "发送失败，失败原因：发件人密码为空！";
-			emailDetail.setFailReason(returnFlag);
-		}
 		if ("".equals(emailDetail.getToAddress())
 				|| emailDetail.getToAddress() == null) {
 			returnFlag = "发送失败，失败原因：收件人地址为空！";
@@ -72,48 +65,34 @@ public class EmailServiceImpl {
 	 */
 	private void send(EmailDetail emailDetail) {
 		try {
-			JavaMailSenderImpl sender = new JavaMailSenderImpl();
-			sender.setHost("mail.asiainfo.com");  // TODO:需配置到文件中引用.
-			sender.setPort(25);
-			sender.setUsername(emailDetail.getFromAddress());
-			sender.setPassword(emailDetail.getFromPwd());
-
-			MimeMessage mimeMessage = sender.createMimeMessage();
+			logger.info("------------ sendEmail start -------------");
+			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "utf-8");
-			messageHelper.setFrom(emailDetail.getFromAddress()); // 设置发件人Email
-			messageHelper.setSubject(emailDetail.getEmailTitle()); // 设置邮件主题
-			messageHelper.setText(emailDetail.getEmailContent(), true); // 设置邮件主题内容
+			messageHelper.setFrom(simpleMailMessage.getFrom());
+			messageHelper.setSubject(emailDetail.getEmailTitle());
+			messageHelper.setText(emailDetail.getEmailContent(), true);
 			messageHelper.setTo(emailDetail.getToAddress());
-			if (emailDetail.getEmailCc() != null
-					&& !"".equals(emailDetail.getEmailCc())) {
+			if (emailDetail.getEmailCc() != null && !"".equals(emailDetail.getEmailCc())) {
 				messageHelper.setBcc(new InternetAddress("mail.asiainfo.com",
-						emailDetail.getEmailCc(), "utf-8"));// 设置抄送
+						emailDetail.getEmailCc(), "utf-8"));
 			}
 
-			sender.send(mimeMessage);
+			javaMailSender.send(mimeMessage);
+			logger.info("------------ sendEmail complete -------------");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(e.getMessage());
 		}
 	}
 	
-	public SqlSessionTemplate getSqlSessionTemplate() {
-		return sqlSessionTemplate;
+	public void setJavaMailSender(JavaMailSender javaMailSender) {
+		this.javaMailSender = javaMailSender;
 	}
 
-	public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {
-		this.sqlSessionTemplate = sqlSessionTemplate;
+	public void setSimpleMailMessage(SimpleMailMessage simpleMailMessage) {
+		this.simpleMailMessage = simpleMailMessage;
 	}
 
-	public DataSourceTransactionManager getTransactionManager() {
-		return transactionManager;
-	}
-
-	public void setTransactionManager(
-			DataSourceTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
-	
 	public static void main(String[] args) {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = df.format(new Date());  // "2015-09-15 20:24:20"
