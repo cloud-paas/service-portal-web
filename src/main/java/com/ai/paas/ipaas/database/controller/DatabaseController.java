@@ -8,14 +8,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ai.paas.ipaas.email.EmailServiceImpl;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IOrder;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
+import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
 import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
@@ -29,6 +32,8 @@ public class DatabaseController {
 	private IOrder iOrder;
 	@Reference
 	private ISysParamDubbo iSysParam;
+	@Autowired
+	private EmailServiceImpl emailSrv;
 	
 	private static final Logger logger = LogManager
 			.getLogger(DatabaseController.class.getName());
@@ -90,6 +95,12 @@ public class DatabaseController {
 		OrderDetailResponse orderDetailResponse = new OrderDetailResponse();
 		try {
 			orderDetailResponse = iOrder.saveOrderDetail(orderDetailRequest);
+			logger.info("========= 根据orderDetailResponse结果，发送服务开通的待审核提醒邮件=========");
+    		if (orderDetailResponse.isNeedSend() && orderDetailResponse.getEmail() != null) {
+    			for (EmailDetail email : orderDetailResponse.getEmail()) {
+    				emailSrv.sendEmail(email);
+    			}
+    		}
 			logger.info("saveOrderDetail返回结果："
 					+ orderDetailResponse.getResponseHeader().getResultCode() + ":"
 					+ orderDetailResponse.getResponseHeader().getResultMessage());

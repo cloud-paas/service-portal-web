@@ -66,9 +66,7 @@ public class UserController {
 	private static String directory = SFTPConfig.getString("SFTP.REQ.DIRECTORY");
 	
 	String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
-	
 	String authUrl = SystemConfigHandler.configMap.get("AUTH.AUTH_URL.url");
-	
 	String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 	
 	@Reference
@@ -199,7 +197,6 @@ public class UserController {
 	
 	@RequestMapping(value = "/checkPs", produces = "text/html;charset=UTF-8")
 	public @ResponseBody String checkPs(@RequestParam String userPwd, String userEmail, HttpServletRequest request) {
-
 			// 调用认证中心进行认证		
 			JSONObject jsonobj = new JSONObject();
 			try {
@@ -399,7 +396,7 @@ public class UserController {
 			}
 			
 			HttpSession session = request.getSession(); 
-	        session.setAttribute("email", email); 
+	        session.setAttribute("email", email);
 	        session.setAttribute(email, System.currentTimeMillis()); 
 			res = son.toJson(rr);
 		} catch (Exception e) {

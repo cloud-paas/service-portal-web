@@ -7,15 +7,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ai.paas.ipaas.email.EmailServiceImpl;
 import com.ai.paas.ipaas.storm.sys.BaseController;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IOrder;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
+import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
 import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.SysParamVo;
@@ -32,7 +35,8 @@ public class StormOrderController extends BaseController {
 	private IOrder iOrder;
 	@Reference
 	private ISysParamDubbo iSysParam;
-
+	@Autowired
+	private EmailServiceImpl emailSrv;
 	
 	@RequestMapping(value="/introduce")
 	public String toIndex(HttpServletRequest request,HttpServletResponse response){
@@ -43,7 +47,6 @@ public class StormOrderController extends BaseController {
 	
 	@RequestMapping(value = "/toOrder")
 	public String toOrder(HttpServletRequest request, HttpServletResponse response) {
-		
 	    SysParmRequest req = new SysParmRequest();
 	    req.setTypeCode(Constants.serviceName.RCS);
 		req.setParamCode(Constants.paramCode.OPTIONS);
@@ -52,6 +55,7 @@ public class StormOrderController extends BaseController {
 		System.out.println(request.getRequestURI());
 		return "/storm/task/orderOpen";
 	}
+	
 	@RequestMapping(value = "/add",produces = {"application/json;charset=UTF-8"})
 	public @ResponseBody String add(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -71,20 +75,28 @@ public class StormOrderController extends BaseController {
 		log.info("产品参数："+prodClusterJson.toString());
 		orderDetailRequest.setProdParam(prodClusterJson.toString());			//产品参数
 		
+		JsonObject resultJson = new JsonObject();
 		log.info("调用saveOrderDetail----------");
 		OrderDetailResponse orderDetailResponse=new OrderDetailResponse();
 		try{
-		orderDetailResponse=iOrder.saveOrderDetail(orderDetailRequest);
+			orderDetailResponse=iOrder.saveOrderDetail(orderDetailRequest);
+			log.info("--------- 根据orderDetailResponse结果，发送RCS服务开通的待审核提醒邮件----------");
+			if (orderDetailResponse.isNeedSend() && orderDetailResponse.getEmail() != null) {
+				for (EmailDetail email : orderDetailResponse.getEmail()) {
+					emailSrv.sendEmail(email);
+				}
+			}
 		}catch(Exception e){
-			
 			log.info(e.getCause().getMessage()+e.getMessage()+"---------");
+			resultJson.addProperty("resultCode", "999999");
+			resultJson.addProperty("resultMessage", "rcs add error");
 		}
+		
 		log.info("saveOrderDetail返回结果："+orderDetailResponse.getResponseHeader().getResultCode()+":"+orderDetailResponse.getResponseHeader().getResultMessage());
-		JsonObject resultJson = new JsonObject();
 		resultJson.addProperty("resultCode",orderDetailResponse.getResponseHeader().getResultCode());
 		resultJson.addProperty("resultMessage", orderDetailResponse.getResponseHeader().getResultMessage());
 		
 		return resultJson.toString();
 	}
-	}
-
+	
+}
