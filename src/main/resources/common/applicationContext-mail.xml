@@ -31,6 +31,11 @@
         <property name="simpleMailMessage" ref="simpleMailMessage" />
     </bean>
     
+    <bean id="simpleMail" class="com.ai.paas.ipaas.system.util.Email">
+        <property name="javaMailSender" ref="javaMailSender" />
+        <property name="simpleMailMessage" ref="simpleMailMessage" />
+    </bean>
+    
     <!-- 
        目前我用过的EMAIL账号都是网易的,下面列出网易的SMTP服务器名和端口号:
        网易邮箱          SMTP服务器     SMTP端口    POP3服务器      POP3端口

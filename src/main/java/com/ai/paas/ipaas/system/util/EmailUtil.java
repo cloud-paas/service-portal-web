@@ -33,10 +33,6 @@ public class EmailUtil {
 	@Reference
 	private ISysParamDubbo iSysParam;
 	
-	String iPaasDubboUrl= SystemConfigHandler.configMap.get("IPAAS-WEB.SERVICE.IP_PORT_SERVICE");
-	
-	String authVerifyUrl= SystemConfigHandler.configMap.get("AUTH.VERIFY.url");
-	
 	@ResponseBody
 	@RequestMapping(value = "/sendEmail")
 	public String sendEmail(HttpServletRequest request, HttpServletResponse response) {
@@ -48,7 +44,9 @@ public class EmailUtil {
 			
 			Map<String,Object> model = new HashMap<String,Object>();  
 	        model.put("email", email);  
-	        //获取邮件激活链接地址			
+	        //获取邮件激活链接地址	
+	        String iPaasDubboUrl= SystemConfigHandler.configMap.get("IPAAS-WEB.SERVICE.IP_PORT_SERVICE");
+	    	String authVerifyUrl= SystemConfigHandler.configMap.get("AUTH.VERIFY.url");
 			String address = iPaasDubboUrl + authVerifyUrl;
 			String token   = CiperUtil.encrypt(Constants.SECURITY_KEY, email);
 	        model.put("activeLink", address+"?token="+token);
