@@ -1,5 +1,16 @@
 package com.ai.paas.ipaas.maintain.controller;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.ai.paas.ipaas.maintain.constants.CCSComponentOperationParam;
 import com.ai.paas.ipaas.maintain.constants.PathType;
 import com.ai.paas.ipaas.maintain.model.UserIdModel;
@@ -8,19 +19,6 @@ import com.ai.paas.ipaas.maintain.util.HttpClientUtil;
 import com.ai.paas.ipaas.maintain.util.HttpRequestUtil;
 import com.ai.paas.ipaas.maintain.util.HttpResponseUtil;
 import com.google.gson.Gson;
-
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 @Controller
 @RequestMapping("/config/maintain")

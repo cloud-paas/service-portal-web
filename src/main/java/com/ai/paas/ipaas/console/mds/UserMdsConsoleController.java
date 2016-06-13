@@ -41,7 +41,6 @@ import com.google.gson.Gson;
  * MDS用户控制台
  * @author mapl
  */
-
 @RequestMapping(value = "/mdsConsole")
 @Controller
 public class UserMdsConsoleController {
@@ -58,8 +57,6 @@ public class UserMdsConsoleController {
 
 	@Reference
 	private IDssConsoleDubboSv dssConsoleDubboSv;
-	
-	String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 	
 	@RequestMapping(value = "/toMdsConsole")
 	public String toMdsConsole(ModelMap model, HttpServletRequest request, HttpServletResponse response) {
@@ -180,13 +177,14 @@ public class UserMdsConsoleController {
 		params.put("topicEnName", request.getParameter("topicEnName"));
 		params.put("partition", request.getParameter("partition"));
 		String data=JSonUtil.toJSon(params);
-//		String address = CacheUtils.getOptionByKey("CONTROLLER.CONTROLLER","url");
-		String result="";
-		result=HttpClientUtil.sendPostRequest(portalDubboUrl+"/mds/console/resendMessage", data);
+		
+		String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
+		String result = HttpClientUtil.sendPostRequest(portalDubboUrl+"/mds/console/resendMessage", data);
 		
 		JSONObject object=new JSONObject(result);
 		resultMap.put("resultCode", object.getString("resultCode"));
 		resultMap.put("resultMsg", object.getString("resultMsg"));
+		
 		return resultMap;
 	}
 	
@@ -202,9 +200,10 @@ public class UserMdsConsoleController {
 		params.put("partition", request.getParameter("partition"));
 		params.put("offset", request.getParameter("offset"));
 		String data=JSonUtil.toJSon(params);
-		String result="";
-		result=HttpClientUtil.sendPostRequest(portalDubboUrl + "/mds/console/skipMessage", data);
-		//result=HttpClientUtil.sendPostRequest("http://127.0.0.1:20881/ipaas/mds/console/skipMessage", data);
+		
+		String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
+		String result = HttpClientUtil.sendPostRequest(portalDubboUrl + "/mds/console/skipMessage", data);
+		
 		JSONObject object=new JSONObject(result);
 		resultMap.put("resultCode", object.getString("resultCode"));
 		resultMap.put("resultMsg", object.getString("resultMsg"));

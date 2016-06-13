@@ -57,22 +57,6 @@ public class ConfigConsoleController {
 	@Reference
 	private ISysParamDubbo iSysParam;
 	
-	String iPaasDubboUrl = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
-	
-	String ccsListUrl =SystemConfigHandler.configMap.get("CCS_CUST.LIST_PATH_DATA.url");
-	
-	String ccsAddUrl =SystemConfigHandler.configMap.get("CCS_CUST.ADD.url");
-	
-	String ccsModifyUrl = SystemConfigHandler.configMap.get("CCS_CUST.MODIFY.url");
-	
-	String ccsGetUrl = SystemConfigHandler.configMap.get("CCS_CUST.GET.url");
-	
-	String ccsBatchDelUrl = SystemConfigHandler.configMap.get("CCS_CUST.DELETE_BATCH.url");
-	
-	String ccsDownloadUrl = SystemConfigHandler.configMap.get("CCS_CUST.DOWNLOAD.url");
-	
-	String ccsBatchAddUrl = SystemConfigHandler.configMap.get("CCS_CUST.ADD_BATCH.url");
-	
 	@RequestMapping("/showService")
 	public ModelAndView showService(HttpServletRequest request ,HttpServletResponse response) {
 		ModelAndView view = new ModelAndView("config/ccsConsole");
@@ -124,6 +108,8 @@ public class ConfigConsoleController {
 	public String getCustomChildren(HttpSession session,@RequestBody ConfigRequestParam param) {
         String result = "";
 		try {
+			String iPaasDubboUrl = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
+			String ccsListUrl =SystemConfigHandler.configMap.get("CCS_CUST.LIST_PATH_DATA.url");
 			String address = iPaasDubboUrl + ccsListUrl;
 			result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(param));
 		} catch (IOException | URISyntaxException e ) {
@@ -142,7 +128,9 @@ public class ConfigConsoleController {
 	@RequestMapping(value = "/custom/add")
 	public String customAdd(HttpSession session,@RequestBody ConfigRequestParam param) {
         String result = "";
-		try {			
+		try {		
+			String iPaasDubboUrl = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
+			String ccsAddUrl =SystemConfigHandler.configMap.get("CCS_CUST.ADD.url");
 			String address = iPaasDubboUrl + ccsAddUrl;
 			result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(param));
 		} catch (IOException | URISyntaxException  e) {
@@ -161,7 +149,9 @@ public class ConfigConsoleController {
 	@RequestMapping(value = "/custom/modify")
 	public String customModify(HttpSession session,@RequestBody ConfigRequestParam param) {
         String result = "";
-		try {			
+		try {		
+			String iPaasDubboUrl = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
+			String ccsModifyUrl = SystemConfigHandler.configMap.get("CCS_CUST.MODIFY.url");
 			String address = iPaasDubboUrl + ccsModifyUrl;
 			result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(param));
 		} catch (IOException | URISyntaxException  e) {
@@ -181,6 +171,8 @@ public class ConfigConsoleController {
 	public String getCustomConfig(HttpServletRequest req,@RequestBody ConfigRequestParam param) {
         String result = "";
 		try {			
+			String iPaasDubboUrl = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
+			String ccsGetUrl = SystemConfigHandler.configMap.get("CCS_CUST.GET.url");
 			String address = iPaasDubboUrl + ccsGetUrl;
 			System.out.println("address---yinzf:"+address);
 			result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(param));
@@ -202,6 +194,8 @@ public class ConfigConsoleController {
 	public String customDelete(HttpSession session,@RequestBody List<ConfigRequestParam> paramList) {
         String result = "";
 		try {			
+			String iPaasDubboUrl = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
+			String ccsBatchDelUrl = SystemConfigHandler.configMap.get("CCS_CUST.DELETE_BATCH.url");
 			String address = iPaasDubboUrl + ccsBatchDelUrl;
 			result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(paramList));
 		} catch (IOException | URISyntaxException  e) {
@@ -232,7 +226,9 @@ public class ConfigConsoleController {
 		param.setUserId(userId);
 		String result = "";
 		Gson gson = new Gson();
-		try {			
+		try {	
+			String iPaasDubboUrl = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
+			String ccsDownloadUrl = SystemConfigHandler.configMap.get("CCS_CUST.DOWNLOAD.url");
 			String address = iPaasDubboUrl + ccsDownloadUrl;
 			result = HttpClientUtil.sendPostRequest(address, gson.toJson(param));	
 			Map<String,Object> map = gson.fromJson(result, new TypeToken<Map<String,Object>>(){}.getType());
@@ -313,6 +309,8 @@ public class ConfigConsoleController {
 			    paramList.add(param);
 			}		
 			try {
+				String iPaasDubboUrl = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
+				String ccsBatchAddUrl = SystemConfigHandler.configMap.get("CCS_CUST.ADD_BATCH.url");
 				String address = iPaasDubboUrl + ccsBatchAddUrl;
 				result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(paramList));
 			} catch (IOException | URISyntaxException e) {

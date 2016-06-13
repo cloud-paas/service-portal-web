@@ -59,10 +59,6 @@ public class ApplyAuditController {
 	@Autowired
 	private EmailServiceImpl emailSrv;
 
-	String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
-	String authSdkUrl = SystemConfigHandler.configMap.get("AUTH.SDKUrl.1");
-	String oaCheckUrl = SystemConfigHandler.configMap.get("OA.SEE_CHECK_URL.url");
-	
 	/**
 	 * 服务申请审核
 	 */
@@ -181,6 +177,8 @@ public class ApplyAuditController {
     
     @RequestMapping(value="/myAccount")
     public String toMyAccount(HttpServletRequest request) {
+    	String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
+    	String authSdkUrl = SystemConfigHandler.configMap.get("AUTH.SDKUrl.1");
         UserInfoVo userInfo = UserUtil.getUserSession(request.getSession());
         request.setAttribute("user", userInfo);
         request.setAttribute("SDKUrl", authServiceUrl + authSdkUrl);
@@ -239,6 +237,7 @@ public class ApplyAuditController {
         if (selectOrderResponse.getPageResult().getResultList() != null) {
             List<OrderDetailVo> resultList = selectOrderResponse.getPageResult().getResultList();
             List<OrderDetailLocalVo> resultListSplit = new ArrayList<OrderDetailLocalVo>();
+        	String oaCheckUrl = SystemConfigHandler.configMap.get("OA.SEE_CHECK_URL.url");
             for (int i = 0, listLength = resultList.size(); i < listLength; ++i) {
                 OrderDetailVo vo = resultList.get(i);
 

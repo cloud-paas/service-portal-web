@@ -8,8 +8,6 @@ public class OrderDetailLocalVo extends OrderDetailVo {
     private String orderAppDateStr;
     private String prodNameStr;
     private String oaCheckUrl;//oa审批查看地址
-    
-    
 
     public String getOaCheckUrl() {
 		return oaCheckUrl;

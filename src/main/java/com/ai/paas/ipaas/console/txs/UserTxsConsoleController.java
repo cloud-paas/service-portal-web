@@ -29,14 +29,10 @@ import com.alibaba.dubbo.config.annotation.Reference;
 
 /**
  * Txs用户控制台* 
- * @author mapl
- * 
  */
-
 @RequestMapping(value = "/txsConsole")
 @Controller
 public class UserTxsConsoleController {
-
 	private static final Logger logger = LogManager
 			.getLogger(UserTxsConsoleController.class.getName());
 

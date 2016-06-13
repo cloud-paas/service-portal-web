@@ -26,8 +26,6 @@ public class SoftwareInstallController {
 	private static final Logger logger = LogManager
 			.getLogger(SoftwareInstallController.class);
 	
-	String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
-	
 	@RequestMapping(value="/softInit")
 	public String openInit(HttpServletRequest request,HttpServletResponse response) {
 		String orderDetailId=request.getParameter("DetailId");
@@ -66,6 +64,7 @@ public class SoftwareInstallController {
 		String result = null;
 		String url = "/softwareInstall/softwareInstallSubmit";
 		try {
+			String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 			result = HttpClientUtil.sendPostRequest(portalDubboUrl + url, param);
 			logger.info("MAIN return :" + result);
 		} catch (IOException e) {

@@ -31,8 +31,6 @@ public class SchemeConfirmController {
 	private static final Logger logger = LogManager
 			.getLogger(SchemeConfirmController.class);
 
-	String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
-	
 	/**
 	 * 查询方案确认列表
 	 * 
@@ -62,6 +60,7 @@ public class SchemeConfirmController {
 
 		String result = null;
 		String url = "/order/queryOrdersInfo";
+		String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 		logger.info("to MAIN rest:" + portalDubboUrl + url);
 		try {
 			result = HttpClientUtil.sendPostRequest(portalDubboUrl + url, jsonObject.toString());
@@ -119,6 +118,7 @@ public class SchemeConfirmController {
 		String url = "/schemeConfirm/schemeSubmit";
 		logger.info("to MAIN rest:" + logger + url);
 		try {
+			String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 			result = HttpClientUtil.sendPostRequest(portalDubboUrl + url,
 					jsondata.toString());
 			logger.info("MAIN return :" + result);

@@ -139,8 +139,6 @@ public class EmailServiceImpl {
 		email.setEmailTitle(subject);
 		email.setFromAddress("ai-cloud@asiainfo.com");
 		email.setFromPwd("Paas0309_");
-//		email.setFromAddress("yuanman@asiainfo.com");
-//		email.setFromPwd("&890Uiop");
 		
 		new EmailServiceImpl().send(email);
 	}

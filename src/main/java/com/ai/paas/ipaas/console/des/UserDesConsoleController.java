@@ -42,13 +42,6 @@ import com.google.gson.reflect.TypeToken;
 public class UserDesConsoleController {
 	@Reference
 	private ISysParamDubbo iSysParam;
-	private static final String SECURITY_KEY = "7331c9b6b1a1d521363f7bca8acb095f";// md5
-
-	String iPaasDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
-	
-	String authUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
-	
-	String authPwd = SystemConfigHandler.configMap.get("AUTH.AUTH_PWD.url");
 	
 	@RequestMapping(value = "/toDesConsole", method = { RequestMethod.GET })
 	public String toManageConsole(HttpServletRequest request,
@@ -75,6 +68,7 @@ public class UserDesConsoleController {
 		jsonObject.put("userId", userInfoVo.getUserId());
 		String data = JSonUtil.toJSon(jsonObject);
 
+		String iPaasDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 		String resultBound = HttpClientUtil.sendPostRequest(iPaasDubboUrl + "/des/console/desGetBound", data);
 		JSONObject bound = new JSONObject(resultBound);
 		if (bound.getString("resultCode").equals(Constants.OPERATE_CODE_FAIL)) {
@@ -149,13 +143,14 @@ public class UserDesConsoleController {
 		String pwd = request.getParameter("password");
 		String mdsId = request.getParameter("mdsService");
 		String username = userInfoVo.getUserName();
+
+		String authUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
+		String authPwd = SystemConfigHandler.configMap.get("AUTH.AUTH_PWD.url");
 		String address = authUrl + authPwd;
-		String data = "";
-		data = HttpRequestUtil.sendPost(address,
-				"password=" + CiperUtil.encrypt(SECURITY_KEY, pwd)
+		String data = HttpRequestUtil.sendPost(address,
+				"password=" + CiperUtil.encrypt(Constants.SECURITY_KEY, pwd)
 						+ "&authUserName=" + username + "&serviceId=" + mdsId);
-		org.apache.tapestry5.json.JSONObject json = new org.apache.tapestry5.json.JSONObject(
-				data);
+		org.apache.tapestry5.json.JSONObject json = new org.apache.tapestry5.json.JSONObject(data);
 		String returnflag = json.getString("successed");
 		if (returnflag.equalsIgnoreCase("false")) {
 			String errorMessage = json.getString("authMsg");
@@ -187,6 +182,7 @@ public class UserDesConsoleController {
 				request.getParameter("mdsPassword"));
 		String data = JSonUtil.toJSon(bindRequest);
 
+		String iPaasDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 		String resultinfo = HttpClientUtil.sendPostRequest(iPaasDubboUrl
 				+ "/des/console/desBind", data);
 		JSONObject json = new JSONObject(resultinfo);
@@ -214,6 +210,7 @@ public class UserDesConsoleController {
 		String data = JSonUtil.toJSon(param);
 		String resultinfo = "";
 
+		String iPaasDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 		resultinfo = HttpClientUtil.sendPostRequest(iPaasDubboUrl
 				+ "/des/console/desUnbind", data);
 		JSONObject json = new JSONObject(resultinfo);
@@ -240,8 +237,8 @@ public class UserDesConsoleController {
 		JSONObject object = new JSONObject(array1);
 		object.put("userId", userInfoVo.getUserId());
 
-		String resultInfo = "";
-		resultInfo = HttpClientUtil.sendPostRequest(iPaasDubboUrl + "/des/console/filterTable", object.toString());
+		String iPaasDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
+		String resultInfo = HttpClientUtil.sendPostRequest(iPaasDubboUrl + "/des/console/filterTable", object.toString());
 		JSONObject json = new JSONObject(resultInfo);
 		if (json.getString("resultCode").equals(Constants.OPERATE_CODE_FAIL)) {
 			result.put("resultCode", json.getString("resultCode"));
@@ -274,6 +271,7 @@ public class UserDesConsoleController {
 		jsonObject.put("userId", userInfoVo.getUserId());
 		String data = JSonUtil.toJSon(jsonObject);
 
+		String iPaasDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 		String resultBound = HttpClientUtil.sendPostRequest(iPaasDubboUrl + "/des/console/desGetBound", data);
 		JSONObject bound = new JSONObject(resultBound);
 		if (bound.getString("resultCode").equals(Constants.OPERATE_CODE_FAIL)) {
@@ -395,6 +393,7 @@ public class UserDesConsoleController {
 		param.put("serviceId", request.getParameter("serviceId"));
 		String data = JSonUtil.toJSon(param);
 
+		String iPaasDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 		String table = HttpClientUtil.sendPostRequest(iPaasDubboUrl
 				+ "/des/console/desgetBoundTableInfo", data);
 		JSONObject object = new JSONObject(table);

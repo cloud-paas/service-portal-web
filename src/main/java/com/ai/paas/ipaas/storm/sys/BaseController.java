@@ -10,17 +10,19 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 /**
  * controller基类
  * @author weichuang
  */
 public class BaseController {
 	private Logger logger = Logger.getLogger(BaseController.class);
+	
 	@Autowired
 	protected HttpServletRequest request;
+	
 	@Autowired
 	protected HttpSession session;
+	
 	/**
 	 * 响应客户端结果 成功、失败、错误
 	 */

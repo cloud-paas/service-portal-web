@@ -56,8 +56,6 @@ public class MessageController {
 	@Autowired
 	private EmailServiceImpl emailSrv;
 	
-	String sysAdminInfo= SystemConfigHandler.configMap.get("System.Admin.No1");
-	
 	@RequestMapping(value="/introduce")
 	public String toIndex(HttpServletRequest request,HttpServletResponse response){
         request.getSession().removeAttribute("list_index");
@@ -164,6 +162,8 @@ public class MessageController {
 			PageResult<UserMessageVo> pageResult = new PageResult<UserMessageVo>();
 			pageResult = userMessageResponse.getPageResult();
 			request.setAttribute("pagingResult", pageResult);
+			
+			String sysAdminInfo= SystemConfigHandler.configMap.get("System.Admin.No1");
 			
 			String[] Admin = sysAdminInfo.split(";");
 			request.setAttribute("AdminName", Admin[0]);

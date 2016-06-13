@@ -50,24 +50,6 @@ public class UserDssConsoleController {
 	private static final Logger logger = LogManager
 			.getLogger(UserDssConsoleController.class.getName());
 	
-	String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
-	
-	String capacity_1024 = SystemConfigHandler.configMap.get("DSS.capacity.1024");
-	
-	String capacity_1536 = SystemConfigHandler.configMap.get("DSS.capacity.1536");
-	
-	String capacity_2048 = SystemConfigHandler.configMap.get("DSS.capacity.2048");
-	
-	String capacity_512 = SystemConfigHandler.configMap.get("DSS.capacity.512");
-			
-	String singleFile_1 = SystemConfigHandler.configMap.get("DSS.singleFileSize.1");
-	
-	String singleFile_5 = SystemConfigHandler.configMap.get("DSS.singleFileSize.5");
-	
-	String singleFile_10 = SystemConfigHandler.configMap.get("DSS.singleFileSize.10");
-	
-	String singleFile_20 = SystemConfigHandler.configMap.get("DSS.singleFileSize.20");
-	
 	@Reference
 	private ISysParamDubbo iSysParam;
 
@@ -451,6 +433,14 @@ public class UserDssConsoleController {
 	
 	@RequestMapping(value="/modifyDetailById")
 	public String modifyDetailById(HttpServletRequest req,HttpServletResponse resp){
+		String capacity_1024 = SystemConfigHandler.configMap.get("DSS.capacity.1024");
+		String capacity_1536 = SystemConfigHandler.configMap.get("DSS.capacity.1536");
+		String capacity_2048 = SystemConfigHandler.configMap.get("DSS.capacity.2048");
+		String capacity_512 = SystemConfigHandler.configMap.get("DSS.capacity.512");
+		String singleFile_1 = SystemConfigHandler.configMap.get("DSS.singleFileSize.1");
+		String singleFile_5 = SystemConfigHandler.configMap.get("DSS.singleFileSize.5");
+		String singleFile_10 = SystemConfigHandler.configMap.get("DSS.singleFileSize.10");
+		String singleFile_20 = SystemConfigHandler.configMap.get("DSS.singleFileSize.20");
 		SelectWithNoPageResponse<UserProdInstVo> response = null;
 		String userServId = req.getParameter("userServId"); 
 		List<String> clist = new ArrayList<String>();
@@ -504,7 +494,7 @@ public class UserDssConsoleController {
 		params.put("limitFileSize", request.getParameter("limitFileSize"));
 		String data=JSonUtil.toJSon(params);
 		String result="";
-		String address = portalDubboUrl;
+		String address = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 		result=HttpClientUtil.sendPostRequest(address+"/dss/console/modifyConfiguration", data);
 		
 		JSONObject object=new JSONObject(result);

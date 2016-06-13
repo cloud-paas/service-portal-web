@@ -32,13 +32,7 @@ public class OaController {
 	@Reference
 	private ISysParamDubbo iSysParam;
 
-	String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
-	
 	/**
-	 * @param req
-	 * @param resp
-	 * @return
-	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/getOaOperators", produces = "text/html;charset=UTF-8")
@@ -50,6 +44,7 @@ public class OaController {
 		try {
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("param", param); // 参数
+			String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 			result = HttpClientUtil.sendPostRequest(portalDubboUrl + "/user/iOaApi/getOaOperators", 
 					GsonUtil.toJSon(map));
 			log.info("查询资产管理员出参======================》" + result);
@@ -66,10 +61,6 @@ public class OaController {
 	}
 
 	/**
-	 * @param req
-	 * @param resp
-	 * @return
-	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/oaAuditResultNotify", produces = "text/html;charset=UTF-8")
@@ -121,6 +112,7 @@ public class OaController {
 			map.put("woDesc", operType);
 			log.info("OA审批通知入参============================="
 					+ GsonUtil.toJSon(map));
+			String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 			result = HttpClientUtil.sendPostRequest(portalDubboUrl + "/user/iOaApi/oaAuditResultNotify", 
 					GsonUtil.toJSon(map));
 			log.info("OA审批通知出参=============================" + result);
@@ -137,10 +129,6 @@ public class OaController {
 	}
 
 	/**
-	 * @param req
-	 * @param resp
-	 * @return
-	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/oaAuditPremise", produces = "text/html;charset=UTF-8")
@@ -152,10 +140,13 @@ public class OaController {
 		try {
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("orderDetailId", orderDetailId); // 参数
+			
+			String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 			String restfulUrl = portalDubboUrl + "/user/iOaApi/oaAuditPremise";
 			String restfulParam = GsonUtil.toJSon(map);
 			log.info(" restful url :" + restfulUrl);
 			log.info(" restful request param : " + restfulParam);
+			
 			result = HttpClientUtil.sendPostRequest(restfulUrl, restfulParam);
 			log.info("restful response result :" + result);
 		} catch (Exception e) {
@@ -193,13 +184,14 @@ public class OaController {
 			map.put("erpProjectCode", erpProjectCode);
 			map.put("pageIndex", String.valueOf(pageIndex));
 			map.put("pageSize", String.valueOf(pageSize));// 参数
+			
+			String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 			String restfulUrl = portalDubboUrl + "/user/iOaApi/getErpProjects";
 			String restfulParam = GsonUtil.toJSon(map);
 
 			log.info(" restful url :" + restfulUrl);
 			log.info(" restful request param : " + restfulParam);
-			String result;
-			result = HttpClientUtil.sendPostRequest(restfulUrl, restfulParam);
+			String result = HttpClientUtil.sendPostRequest(restfulUrl, restfulParam);
 			Gson gson = new Gson();
 			PageResult<ErpProjectVo> pageResult = gson.fromJson(result,
 					new TypeToken<PageResult<ErpProjectVo>>() {

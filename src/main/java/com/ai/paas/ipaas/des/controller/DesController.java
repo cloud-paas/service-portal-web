@@ -29,8 +29,6 @@ import com.alibaba.dubbo.config.annotation.Reference;
 public class DesController {
 	@Reference
 	private ISysParamDubbo iSysParam;
-
-	String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 	
 	@RequestMapping(value = "/initapply", method = { RequestMethod.GET })
 	public String initApply(HttpServletRequest request,
@@ -66,6 +64,7 @@ public class DesController {
 				.getParameter("serivcePwd"));
 
 		String data = JSonUtil.toJSon(orderDetailRequest);
+		String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 		String result = HttpClientUtil.sendPostRequest(portalDubboUrl + "/user/order/applyOrders", data);
 		OrderDetailResponse orderDetailResponse = JSonUtil.fromJSon(result,
 				OrderDetailResponse.class);

@@ -65,10 +65,6 @@ public class UserController {
 	private static final String SECURITY_KEY = "7331c9b6b1a1d521363f7bca8acb095f";// md5
 	private static String directory = SFTPConfig.getString("SFTP.REQ.DIRECTORY");
 	
-	String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
-	String authUrl = SystemConfigHandler.configMap.get("AUTH.AUTH_URL.url");
-	String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
-	
 	@Reference
 	private IUser iUser;
 	
@@ -91,6 +87,7 @@ public class UserController {
 		session.invalidate();
 		return "user/login";
 	}
+	
 	@RequestMapping(value = "/toNTLogin")
 	public String toNTLogin(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -101,7 +98,7 @@ public class UserController {
 		return "user/ntlogin";
 	}
 
-	@RequestMapping(value = "/toSignOut")//正常登陆！！！！！！！！！！！！！！！！！！！！！！！！
+	@RequestMapping(value = "/toSignOut")
 	public String toSignOut(HttpServletRequest request,
 			HttpServletResponse response) {
 		session.setAttribute(ConstantsForSession.LoginSession.USER_INFO, null);
@@ -113,7 +110,6 @@ public class UserController {
 	@RequestMapping(value = "/toRegister")
 	public String register(HttpServletRequest request,
 			HttpServletResponse response) {
-
 		return "user/register";
 	}
 
@@ -123,6 +119,7 @@ public class UserController {
 		model.addAttribute("email", request.getParameter("email"));
 		return "user/registerSuccess";
 	}
+	
 	@RequestMapping(value = "/toActiveAccount")
 	public String activeAccount(ModelMap model, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -200,8 +197,9 @@ public class UserController {
 			// 调用认证中心进行认证		
 			JSONObject jsonobj = new JSONObject();
 			try {
-				logger.info(">>>>>>>>>>checkPs:"+authServiceUrl + authUrl);
 				String result = "";
+				String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
+				String authUrl = SystemConfigHandler.configMap.get("AUTH.AUTH_URL.url");
 				result = HttpRequestUtil.sendPost(authServiceUrl + authUrl,
 						"password=" + CiperUtil.encrypt(SECURITY_KEY, userPwd)
 								+ "&authUserName=" + userEmail);
@@ -232,6 +230,9 @@ public class UserController {
 
 		UserVo vo = null;
 		UserInfoVo userInfoVo = new UserInfoVo();
+		
+		String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
+		String authUrl = SystemConfigHandler.configMap.get("AUTH.AUTH_URL.url");
 		try {
 			// 调用认证中心进行认证			
 			String address = authServiceUrl + authUrl;
@@ -300,6 +301,8 @@ public class UserController {
 		String passWord = request.getParameter("passWord");
 		boolean res = true;
 		try {
+			String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
+			String authUrl = SystemConfigHandler.configMap.get("AUTH.AUTH_URL.url");
 			// 调用认证中心进行认证
 			String address = authServiceUrl + authUrl;
 			String result = "";
@@ -516,6 +519,7 @@ public class UserController {
 			Gson gson=new Gson();
 			String json=gson.toJson(map);
 			String url = "/user/iUserApi/getAiEmployeeInfo";
+			String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 			result = HttpClientUtil.sendPostRequest(portalDubboUrl + url, json);
 			
 			Map resmap = GsonUtil.fromJSon(result, HashMap.class);

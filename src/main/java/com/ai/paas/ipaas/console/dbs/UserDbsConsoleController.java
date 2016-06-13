@@ -35,7 +35,6 @@ import com.alibaba.dubbo.config.annotation.Reference;
  * @author mapl
  * 
  */
-
 @RequestMapping(value = "/dbsConsole")
 @Controller
 public class UserDbsConsoleController {
@@ -53,8 +52,6 @@ public class UserDbsConsoleController {
 
 	@Reference
 	private ISysParamDubbo iSysParam;
-	
-	String muiUrl = SystemConfigHandler.configMap.get("IPAAS-MUI.SERVICE.IP_PORT_SERVICE");
 	
 	@RequestMapping(value = "/toDbsConsole")
 	public String toManageConsole(HttpServletRequest req,
@@ -84,17 +81,18 @@ public class UserDbsConsoleController {
 	@ResponseBody
 	public Map<String, Object> queryDbsList(HttpServletRequest req,
 			HttpServletResponse resp) {
-
 		Map<String, Object> result = new HashMap<String, Object>();
 		SelectWithNoPageResponse<UserProdInstVo> response = null;
 		try {
+			String muiUrl = SystemConfigHandler.configMap.get("IPAAS-MUI.SERVICE.IP_PORT_SERVICE");
+			String prodId = String.valueOf(Constants.serviceType.DBS_CENTER);
 			SelectWithNoPageRequest<UserProdInstVo> selectWithNoPageRequest = new SelectWithNoPageRequest<UserProdInstVo>();
 			UserProdInstVo vo = new UserProdInstVo();
 			UserInfoVo userVo = UserUtil.getUserSession(req.getSession());
 			vo.setUserId(userVo.getUserId()); // 用户Id
-			String prodId = String.valueOf(Constants.serviceType.DBS_CENTER);
 			vo.setUserServiceId(prodId);
 			selectWithNoPageRequest.setSelectRequestVo(vo);
+			
 			response = atsConsoleDubboSv.selectUserProdInsts(selectWithNoPageRequest);
 			String resultCode = response.getResponseHeader().getResultCode();
 			List<UserProdInstVo> resultList = response.getResultList();

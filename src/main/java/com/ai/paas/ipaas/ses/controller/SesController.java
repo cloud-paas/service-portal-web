@@ -40,16 +40,6 @@ public class SesController {
 	@Reference
 	private ISysParamDubbo iSysParam;
 
-	String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
-	
-	String sesClusterNum= SystemConfigHandler.configMap.get("SES.clusterNum.param");
-	
-	String sesReplicasNum= SystemConfigHandler.configMap.get("SES.replicasNum.param");
-	
-	String sesMemNum= SystemConfigHandler.configMap.get("SES.sesMem.param");
-	
-	String sesSharedNum= SystemConfigHandler.configMap.get("SES.shardNum.param");
-			
 	@RequestMapping(value = "/SesApplyPage", method = { RequestMethod.GET })
 	public String SesApplyPage(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -119,6 +109,10 @@ public class SesController {
 	@RequestMapping(value = "/sesApplyPage", method = { RequestMethod.GET })
 	public String sesApplyPage(ModelMap model, HttpServletRequest request,
 			HttpServletResponse response) {
+		String sesClusterNum= SystemConfigHandler.configMap.get("SES.clusterNum.param");
+		String sesReplicasNum= SystemConfigHandler.configMap.get("SES.replicasNum.param");
+		String sesMemNum= SystemConfigHandler.configMap.get("SES.sesMem.param");
+		String sesSharedNum= SystemConfigHandler.configMap.get("SES.shardNum.param");
 		String[] clusterNumList = sesClusterNum.split(",");
 		String[] shardNumList = sesSharedNum.split(",");
 		String[] sesMemList = sesMemNum.split(",");
@@ -160,6 +154,7 @@ public class SesController {
 		orderDetailRequest.setUserServIpaasPwd(request.getParameter("serivcePwd"));
 		
 		String data = JSonUtil.toJSon(orderDetailRequest);
+		String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 		String result = HttpClientUtil.sendPostRequest(portalDubboUrl
 				+ "/user/order/applyOrders", data);
 		OrderDetailResponse orderDetailResponse = JSonUtil.fromJSon(result,
