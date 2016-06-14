@@ -13,13 +13,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.PaasException;
 import com.ai.paas.ipaas.apply.vo.OrderDetailLocalVo;
-import com.ai.paas.ipaas.cache.CacheUtils;
+import com.ai.paas.ipaas.email.EmailServiceImpl;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IOrder;
@@ -27,6 +28,8 @@ import com.ai.paas.ipaas.user.dubbo.interfaces.IProdProductDubboSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.dubbo.vo.CheckOrdersRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.CheckOrdersResponse;
+import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
+import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailVo;
 import com.ai.paas.ipaas.user.dubbo.vo.PageEntity;
 import com.ai.paas.ipaas.user.dubbo.vo.ProdProductVo;
@@ -36,26 +39,28 @@ import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.StringUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 @Controller
 @RequestMapping(value = "/apply")
 public class ApplyAuditController {
-
-	private static final Logger logger = LogManager
-			.getLogger(ApplyAuditController.class);
+	private static final Logger logger = LogManager.getLogger(ApplyAuditController.class);
+	
 	@Reference
 	private IOrder iOrder;
-	@Reference
-	private IProdProductDubboSv iProdProductDubboSv;
 	
 	@Reference
 	private ISysParamDubbo iSysParam;
+	
+	@Reference
+	private IProdProductDubboSv iProdProductDubboSv;
+	
+	@Autowired
+	private EmailServiceImpl emailSrv;
 
 	/**
 	 * 服务申请审核
-	 * 
-	 * @return
 	 */
 	@RequestMapping(value = "/applyAudit")
 	public String applyAudit() {
@@ -64,20 +69,16 @@ public class ApplyAuditController {
 
 	/**
 	 * 服务申请审核列表查询
-	 * 
-	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/queryApplyAuditList")
 	public Map<String, Object> queryApplyAuditList(HttpServletRequest request,
 			HttpServletResponse response) {
-
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		SelectOrderRequest selectOrderRequest = new SelectOrderRequest();
 		PageEntity entity = new PageEntity();
 		String page = request.getParameter("page");
-		entity.setCurrentPage(StringUtil.isBlank(page) ? 1 : Integer
-				.valueOf(page));
+		entity.setCurrentPage(StringUtil.isBlank(page) ? 1 : Integer.valueOf(page));
 		entity.setPageSize(Constants.PageResult.PAGE_SIZE);
 		selectOrderRequest.setPageEntity(entity);
 		SelectOrderResponse selectOrderResponse = null;
@@ -99,30 +100,24 @@ public class ApplyAuditController {
 
 	/**
 	 * 审批不通过页面跳转
-	 * 
-	 * @param req
-	 * @param resp
-	 * @return
 	 */
 	@RequestMapping(value = "/toAgainstApply")
-	public String toAgainstApply(HttpServletRequest req,
-			HttpServletResponse resp) {
+	public String toAgainstApply(HttpServletRequest req, HttpServletResponse resp) {
 		return "apply/againstApply";
 	}
 
 	/**
 	 * 审核通过或者不通过
-	 * 
-	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/approveApply")
-	public Map<String, Object> approveApply(HttpServletRequest request,
-			HttpServletResponse response) {
+	public Map<String, Object> approveApply(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		UserInfoVo userVo = UserUtil.getUserSession(request.getSession());
 		String applyIdList = request.getParameter("orderDetailIdList");
 		String suggestion = request.getParameter("suggestion");
-		String checkResult = request.getParameter("checkResult");		
+		String checkResult = request.getParameter("checkResult");
+		
 		List<Long> idList = new ArrayList<Long>();
 		String[] applyIdListArr = applyIdList.split(",");
 		for (String id : applyIdListArr) {
@@ -130,17 +125,25 @@ public class ApplyAuditController {
 		}
 
 		try {
-			logger.info("！！！！！！apply audit begin, parameters [applyIdList:" + applyIdList+"]");
+			logger.info("======== apply audit begin, parameters [applyIdList:" + applyIdList+"]");
 			CheckOrdersRequest checkOrdersRequest = new CheckOrdersRequest();
 			checkOrdersRequest.setIdlist(idList);
 			checkOrdersRequest.setSuggestion(suggestion); // 建议
-			UserInfoVo userVo = UserUtil.getUserSession(request.getSession());
 			checkOrdersRequest.setUserId(userVo.getUserId());// userId
-			checkOrdersRequest.setCheckResult(checkResult);// 审批结果；1：通过，2：驳回			
-			CheckOrdersResponse checkOrdersResponse= iOrder.checkOrders(checkOrdersRequest);
-			resultMap.put("resultCode", checkOrdersResponse.getResponseHeader().getResultCode());
-			resultMap.put("resultMessage", checkOrdersResponse.getResponseHeader().getResultMessage());
-			logger.info("!!!!!!!!apply audit end，apply result："+ checkOrdersResponse.getResponseHeader().getResultCode());
+			checkOrdersRequest.setCheckResult(checkResult);// 审批结果；1：通过，2：驳回
+			
+			OrderDetailResponse orderResponse = iOrder.checkOrders(checkOrdersRequest);
+			/** 根据应答结果，进行邮件发送 **/
+			logger.info("======== apply audit end, send email [emailList:" + orderResponse.getEmail().size()+"]");
+			if (orderResponse.isNeedSend() && orderResponse.getEmail() != null) {
+				for (EmailDetail email : orderResponse.getEmail()) {
+					emailSrv.sendEmail(email);
+				}
+			}
+			
+			logger.info("======== apply audit end，apply result："+ orderResponse.getResponseHeader().getResultCode());
+			resultMap.put("resultCode", orderResponse.getResponseHeader().getResultCode());
+			resultMap.put("resultMessage", orderResponse.getResponseHeader().getResultMessage());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			resultMap.put("resultCode", Constants.OPERATE_CODE_FAIL);
@@ -150,9 +153,11 @@ public class ApplyAuditController {
 		return resultMap;
 	}
 	
-	/*
-	 * 我的申请
-	 * 尹笑
+	/**
+	 * 获取申请列表
+	 * @param request
+	 * @param modelmap
+	 * @return
 	 */
 	@RequestMapping(value = "/purchaseRecords")
     public String purchaseRecords(HttpServletRequest request,Map <String ,Object>modelmap) {
@@ -172,11 +177,14 @@ public class ApplyAuditController {
     
     @RequestMapping(value="/myAccount")
     public String toMyAccount(HttpServletRequest request) {
+    	String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
+    	String authSdkUrl = SystemConfigHandler.configMap.get("AUTH.SDKUrl.1");
         UserInfoVo userInfo = UserUtil.getUserSession(request.getSession());
         request.setAttribute("user", userInfo);
-        request.setAttribute("SDKUrl", CacheUtils.getOptionByKey("iPaas-Auth.SERVICE","IP_PORT_SERVICE")  + CacheUtils.getOptionByKey("AUTH.SDKUrl","1"));
+        request.setAttribute("SDKUrl", authServiceUrl + authSdkUrl);
         return "apply/myAccount";
     }
+    
     @RequestMapping(value="/passwordUpadte")
     public String passwordUpadte(HttpServletRequest request) {
         UserInfoVo userInfo = UserUtil.getUserSession(request.getSession());
@@ -192,7 +200,6 @@ public class ApplyAuditController {
     }
 
     private Map<String ,Object> getPurchsRecordsList(HttpServletRequest request) {
-    	    	
     	Map<String ,Object> returnMap =new HashMap<String, Object>();
         List<List<OrderDetailLocalVo>> returnList = new ArrayList<List<OrderDetailLocalVo>>();
         String userId = UserUtil.getUserSession(request.getSession()).getUserId();
@@ -200,7 +207,7 @@ public class ApplyAuditController {
         int currentPage=0; 
         if(request.getParameter("currentPage")!=null && !"".equals(request.getParameter("currentPage"))){
         	currentPage = Integer.parseInt(request.getParameter("currentPage"));
-        }else{
+        } else {
         	currentPage=1;
         }
         
@@ -230,6 +237,7 @@ public class ApplyAuditController {
         if (selectOrderResponse.getPageResult().getResultList() != null) {
             List<OrderDetailVo> resultList = selectOrderResponse.getPageResult().getResultList();
             List<OrderDetailLocalVo> resultListSplit = new ArrayList<OrderDetailLocalVo>();
+        	String oaCheckUrl = SystemConfigHandler.configMap.get("OA.SEE_CHECK_URL.url");
             for (int i = 0, listLength = resultList.size(); i < listLength; ++i) {
                 OrderDetailVo vo = resultList.get(i);
 
@@ -262,7 +270,7 @@ public class ApplyAuditController {
                 }
                 localVo.setOrderAppDateStr(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(vo
                         .getOrderAppDate()));
-                localVo.setOaCheckUrl(CacheUtils.getValueByKey("OA.SEE_CHECK_URL"));
+                localVo.setOaCheckUrl(oaCheckUrl);
                 resultListSplit.add(localVo);
             }
             returnList.add(resultListSplit);
@@ -276,8 +284,6 @@ public class ApplyAuditController {
     
     /**
 	 * 审核通过或者不通过
-	 * 
-	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/iaasAudit")

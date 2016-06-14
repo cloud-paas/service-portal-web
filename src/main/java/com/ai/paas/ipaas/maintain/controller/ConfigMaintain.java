@@ -1,5 +1,16 @@
 package com.ai.paas.ipaas.maintain.controller;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.ai.paas.ipaas.maintain.constants.CCSComponentOperationParam;
 import com.ai.paas.ipaas.maintain.constants.PathType;
 import com.ai.paas.ipaas.maintain.model.UserIdModel;
@@ -7,26 +18,14 @@ import com.ai.paas.ipaas.maintain.util.ConfigUtil;
 import com.ai.paas.ipaas.maintain.util.HttpClientUtil;
 import com.ai.paas.ipaas.maintain.util.HttpRequestUtil;
 import com.ai.paas.ipaas.maintain.util.HttpResponseUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.google.gson.Gson;
-
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 @Controller
 @RequestMapping("/config/maintain")
 public class ConfigMaintain {
 	
-    private final String url = ConfigUtil.getProperty("ipaas.rest.url");
+//    private final String url = ConfigUtil.getProperty("ipaas.rest.url");
 
     @RequestMapping("/main")
     public ModelAndView main(HttpServletRequest request, HttpServletResponse response) {
@@ -34,15 +33,15 @@ public class ConfigMaintain {
         String userName = request.getParameter("name");
         String result = "";
         try{
-        	result =  HttpRequestUtil.sendPost(
-        			ConfigUtil.getProperty("ipaas.user.getUserID.rest.url"),
-					"userName="+userName);
-        	System.out.println("***********************"+result);
+        	String uacUrl = SystemConfigHandler.configMap.get("IPAAS-UAC.SERVICE.IP_PORT_SERVICE");
+        	String queryUserService = SystemConfigHandler.configMap.get("IPAAS-UAC.QUERYUSER.URL");
+        	result =  HttpRequestUtil.sendPost(uacUrl + queryUserService, "userName="+userName);
         }catch(Exception e){
         	e.printStackTrace();
         	mav.setViewName("config/error");
         	return mav;
         }
+        
         Gson gson = new Gson();
         UserIdModel userIdModel = gson.fromJson(result, UserIdModel.class);
         request.getSession().setAttribute("userId", userIdModel.getUserId());
@@ -59,6 +58,7 @@ public class ConfigMaintain {
         param.setUserId(userId);
         param.setPath(request.getParameter("path"));
         param.setPathType(PathType.convertPathType(Integer.valueOf(request.getParameter("flags"))));
+        String url = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
         String result = HttpClientUtil.sendPostRequest(url + "/ccs-component/maintain/listSubPathAndData", new Gson().toJson(param));
         HttpResponseUtil.sendResponse(result, response);
     }
@@ -70,22 +70,19 @@ public class ConfigMaintain {
      */
     @RequestMapping(value = "/get")
     public void get(HttpServletRequest request, HttpServletResponse response) {
-    	
     	HttpSession session = request.getSession();
     	String userId = String.valueOf(session.getAttribute("userId"));
         CCSComponentOperationParam param = new CCSComponentOperationParam();
         param.setUserId(userId);
         param.setPath(request.getParameter("path"));
         param.setPathType(PathType.convertPathType(Integer.valueOf(request.getParameter("flags"))));
-        String result;
 		try {
-			result = HttpClientUtil.sendPostRequest(url + "/ccs-component/maintain/get", new Gson().toJson(param));
+			String url = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
+			String result = HttpClientUtil.sendPostRequest(url + "/ccs-component/maintain/get", new Gson().toJson(param));
 			HttpResponseUtil.sendResponse(result, response);
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
 		}
-        
- 
     }
     
     /**
@@ -102,9 +99,9 @@ public class ConfigMaintain {
         param.setPath(request.getParameter("path"));
         param.setPathType(PathType.convertPathType(Integer.valueOf(request.getParameter("flags"))));
         param.setData(request.getParameter("data"));
-        String result;
 		try {
-			result = HttpClientUtil.sendPostRequest(url + "/ccs-component/maintain/modify", new Gson().toJson(param));
+			String url = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
+			String result = HttpClientUtil.sendPostRequest(url + "/ccs-component/maintain/modify", new Gson().toJson(param));
 			HttpResponseUtil.sendResponse(result, response);
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
@@ -124,9 +121,9 @@ public class ConfigMaintain {
         param.setUserId(userId);
         param.setPath(request.getParameter("path"));
         param.setPathType(PathType.convertPathType(Integer.valueOf(request.getParameter("flags"))));
-        String result;
 		try {
-			result = HttpClientUtil.sendPostRequest(url + "/ccs-component/maintain/delete", new Gson().toJson(param));
+			String url = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
+			String result = HttpClientUtil.sendPostRequest(url + "/ccs-component/maintain/delete", new Gson().toJson(param));
 			HttpResponseUtil.sendResponse(result, response);
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
@@ -147,9 +144,9 @@ public class ConfigMaintain {
         param.setPath(request.getParameter("path"));
         param.setPathType(PathType.convertPathType(Integer.valueOf(request.getParameter("flags"))));
         param.setData(request.getParameter("data"));
-        String result;
 		try {
-			result = HttpClientUtil.sendPostRequest(url + "/ccs-component/maintain/add", new Gson().toJson(param));
+			String url = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
+			String result = HttpClientUtil.sendPostRequest(url + "/ccs-component/maintain/add", new Gson().toJson(param));
 			HttpResponseUtil.sendResponse(result, response);
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();

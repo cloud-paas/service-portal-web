@@ -8,14 +8,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ai.paas.ipaas.email.EmailServiceImpl;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IOrder;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
+import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
 import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
@@ -25,23 +28,24 @@ import com.google.gson.Gson;
 @Controller
 @RequestMapping(value = "/dbs")
 public class DatabaseController {
+	private static final Logger logger = LogManager
+			.getLogger(DatabaseController.class.getName());
+
 	@Reference
 	private IOrder iOrder;
 	@Reference
 	private ISysParamDubbo iSysParam;
-	
-	private static final Logger logger = LogManager
-			.getLogger(DatabaseController.class.getName());
-	
-	
-	@RequestMapping(value="/introduce")
-	public String toIndex(HttpServletRequest request,HttpServletResponse response){
-        request.getSession().removeAttribute("list_index");
-        request.getSession().setAttribute("list_index", "list_2");
+	@Autowired
+	private EmailServiceImpl emailSrv;
+
+	@RequestMapping(value = "/introduce")
+	public String toIndex(HttpServletRequest request,
+			HttpServletResponse response) {
+		request.getSession().removeAttribute("list_index");
+		request.getSession().setAttribute("list_index", "list_2");
 		return "/database/introduce";
 	}
-	
-	
+
 	/**
 	 * 准备开通分布式数据库服务
 	 */
@@ -66,16 +70,18 @@ public class DatabaseController {
 		orderDetailRequest.setOperateType(Constants.OperateType.APPLY);// 操作类型
 		UserInfoVo userVo = UserUtil.getUserSession(request.getSession());
 		orderDetailRequest.setUserId(userVo.getUserId()); // 用户Id
-		orderDetailRequest.setProdType(Constants.ProductType.IPAAS_ShuJK); //PROD_TAB // 产品类型   // 1存储  2计算   3 数据库服务
-		String prodId = Constants.serviceType.DBS_CENTER+"";
+		/** PROD_TAB 产品类型: 1存储,2计算,3数据库服务 **/
+		orderDetailRequest.setProdType(Constants.ProductType.IPAAS_ShuJK); 
+		String prodId = Constants.serviceType.DBS_CENTER + "";
 		orderDetailRequest.setProdId(prodId); // 产品id
 		orderDetailRequest.setProdByname(Constants.serviceName.DBS); // 别名
+
+		String masterNum = request.getParameter("masterNum"); // 主库数量
+		String needDistributeTrans = request.getParameter("needDistributeTrans"); // 开启分布式事务
+		String isMysqlProxy = request.getParameter("isMysqlProxy"); // 是否读写分离
+		String isAutoSwitch = request.getParameter("isAutoSwitch"); // >是否主从自动切换
+		String my_name = request.getParameter("my_name"); // 主库数量
 		
-		String masterNum = request.getParameter("masterNum"); //主库数量
-		String needDistributeTrans = request.getParameter("needDistributeTrans");  //开启分布式事务
-		String isMysqlProxy = request.getParameter("isMysqlProxy");  //是否读写分离
-		String isAutoSwitch = request.getParameter("isAutoSwitch");  //>是否主从自动切换
-		String my_name = request.getParameter("my_name"); //主库数量
 		Gson prodParam = new Gson();
 		Map<String, Object> serviceMap = new HashMap<String, Object>();
 		serviceMap.put("serviceName", my_name);
@@ -85,27 +91,28 @@ public class DatabaseController {
 		serviceMap.put("isAutoSwitch", isAutoSwitch);
 		orderDetailRequest.setProdParam(prodParam.toJson(serviceMap)); // 配置中心参数为空
 		orderDetailRequest.setUserServIpaasPwd(request.getParameter("servicePassword"));// 服务密码
-		
+
 		logger.info("调用saveOrderDetail----------");
 		OrderDetailResponse orderDetailResponse = new OrderDetailResponse();
 		try {
 			orderDetailResponse = iOrder.saveOrderDetail(orderDetailRequest);
-			logger.info("saveOrderDetail返回结果："
-					+ orderDetailResponse.getResponseHeader().getResultCode() + ":"
-					+ orderDetailResponse.getResponseHeader().getResultMessage());
-			resultMap.put("code", orderDetailResponse.getResponseHeader()
-					.getResultCode());
+			logger.info("========= 根据orderDetailResponse结果，发送服务开通的待审核提醒邮件=========");
+			if (orderDetailResponse.isNeedSend()
+					&& orderDetailResponse.getEmail() != null) {
+				for (EmailDetail email : orderDetailResponse.getEmail()) {
+					emailSrv.sendEmail(email);
+				}
+			}
+			resultMap.put("code", orderDetailResponse.getResponseHeader().getResultCode());
 			resultMap.put("data", prodId);
-			resultMap.put("message", orderDetailResponse.getResponseHeader()
-					.getResultMessage());
+			resultMap.put("message", orderDetailResponse.getResponseHeader().getResultMessage());
 		} catch (Exception e) {
-			logger.info(e.getCause().getMessage() + e.getMessage()
-					+ "---------");
+			logger.info(e.getCause().getMessage() + e.getMessage());
 			resultMap.put("code", "9999");
 			resultMap.put("message", "系统异常，请联系管理员");
 		}
-		
+
 		return resultMap;
 	}
-	
+
 }

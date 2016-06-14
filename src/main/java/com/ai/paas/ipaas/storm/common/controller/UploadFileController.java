@@ -27,11 +27,13 @@ import com.alibaba.dubbo.config.annotation.Reference;
 @Controller
 @RequestMapping("/rcs/uploadFile")
 public class UploadFileController {
+	private Logger logger = Logger.getLogger(UploadFileController.class);
+	
 	@Reference
 	private IOrder iOrder;
+	
 	@Reference
 	private ISysParamDubbo iSysParam;
-	private Logger logger = Logger.getLogger(UploadFileController.class);
 
 	/**
 	 * 上传jar文件
@@ -40,7 +42,6 @@ public class UploadFileController {
 	public void uploadJars(HttpServletResponse response,HttpServletRequest request) {
 		System.out.println("comein");
 		System.out.println(64364364);
-	//public void uploadJar(@RequestParam("insertFile") CommonsMultipartFile mFile, HttpServletResponse response,HttpServletRequest request) {
 		System.out.println("OK");
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		MultipartFile mFile = multipartRequest.getFile("myFile");

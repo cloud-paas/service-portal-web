@@ -32,18 +32,14 @@ import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.JSonUtil;
 import com.alibaba.dubbo.config.annotation.Reference;
 
-import ring.middleware.session__init;
-
 /**
  * Ses用户控制台* 
  * @author mapl
  * 
  */
-
 @RequestMapping(value = "/sesConsole")
 @Controller
 public class UserSesConsoleController {
-
 	private static final Logger logger = LogManager
 			.getLogger(UserSesConsoleController.class.getName());
 	
@@ -58,6 +54,7 @@ public class UserSesConsoleController {
 
 	@Reference
 	private ISysParamDubbo iSysParam;
+	
 	@Reference
 	private ISesConsoleDubboSv sesConsoleDubboSvImpl;
 	

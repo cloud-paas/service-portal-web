@@ -22,6 +22,4 @@ public class ErpProjectVo {
 		this.erpProjectName = erpProjectName;
 	}
     
-    
-
 }

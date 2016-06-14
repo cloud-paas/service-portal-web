@@ -27,58 +27,48 @@ import com.alibaba.dubbo.config.annotation.Reference;
 
 /**
  * DSS用户控制台
- * 
- * @author mapl
- * 
  */
-
 @RequestMapping(value = "/idpsConsole")
 @Controller
 public class UserIdpsConsoleController {
-
 	private static final Logger logger = LogManager
 			.getLogger(UserIdpsConsoleController.class.getName());
+	
 	@Reference
 	private ISysParamDubbo iSysParam;
- 
-	
+
 	@Reference
 	private IProdProductDubboSv prodProductDubboSv;
-	
+
 	@Reference
 	private IIdpsConsoleDubboSv idpsConsoleDubboSv;
-	
+
 	@RequestMapping(value = "/consoleIndex")
-	public String consoleIndex(HttpServletRequest req,
-			HttpServletResponse resp) {
-
+	public String consoleIndex(HttpServletRequest req, HttpServletResponse resp) {
 		return "console/dss/index";
-
 	}
 
 	@RequestMapping(value = "/toIdpsConsole")
 	public String toManageConsole(HttpServletRequest req,
 			HttpServletResponse resp) {
-		String indexFlag=req.getParameter("indexFlag");
+		String indexFlag = req.getParameter("indexFlag");
 		req.setAttribute("indexFlag", indexFlag);
-		Map<String, Object> result = new HashMap<String, Object>();		
+		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			
 			SelectWithNoPageResponse<ProdProductVo> prodProductVoresponse = null;
 			SelectWithNoPageRequest<ProdProductVo> prodProductVoRequest = new SelectWithNoPageRequest<ProdProductVo>();
-			ProdProductVo  prodProductVo = new ProdProductVo();
+			ProdProductVo prodProductVo = new ProdProductVo();
 			short prodId = Constants.serviceType.IDPS_CENTER;
 			prodProductVo.setProdId(prodId);
 			prodProductVoRequest.setSelectRequestVo(prodProductVo);
-			prodProductVoresponse = prodProductDubboSv.selectProduct(prodProductVoRequest);
+			prodProductVoresponse = prodProductDubboSv
+					.selectProduct(prodProductVoRequest);
 			prodProductVo = prodProductVoresponse.getResultList().get(0);
 			req.setAttribute("prodName", prodProductVo.getProdName());
-			
 		} catch (Exception e) {
+			logger.error(e);
 			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
 			result.put("resultMessage", "查询出现异常！");
-			logger.error(e);
-
 		}
 		return "console/idps/idpsConsole";
 	}
@@ -92,7 +82,6 @@ public class UserIdpsConsoleController {
 	@ResponseBody
 	public Map<String, Object> queryIdpsList(HttpServletRequest req,
 			HttpServletResponse resp) {
-
 		Map<String, Object> result = new HashMap<String, Object>();
 		SelectWithNoPageResponse<UserProdInstVo> response = null;
 		try {
@@ -103,18 +92,19 @@ public class UserIdpsConsoleController {
 			String prodId = String.valueOf(Constants.serviceType.IDPS_CENTER);
 			vo.setUserServiceId(prodId);
 			selectWithNoPageRequest.setSelectRequestVo(vo);
-			response = idpsConsoleDubboSv.selectUserProdInsts(selectWithNoPageRequest);
-						
-			result.put("resultCode", response.getResponseHeader().getResultCode());
-			result.put("resultMessage", response.getResponseHeader().getResultMessage());
-			result.put("resultList", response.getResultList());			
-			
-			
+			response = idpsConsoleDubboSv
+					.selectUserProdInsts(selectWithNoPageRequest);
+
+			result.put("resultCode", response.getResponseHeader()
+					.getResultCode());
+			result.put("resultMessage", response.getResponseHeader()
+					.getResultMessage());
+			result.put("resultList", response.getResultList());
+
 		} catch (Exception e) {
 			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
 			result.put("resultMessage", "查询出现异常！");
 			logger.error(e);
-
 		}
 
 		return result;

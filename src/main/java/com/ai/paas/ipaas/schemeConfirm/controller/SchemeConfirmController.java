@@ -19,16 +19,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.PaasException;
-import com.ai.paas.ipaas.cache.CacheUtils;
 import com.ai.paas.ipaas.system.util.HttpClientUtil;
 import com.ai.paas.ipaas.system.util.UserUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 @Controller
 @RequestMapping(value = "/schemeConfirm")
 public class SchemeConfirmController {
-
 	private static final Logger logger = LogManager
 			.getLogger(SchemeConfirmController.class);
 
@@ -39,7 +38,6 @@ public class SchemeConfirmController {
 	 * @param modelmap
 	 * @return
 	 */
-
 	@SuppressWarnings("serial")
 	@RequestMapping(value = "/schemeConfirmList")
 	public String schemeConfirmList(HttpServletRequest request,
@@ -61,13 +59,11 @@ public class SchemeConfirmController {
 		jsonObject.put("sortFlag", "1");
 
 		String result = null;
-		String service =CacheUtils.getOptionByKey("CONTROLLER.CONTROLLER","url");
-//		String service = "http://127.0.0.1:20881/ipaas";
 		String url = "/order/queryOrdersInfo";
-		System.out.println("to MAIN rest:" + service + url);
-
+		String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
+		logger.info("to MAIN rest:" + portalDubboUrl + url);
 		try {
-			result = HttpClientUtil.sendPostRequest(service + url, jsonObject.toString());
+			result = HttpClientUtil.sendPostRequest(portalDubboUrl + url, jsonObject.toString());
 			System.out.println("MAIN return :" + result);
 		} catch (IOException e) {
 
@@ -119,22 +115,19 @@ public class SchemeConfirmController {
 		jsondata.put("orderDetailId", orderDetailId);
 
 		String result = null;
-
-//		String service = "http://127.0.0.1:20881/ipaas";
-		String service =CacheUtils.getOptionByKey("CONTROLLER.CONTROLLER","url");
 		String url = "/schemeConfirm/schemeSubmit";
-		System.out.println("to MAIN rest:" + service + url);
+		logger.info("to MAIN rest:" + logger + url);
 		try {
-			result = HttpClientUtil.sendPostRequest(service + url,
+			String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
+			result = HttpClientUtil.sendPostRequest(portalDubboUrl + url,
 					jsondata.toString());
-			System.out.println("MAIN return :" + result);
+			logger.info("MAIN return :" + result);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 
 		return result;
-
 	}
 }

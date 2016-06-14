@@ -29,8 +29,6 @@ public class MessageInfo {
 	private String state;
 	private String remark;
 	
-	
-	
 	public long getQueueId() {
 		return queueId;
 	}

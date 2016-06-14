@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ai.paas.ipaas.PaasException;
-import com.ai.paas.ipaas.cache.CacheUtils;
-import com.ai.paas.ipaas.cache.CodeValueObject;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.HttpClientUtil;
 import com.ai.paas.ipaas.system.util.UserUtil;
@@ -39,21 +37,19 @@ import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.CiperUtil;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 /**
  * DSS用户控制台
- * 
  * @author mapl
- * 
  */
-
 @RequestMapping(value = "/dssConsole")
 @Controller
 public class UserDssConsoleController {
-
 	private static final Logger logger = LogManager
 			.getLogger(UserDssConsoleController.class.getName());
+	
 	@Reference
 	private ISysParamDubbo iSysParam;
 
@@ -82,26 +78,19 @@ public class UserDssConsoleController {
 				return new ModelAndView("redirect:/dssConsole/consoleIndex");
 			}			
 			prodMenuVo  = 	response.getResultList().get(0);		
-			
-			
 		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
 			result.put("resultMessage", "查询出现异常！");
-			logger.error(e);
-
 		}
 		
-		String returnUrl=  "redirect:"+prodMenuVo.getConsoleUrl();
-		return new ModelAndView(returnUrl);
-
+		return new ModelAndView("redirect:"+prodMenuVo.getConsoleUrl());
 	}
 	
 	@RequestMapping(value = "/consoleIndex")
 	public String consoleIndex(HttpServletRequest req,
 			HttpServletResponse resp) {
-
 		return "console/dss/index";
-
 	}
 
 	@RequestMapping(value = "/toDssConsole")
@@ -111,7 +100,6 @@ public class UserDssConsoleController {
 		req.setAttribute("indexFlag", indexFlag);
 		Map<String, Object> result = new HashMap<String, Object>();		
 		try {
-			
 			SelectWithNoPageResponse<ProdProductVo> prodProductVoresponse = null;
 			SelectWithNoPageRequest<ProdProductVo> prodProductVoRequest = new SelectWithNoPageRequest<ProdProductVo>();
 			ProdProductVo  prodProductVo = new ProdProductVo();
@@ -121,13 +109,13 @@ public class UserDssConsoleController {
 			prodProductVoresponse = prodProductDubboSv.selectProduct(prodProductVoRequest);
 			prodProductVo = prodProductVoresponse.getResultList().get(0);
 			req.setAttribute("prodName", prodProductVo.getProdName());
-			
 		} catch (Exception e) {
 			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
 			result.put("resultMessage", "查询出现异常！");
 			logger.error(e);
 
 		}
+		
 		return "console/dss/dssConsole";
 	}
 
@@ -151,18 +139,15 @@ public class UserDssConsoleController {
 			String prodId = String.valueOf(Constants.serviceType.DBCENTER_CENTER);
 			vo.setUserServiceId(prodId);
 			selectWithNoPageRequest.setSelectRequestVo(vo);
+			
 			response = dssConsoleDubboSv.selectUserProdInsts(selectWithNoPageRequest);
-						
 			result.put("resultCode", response.getResponseHeader().getResultCode());
 			result.put("resultMessage", response.getResponseHeader().getResultMessage());
 			result.put("resultList", response.getResultList());			
-			
-			
 		} catch (Exception e) {
 			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
 			result.put("resultMessage", "查询出现异常！");
 			logger.error(e);
-
 		}
 
 		return result;
@@ -185,7 +170,6 @@ public class UserDssConsoleController {
 		vo.setUserId(userVo.getUserId());
 		vo.setUserServId(Long.parseLong(userServId));;
 		try {
-			// 注销
 			responseHeader = dssConsoleDubboSv.cancleUserProdInst(vo);
 			result.put("resultCode", responseHeader.getResultCode());
 			result.put("resultMessage", responseHeader.getResultCode());
@@ -194,6 +178,7 @@ public class UserDssConsoleController {
 			result.put("resultMessage", "注销异常！");
 			logger.error(e.getMessage(),e);
 		}
+		
 		return result;
 	}
 
@@ -216,7 +201,6 @@ public class UserDssConsoleController {
 		vo.setUserId(userVo.getUserId());
 		vo.setUserServId(Long.parseLong(userServId));;
 		try {
-			// 格式化
 			responseHeader = dssConsoleDubboSv.fullClear(vo);
 			result.put("resultCode", responseHeader.getResultCode());
 			result.put("resultMessage", responseHeader.getResultCode());
@@ -225,8 +209,10 @@ public class UserDssConsoleController {
 			result.put("resultMessage", "格式化失败！");
 			logger.error(e.getMessage(),e);
 		}
+		
 		return result;
 	}
+	
 	/**
 	 * 根据userServId 查询用户产品实例 
 	 * @return
@@ -241,7 +227,6 @@ public class UserDssConsoleController {
 		req.setAttribute("parentUrl",parentUrl);
 		String productType = req.getParameter("productType"); 
 		req.setAttribute("productType",productType);
-		
 
 		try {
 			SelectWithNoPageRequest<UserProdInstVo> selectWithNoPageRequest = new SelectWithNoPageRequest<UserProdInstVo>();
@@ -257,15 +242,10 @@ public class UserDssConsoleController {
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
-
 		}
 
 		return "console/dss/dssDetail";
 	}
-	
-	
-	
-	
 	
 	/**
 	 * 
@@ -302,6 +282,7 @@ public class UserDssConsoleController {
 			result.put("resultMessage", "查询文档上传记录失败！");
 			logger.error(e.getMessage(),e);
 		}
+		
 		return result;
 	}
 	
@@ -452,13 +433,26 @@ public class UserDssConsoleController {
 	
 	@RequestMapping(value="/modifyDetailById")
 	public String modifyDetailById(HttpServletRequest req,HttpServletResponse resp){
+		String capacity_1024 = SystemConfigHandler.configMap.get("DSS.capacity.1024");
+		String capacity_1536 = SystemConfigHandler.configMap.get("DSS.capacity.1536");
+		String capacity_2048 = SystemConfigHandler.configMap.get("DSS.capacity.2048");
+		String capacity_512 = SystemConfigHandler.configMap.get("DSS.capacity.512");
+		String singleFile_1 = SystemConfigHandler.configMap.get("DSS.singleFileSize.1");
+		String singleFile_5 = SystemConfigHandler.configMap.get("DSS.singleFileSize.5");
+		String singleFile_10 = SystemConfigHandler.configMap.get("DSS.singleFileSize.10");
+		String singleFile_20 = SystemConfigHandler.configMap.get("DSS.singleFileSize.20");
 		SelectWithNoPageResponse<UserProdInstVo> response = null;
 		String userServId = req.getParameter("userServId"); 
-		List<CodeValueObject> clist=new ArrayList<CodeValueObject>();
-		List<CodeValueObject> slist=new ArrayList<CodeValueObject>();
-		clist=CacheUtils.getCodeValueListByKey("DSS.capacity");
-		slist=CacheUtils.getCodeValueListByKey("DSS.singleFileSize");
-		 
+		List<String> clist = new ArrayList<String>();
+		clist.add(capacity_512);
+		clist.add(capacity_1024);
+		clist.add(capacity_1536);
+		clist.add(capacity_2048);
+		List<String> slist=new ArrayList<String>();
+		slist.add(singleFile_1);
+		slist.add(singleFile_5);
+		slist.add(singleFile_10);
+		slist.add(singleFile_20);
 		try {
 			SelectWithNoPageRequest<UserProdInstVo> selectWithNoPageRequest = new SelectWithNoPageRequest<UserProdInstVo>();
 			UserProdInstVo vo = new UserProdInstVo();
@@ -479,17 +473,13 @@ public class UserDssConsoleController {
 				}
 				req.setAttribute("capacity", object.getString("capacity"));
 				req.setAttribute("singleFileSize", object.getString("singleFileSize"));
-				 
 			}	
-			
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
-
 		}
-		return "console/dss/modifyConfiguration";
 		
+		return "console/dss/modifyConfiguration";
 	}
-	
 	
 	@RequestMapping(value="/modifyConfiguration",method={RequestMethod.POST})
 	public  @ResponseBody Map<String, String> modifyConfiguration(HttpServletRequest request,HttpServletResponse response) throws PaasException, IOException, URISyntaxException{
@@ -504,20 +494,13 @@ public class UserDssConsoleController {
 		params.put("limitFileSize", request.getParameter("limitFileSize"));
 		String data=JSonUtil.toJSon(params);
 		String result="";
-		String address = CacheUtils.getOptionByKey("CONTROLLER.CONTROLLER","url");
+		String address = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
 		result=HttpClientUtil.sendPostRequest(address+"/dss/console/modifyConfiguration", data);
-		JSONObject object=new JSONObject(result);
-		if(result==""&&result==null){
-			resultinfo.put("resultCode", Constants.OPERATE_CODE_FAIL);
-			resultinfo.put("resultMsg", "请求失败！");
-			return  resultinfo ;
-		}
 		
+		JSONObject object=new JSONObject(result);
 		resultinfo.put("resultCode", object.getString("resultCode"));
 		resultinfo.put("resultMsg", object.getString("resultMsg"));
 		return resultinfo;
-	 
-		
 	}
 
 }

@@ -15,23 +15,23 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ai.paas.ipaas.cache.CacheUtils;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.util.CiperUtil;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
-
 
 @Controller
 @RequestMapping(value = "/email")
 public class EmailUtil {
+	private static final Logger log = LogManager.getLogger(EmailUtil.class.getName());
+	
 	@Autowired 
 	private Email simpleMail;
+	
 	@Reference
 	private ISysParamDubbo iSysParam;
-	private static final Logger log = LogManager.getLogger(EmailUtil.class
-			.getName());
 	
 	@ResponseBody
 	@RequestMapping(value = "/sendEmail")
@@ -44,30 +44,29 @@ public class EmailUtil {
 			
 			Map<String,Object> model = new HashMap<String,Object>();  
 	        model.put("email", email);  
-	        //获取邮件激活链接地址			
-			String address = CacheUtils.getOptionByKey("IPAAS-WEB.SERVICE","IP_PORT_SERVICE") + CacheUtils.getOptionByKey("AUTH.VERIFY","url");
+	        //获取邮件激活链接地址	
+	        String iPaasDubboUrl= SystemConfigHandler.configMap.get("IPAAS-WEB.SERVICE.IP_PORT_SERVICE");
+	    	String authVerifyUrl= SystemConfigHandler.configMap.get("AUTH.VERIFY.url");
+			String address = iPaasDubboUrl + authVerifyUrl;
 			String token   = CiperUtil.encrypt(Constants.SECURITY_KEY, email);
-	        model.put("activeLink", address+"?token="+token);  
+	        model.put("activeLink", address+"?token="+token);
+	        
 	    	String content = VelocityEngineUtils.mergeTemplateIntoString(
 	    	EmailTemplUtil.getVelocityEngineInstance(), "mail.vm", "UTF-8", model);
 			log.info("----------send emailList11      spend time："+(System.currentTimeMillis()-beginTime));
 			simpleMail.sendMail(subject, content, email);
 			log.info("----------send emailList22      spend time："+(System.currentTimeMillis()-beginTime));
-//			}
-			
 			json.put("resultFlag", "true");
 			json.put("resultMsg", "send email success");
 			log.info("----------send emailList      spend time："+(System.currentTimeMillis()-beginTime));
+			
 			return json.toString();
 		} catch (Exception e) {
+			log.error(e.getMessage(),e);
 			json.put("resultFlag", "false");
 			json.put("resultMsg", "send email failed");
-			System.out.println(e.getMessage());
-			log.error(e.getMessage(),e);
 			return json.toString();
-			
 		} 
-		
 	}
 	
 	@ResponseBody

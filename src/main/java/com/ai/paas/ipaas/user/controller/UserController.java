@@ -31,11 +31,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.PaasException;
-import com.ai.paas.ipaas.cache.CacheUtils;
 import com.ai.paas.ipaas.config.ftp.SFTPConfig;
 import com.ai.paas.ipaas.config.ftp.SFTPConstants;
 import com.ai.paas.ipaas.config.ftp.SFTPException;
 import com.ai.paas.ipaas.config.ftp.SFTPUtils;
+import com.ai.paas.ipaas.email.EmailServiceImpl;
 import com.ai.paas.ipaas.storm.sys.utils.StringUtils;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.constants.ConstantsForSession;
@@ -51,7 +51,8 @@ import com.ai.paas.ipaas.util.Assert;
 import com.ai.paas.ipaas.util.CiperUtil;
 import com.ai.paas.ipaas.util.StringUtil;
 import com.ai.paas.ipaas.util.UUIDTool;
-import com.ai.paas.ipaas.virtual.gson.GsonUtil;
+import com.ai.paas.ipaas.utils.GsonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -59,18 +60,23 @@ import com.google.gson.reflect.TypeToken;
 @Controller
 @RequestMapping(value = "/audit")
 public class UserController {
-	private static final Logger log = LogManager.getLogger(UserController.class
-			.getName());
+	private static final Logger logger = LogManager.getLogger(UserController.class.getName());
+	
+	private static final String SECURITY_KEY = "7331c9b6b1a1d521363f7bca8acb095f";// md5
 	private static String directory = SFTPConfig.getString("SFTP.REQ.DIRECTORY");
 	
 	@Reference
 	private IUser iUser;
+	
 	@Reference
 	private ISysParamDubbo iSysParam;
+	
 	@Autowired
 	protected HttpSession session;
-	private static final String SECURITY_KEY = "7331c9b6b1a1d521363f7bca8acb095f";// md5
 
+	@Autowired
+	private EmailServiceImpl emailSrv;
+	
 	@RequestMapping(value = "/toLogin")
 	public String toLogin(HttpServletRequest request,
 			HttpServletResponse response) {
@@ -81,17 +87,18 @@ public class UserController {
 		session.invalidate();
 		return "user/login";
 	}
+	
 	@RequestMapping(value = "/toNTLogin")
 	public String toNTLogin(HttpServletRequest request,
 			HttpServletResponse response) {
 		String urlInfo = request
 				.getParameter(ConstantsForSession.LoginSession.URL_INFO);
 		request.setAttribute("urlInfo", urlInfo);
-		log.info("###################toNTLogin#######################urlInfo:"+urlInfo);
+		logger.info("###################toNTLogin#######################urlInfo:"+urlInfo);
 		return "user/ntlogin";
 	}
 
-	@RequestMapping(value = "/toSignOut")//正常登陆！！！！！！！！！！！！！！！！！！！！！！！！
+	@RequestMapping(value = "/toSignOut")
 	public String toSignOut(HttpServletRequest request,
 			HttpServletResponse response) {
 		session.setAttribute(ConstantsForSession.LoginSession.USER_INFO, null);
@@ -103,7 +110,6 @@ public class UserController {
 	@RequestMapping(value = "/toRegister")
 	public String register(HttpServletRequest request,
 			HttpServletResponse response) {
-
 		return "user/register";
 	}
 
@@ -113,6 +119,7 @@ public class UserController {
 		model.addAttribute("email", request.getParameter("email"));
 		return "user/registerSuccess";
 	}
+	
 	@RequestMapping(value = "/toActiveAccount")
 	public String activeAccount(ModelMap model, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -126,13 +133,13 @@ public class UserController {
 			HttpServletResponse response) throws PaasException {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		try {
-			log.info("###################begin to do NT Login#######################");
+			logger.info("###################begin to do NT Login#######################");
 			//拿到用户信息
 			final Assertion assertion = (Assertion) (((HttpServletRequest) request).getSession() == null ? request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION) : ((HttpServletRequest) request).getSession().getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
-			log.info("###################get user info       #######################");
+			logger.info("###################get user info       #######################");
 			if (assertion!=null&&assertion.getPrincipal()!=null){
 			         String ntAccount =assertion.getPrincipal().getName();
-			         log.info("###################ntAccount:"+ntAccount+"#######################");
+			         logger.info("###################ntAccount:"+ntAccount+"#######################");
 			         if(ntAccount != null){
 			        	//判重处理
 			        	String email = ntAccount+"@asiainfo.com";
@@ -151,7 +158,7 @@ public class UserController {
 			        	if(uniqueEmail){
 			        		//nt账号入库  
 				 			uv.setUserId(UUIDTool.genId32());
-				 			log.info("###################register if haven't registered yet#######################");
+				 			logger.info("###################register if haven't registered yet#######################");
 				 			iUser.registerUser(uv);
 			        	}
 		 				UserInfoVo userInfoVo = new UserInfoVo();
@@ -163,23 +170,23 @@ public class UserController {
 		 						throw new RuntimeException("I have got uservo from db by email but userid is null fuck!");
 		 					}
 		 				}
-		 				log.info("###################copy UserVo to  userInfoVo  userid:#######################"+uv.getUserId());
+		 				logger.info("###################copy UserVo to  userInfoVo  userid:#######################"+uv.getUserId());
 		 				BeanUtils.copyProperties(uv, userInfoVo);
-		 				log.info("###################put userinfo to session   userid:#######################"+userInfoVo.getUserId());
+		 				logger.info("###################put userinfo to session   userid:#######################"+userInfoVo.getUserId());
 		 				if("18610176415".equals(userInfoVo.getUserPhoneNum())){
 		 					userInfoVo.setUserPhoneNum("");
 		 				}
 		 				UserUtil.setUserSession(session, userInfoVo);
 		 				
-		 				log.info("###################go to the last page before you login       if you are lucky!!!#######################");
+		 				logger.info("###################go to the last page before you login       if you are lucky!!!#######################");
 		 				modelMap.put("returnFlag", "success");
 			         }else{
-			        	log.info("###################woops.......ntlogin failed go to index#######################");
+			        	logger.info("###################woops.......ntlogin failed go to index#######################");
 			        	modelMap.put("returnFlag", "0");
 			         }
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e.getMessage(), e);
 		}
         return modelMap;
@@ -187,14 +194,13 @@ public class UserController {
 	
 	@RequestMapping(value = "/checkPs", produces = "text/html;charset=UTF-8")
 	public @ResponseBody String checkPs(@RequestParam String userPwd, String userEmail, HttpServletRequest request) {
-
 			// 调用认证中心进行认证		
 			JSONObject jsonobj = new JSONObject();
 			try {
-				String address = CacheUtils.getOptionByKey("iPaas-Auth.SERVICE","IP_PORT_SERVICE") + CacheUtils.getOptionByKey("AUTH.AUTH_URL","url");
-				log.info(">>>>>>>>>>checkPs:"+address);
 				String result = "";
-				result = HttpRequestUtil.sendPost(address,
+				String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
+				String authUrl = SystemConfigHandler.configMap.get("AUTH.AUTH_URL.url");
+				result = HttpRequestUtil.sendPost(authServiceUrl + authUrl,
 						"password=" + CiperUtil.encrypt(SECURITY_KEY, userPwd)
 								+ "&authUserName=" + userEmail);
 				JSONObject json = new JSONObject(result);
@@ -224,9 +230,12 @@ public class UserController {
 
 		UserVo vo = null;
 		UserInfoVo userInfoVo = new UserInfoVo();
+		
+		String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
+		String authUrl = SystemConfigHandler.configMap.get("AUTH.AUTH_URL.url");
 		try {
 			// 调用认证中心进行认证			
-			String address = CacheUtils.getOptionByKey("iPaas-Auth.SERVICE","IP_PORT_SERVICE") + CacheUtils.getOptionByKey("AUTH.AUTH_URL","url");
+			String address = authServiceUrl + authUrl;
 			String result = "";
 			result = HttpRequestUtil.sendPost(address,
 					"password=" + CiperUtil.encrypt(SECURITY_KEY, passWord)
@@ -239,25 +248,24 @@ public class UserController {
 				modelMap.put("returnMessage", errorMessage);
 				return modelMap;
 			}
-			// 验证验证码是否正确 ---------add by zhanglei
-
-			String kaptchaExpected = (String) request
-					.getSession()
-					.getAttribute(
-							com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);// 获取当前页面验证码
+ 
+			/** 获取当前页面验证码 **/
+			String kaptchaExpected = (String) request.getSession().getAttribute(
+							com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 			if (!imageString.equalsIgnoreCase(kaptchaExpected)) {
 				modelMap.put("returnFlag", "false");
 				modelMap.put("returnMessage", "验证码错误，请重新输入");
 				return modelMap;
 			}
-			// 认证成功后根据userId 查询用户信息
+			
+			/** 认证成功后根据userId 查询用户信息 **/
 			String userId = json.getString("userId");
 			vo = iUser.getUserInfo(userId);
-
 			if (vo == null) {
 				throw new PaasException("根据用户Id返回用户信息失败");
 			}
-			// 判断用户状态是否是已激活状态，如果未激活则不允许登录
+			
+			/** 判断用户状态是否是已激活状态，如果未激活则不允许登录  **/
 			if (StringUtils.isBlank(vo.getUserState())
 					|| !vo.getUserState().equalsIgnoreCase(
 							Constants.userState.USER_STATE_OK)) {
@@ -265,22 +273,21 @@ public class UserController {
 				modelMap.put("returnMessage", "该用户未激活，请先登录邮箱激活账号");
 				return modelMap;
 			}
-			// 将查到的用户信息写缓存
+			
+			/** 将查到的用户信息写缓存 **/
 			vo.setUserName(vo.getUserEmail());
 			BeanUtils.copyProperties(vo, userInfoVo);
-			if("18610176415".equals(userInfoVo.getUserPhoneNum())){
-				userInfoVo.setUserPhoneNum("");
-			}
+			userInfoVo.setUserPhoneNum(vo.getUserPhoneNum());
+			
 			//  partnerType;     partnerAccount;
 			if(userInfoVo.getPartnerAccount()==null || "".equals(userInfoVo.getPartnerAccount() ) ){
 				userInfoVo.setPartnerAccount(vo.getUserEmail().split("@asiainfo.com")[0]);
 			}
+			
 			UserUtil.setUserSession(session, userInfoVo);
 			modelMap.put("returnFlag", "success");
-
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-			// modelMap.put("errorMassage", e.getMessage());
+			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e.getMessage(), e);
 		}
 
@@ -289,20 +296,19 @@ public class UserController {
 
 	@RequestMapping(value = "/authUser")
 	@ResponseBody
-	public void authUser(HttpServletRequest request,
-			HttpServletResponse response) {
+	public void authUser(HttpServletRequest request, HttpServletResponse response) {
 		String userName = request.getParameter("userName");
 		String passWord = request.getParameter("passWord");
 		boolean res = true;
 		try {
+			String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
+			String authUrl = SystemConfigHandler.configMap.get("AUTH.AUTH_URL.url");
 			// 调用认证中心进行认证
-			String address = CacheUtils.getOptionByKey("iPaas-Auth.SERVICE","IP_PORT_SERVICE") + CacheUtils.getOptionByKey("AUTH.AUTH_URL","url");
+			String address = authServiceUrl + authUrl;
 			String result = "";
 			result = HttpRequestUtil.sendPost(address,
-					"password=" + CiperUtil.encrypt(SECURITY_KEY, passWord)
-							+ "&authUserName=" + userName);
+					"password=" + CiperUtil.encrypt(SECURITY_KEY, passWord) + "&authUserName=" + userName);
 			JSONObject json = new JSONObject(result);
-			// json=json.getObject(result);
 			String returnflag = json.getString("successed");
 			if (returnflag.equalsIgnoreCase("false")) {
 				res = false;
@@ -329,20 +335,18 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/download")
-	public String download(HttpServletRequest request,
-			HttpServletResponse response) {
-
+	public String download(HttpServletRequest request, HttpServletResponse response) {
 		String fileId = request.getParameter("fileId");
 		String type = request.getParameter("type");
 		ByteArrayOutputStream input = null;
 		BufferedOutputStream out = null;
+		
 		if (!StringUtil.isBlank(fileId)) {
 			try {
 				if("2".equals(type)){
 					fileId = URLDecoder.decode(fileId);
 					String path = directory+SFTPConstants.SFTP_DIR_DOC+fileId;
 					File file = new File(path);
-					
 				}
 				System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%"+fileId+"********************************");
 				SFTPUtils sftp = new SFTPUtils();
@@ -357,17 +361,19 @@ public class UserController {
 				out.write(input.toByteArray());
 				out.close();
 			} catch (IOException e) {
-				log.debug("ftp下载异常" + e.getMessage());
+				logger.error("ftp下载异常" + e.getMessage());
 			} catch (SFTPException e) {
-				log.debug("资源文件不存在" + e.getMessage());
+				logger.error("资源文件不存在" + e.getMessage());
 				request.setAttribute("message", "该文件不存在！");
 				request.setAttribute("type", type);
 				return "user/downloadCenter";
 			}
 		}
+		
 		request.setAttribute("type", type);
 		return null;
 	}
+	
 	@RequestMapping(value = "/doRegister", produces = "text/html;charset=UTF-8")
 	public @ResponseBody String register(@RequestParam String email,
 			String password, String userOrgName, String mobileNumber, HttpServletRequest request) {
@@ -386,16 +392,21 @@ public class UserController {
 			uv.setPid( UUIDTool.genId32() );
 			
 			RegisterResult rr = iUser.registerUser(uv);
-			//res = HttpClientUtil.sendPostRequest("http://127.0.0.1:20881/ipaas/user/registerUser", son.toJson(uv).toString());
+			
+			/** 通过portal发送邮件 **/
+			if (rr.isNeedSend() && rr.getEmail() != null) {
+				emailSrv.sendEmail(rr.getEmail());
+			}
 			
 			HttpSession session = request.getSession(); 
-	        session.setAttribute("email", email); 
+	        session.setAttribute("email", email);
 	        session.setAttribute(email, System.currentTimeMillis()); 
 			res = son.toJson(rr);
 		} catch (Exception e) {
-			log.info(e.getMessage(), e);
+			logger.error(e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
+		
 		return res;
 	}
 	
@@ -415,7 +426,7 @@ public class UserController {
 			int rr=0;
 			try {
 				 rr =  iUser.updatebyKey(uv);
-				 log.info("UserController:rr"+rr);
+				 logger.info("UserController:rr"+rr);
 			} catch (PaasException e) {
 				e.printStackTrace();
 			}
@@ -442,7 +453,7 @@ public class UserController {
 			}
 			try {
 				 rr =  iUser.updateUserPs(uv);
-				 log.info("UserController:rr"+rr);
+				 logger.info("UserController:rr"+rr);
 			} catch (PaasException e) {
 				e.printStackTrace();
 			}
@@ -453,7 +464,6 @@ public class UserController {
 	@RequestMapping(value = "/uniqueEmail", produces = "text/html;charset=UTF-8")
 	public @ResponseBody void uniqueEmail(@RequestParam String email,
 			HttpServletResponse response) {
-
 		try {
 			boolean res = iUser.uniqueEmail(email);
 			response.getWriter().print(res);
@@ -468,7 +478,7 @@ public class UserController {
 		boolean result = false;
 		try {
 			 result = iUser.uniqueEmail(email);
-			 log.info("UserController>>>>>>>>>>>>>>uniqueEmail_update>>>result"+result+email);
+			 logger.info("UserController>>>>>>>>>>>>>>uniqueEmail_update>>>result"+result+email);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -478,7 +488,6 @@ public class UserController {
 	@RequestMapping(value = "/uniquePhone", produces = "text/html;charset=UTF-8")
 	public @ResponseBody void uniquePhone(@RequestParam String phone,
 			HttpServletResponse response) {
-
 		try {
 			boolean res = iUser.uniquePhone(phone);
 			response.getWriter().print(res);
@@ -496,55 +505,44 @@ public class UserController {
 	
 	@RequestMapping(value="/userOrgName",method={RequestMethod.POST},produces = "application/json;charset=utf-8")
 	public @ResponseBody String userOrgName(HttpServletRequest request,HttpServletResponse response){
-		
 		String NT_name = request.getParameter("NT_name");
-		JSONObject objresult=new JSONObject();
-		String service =CacheUtils.getOptionByKey("CONTROLLER.CONTROLLER","url");//http://10.1.228.198:10889/ipaas
-		//String service = "http://127.0.0.1:20881/ipaas";
-		String url = "/user/iUserApi/getAiEmployeeInfo";
+		JSONObject objresult = new JSONObject();
 		
 		Map map = new HashMap();
 		if(NT_name!=null || !"".equals(NT_name)){
 			map.put("ntAccount", NT_name);   //nt账号		"mapl"	userOrgNameEmail.split("@asiainfo")[0]
 		}
-		Gson gson=new Gson();
-		String json=gson.toJson(map);
 		
 		String result = null;
 		Map<String ,String > outMap = new HashMap<String,String>();
 		try {
-			result = HttpClientUtil.sendPostRequest(service + url, json);
+			Gson gson=new Gson();
+			String json=gson.toJson(map);
+			String url = "/user/iUserApi/getAiEmployeeInfo";
+			String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
+			result = HttpClientUtil.sendPostRequest(portalDubboUrl + url, json);
+			
 			Map resmap = GsonUtil.fromJSon(result, HashMap.class);
 		    String object  = (String) resmap.get("object");
 		    Gson gson2 = new Gson();
-		    List<Map<String,Object>> list= gson2.fromJson(object,new TypeToken<List<Map<String,Object>>>() {}.getType());		    
+		    List<Map<String,Object>> list = gson2.fromJson(object,new TypeToken<List<Map<String,Object>>>() {}.getType());		    
 		    Map lais = list.get(0);
 		    JSONObject jsonww = new JSONObject(lais);
-		    
 		    jsonww.put("responseCode", resmap.get("responseCode"));
 		    result = jsonww.toString();
-			System.out.println("MAIN return>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. :" + result);
-			
+			logger.info("MAIN return>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>. :" + result);
 		} catch (IOException e) {
-			 objresult.put("responseCode","999999");
-			 objresult.put("mssage","请求出错！");
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
+			objresult.put("responseCode","999999");
+			objresult.put("mssage","请求出错！");
 		} catch (URISyntaxException e) {
-			 objresult.put("responseCode","999999");
-			 objresult.put("mssage","请求出错！");
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
+			objresult.put("responseCode","999999");
+			objresult.put("mssage","请求出错！");
 		}
 
 		return result;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public static void main(String[] args) {
 		String a, b = null;
@@ -553,29 +551,22 @@ public class UserController {
 			"{\"ntAccount\":\"dingyi5\"}");
 		 System.out.println("\n\nSSSSSSSSSSSSSS:"+a);
 		 */
-			
-			
-				String subject = "亚信云  激活验证链接"; //Constants.SENDEMAIL
-				String s =HttpRequestUtil.sendPost("http://10.1.228.200:14201/iPaas-Web/email/sendEmail","subject="+subject+"&toSenders="+"haoyh@asiainfo.com");
-				//http://10.1.228.200:14201/iPaas-Web/email/sendEmail
-				System.out.println(s);
-			// b =
-			// HttpRequestUtil.sendPost("http://10.1.228.198:14815/iPaas-Web/email/sendEmail","subject=1&content="+content+"&toSenders=majh5@asiainfo.com");
-			// String token =
-			// DigestUtils.sha512Hex("697CB33E9F824CCD856BE85A4EDCA8C6"+SECURITY_KEY);
-			// System.out.println(token);
-			// long s = System.currentTimeMillis();
-			// String param
-			// ="{\"userId\":\"FFF49D0D518948D0AB28D7A8EEE25D03\",\"applyType\":\"create\",\"serviceId\":\"1\",\"capacity\":\"512\",\"haMode\":\"single\"}";
-			//
-			// EmailUtil.email("2", "3", "540576141@qq.com");
-			// System.out.println("---------- 耗时："+(System.currentTimeMillis()-s));
-
+		String subject = "亚信云  激活验证链接"; //Constants.SENDEMAIL
+		String s =HttpRequestUtil.sendPost("http://10.1.228.200:14201/iPaas-Web/email/sendEmail","subject="+subject+"&toSenders="+"haoyh@asiainfo.com");
+		//http://10.1.228.200:14201/iPaas-Web/email/sendEmail
+		System.out.println(s);
+		// b =
+		// HttpRequestUtil.sendPost("http://10.1.228.198:14815/iPaas-Web/email/sendEmail","subject=1&content="+content+"&toSenders=majh5@asiainfo.com");
+		// String token =
+		// DigestUtils.sha512Hex("697CB33E9F824CCD856BE85A4EDCA8C6"+SECURITY_KEY);
+		// System.out.println(token);
+		// long s = System.currentTimeMillis();
+		// String param
+		// ="{\"userId\":\"FFF49D0D518948D0AB28D7A8EEE25D03\",\"applyType\":\"create\",\"serviceId\":\"1\",\"capacity\":\"512\",\"haMode\":\"single\"}";
+		// EmailUtil.email("2", "3", "540576141@qq.com");
+		// System.out.println("---------- 耗时："+(System.currentTimeMillis()-s));
 		//} catch (Exception e) {
 			//e.printStackTrace();
 		//}
-
 	}
 }
-
-
