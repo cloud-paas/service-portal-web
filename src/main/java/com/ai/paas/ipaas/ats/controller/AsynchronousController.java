@@ -9,14 +9,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ai.paas.ipaas.email.EmailServiceImpl;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IOrder;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
+import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
 import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
@@ -31,6 +34,9 @@ public class AsynchronousController {
     @Reference
     private ISysParamDubbo iSysParam;
 
+    @Autowired
+	private EmailServiceImpl emailSrv;
+    
     private static final Logger log = LogManager.getLogger(AsynchronousController.class.getName());
 
     @RequestMapping(value = "/introduce")
@@ -82,9 +88,17 @@ public class AsynchronousController {
         OrderDetailResponse response = iOrder.saveOrderDetail(request);
         log.info("========= receive the response and the response's contents are : "
                 + net.sf.json.JSONObject.fromObject(response));
+        
         Map<String, Object> json = new HashMap<String, Object>();
 
         try {
+        	log.info("========= 根据orderDetailResponse结果，发送服务开通的待审核提醒邮件=========");
+    		if (response.isNeedSend() && response.getEmail() != null) {
+    			for (EmailDetail email : response.getEmail()) {
+    				emailSrv.sendEmail(email);
+    			}
+    		}
+    		
             json.put("code", response.getResponseHeader().getResultCode());
             json.put("resultMessage", response.getResponseHeader().getResultMessage());
         } catch (Exception e) {

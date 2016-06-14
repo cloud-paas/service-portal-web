@@ -7,8 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,18 +19,11 @@ import com.alibaba.dubbo.config.annotation.Reference;
 
 /**
  * 用户控制台
- * 
- * @author easynoder
- * 
  */
 
 @RequestMapping(value = "/console")
 @Controller
 public class UserConsoleController {
-
-	private static final Logger logger = LogManager
-			.getLogger(UserConsoleController.class.getName());
-
 	@Reference
 	private IDssConsoleDubboSv consoleDubboSv;
 
@@ -55,7 +46,6 @@ public class UserConsoleController {
 		SelectWithNoPageResponse<UserProdInstVo> response = null;
 		ResponseHeader header = new ResponseHeader();
 		try {
-			// response = consoleDubboSv.selectUserProdInsts(arg0);
 			result.put("code", "000000");
 			result.put("resultList", new ArrayList<UserProdInstVo>());
 		} catch (Exception e) {
@@ -63,7 +53,6 @@ public class UserConsoleController {
 			result.put("code", "999999");
 			result.put("resultMessage", "查询出现异常！");
 		}
-
 		return result;
 	}
 
@@ -92,10 +81,6 @@ public class UserConsoleController {
 
 	/**
 	 * 缓存格式化
-	 * 
-	 * @param req
-	 * @param resp
-	 * @return
 	 */
 	@RequestMapping(value = "/formatMCS")
 	@ResponseBody
@@ -117,10 +102,6 @@ public class UserConsoleController {
 
 	/**
 	 * 缓存密码修改
-	 * 
-	 * @param req
-	 * @param resp
-	 * @return
 	 */
 	@RequestMapping(value = "/updateMCSPwd")
 	@ResponseBody
@@ -139,14 +120,10 @@ public class UserConsoleController {
 		}
 		return result;
 	}
-
 	
 	@RequestMapping(value = "/iaasConsole")
 	public String iaasConsole() {
-		
-		
 		return "console/manageconsole";
 	}
-	
 	
 }

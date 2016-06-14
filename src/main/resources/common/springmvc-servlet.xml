@@ -9,13 +9,15 @@
 				http://www.springframework.org/schema/mvc 
 				http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
+	<import resource="classpath:common/applicationContext.xml" />
+	<import resource="classpath:common/applicationContext-mail.xml" />
+	 
 	<!-- 默认的注解映射的支持 -->
 	<mvc:annotation-driven />
 
 	<!-- 设置使用注解的类所在的jar包 ,当使用 <context:component-scan/> 后，就可以将 <context:annotation-config/> 
 		移除了 -->
 	<context:component-scan base-package="com.ai.paas.ipaas" />
-
 
 	<!-- 完成请求和注解POJO的映射 -->
 	<bean
@@ -28,12 +30,10 @@
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.JstlView" />
 	</bean>
+	
 	<!-- 对静态资源文件的访问 -->
 	<mvc:default-servlet-handler />
 
-	 <import resource="classpath:common/applicationContext.xml" />
-	 <import resource="classpath:common/applicationContext-mail.xml" />
-	
 	<!-- 文件上传 -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

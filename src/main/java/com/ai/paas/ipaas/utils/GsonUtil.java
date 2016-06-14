@@ -1,11 +1,11 @@
-package com.ai.paas.ipaas.virtual.gson;
+package com.ai.paas.ipaas.utils;
 
 import java.sql.Timestamp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.user.utils.gson.TimestampTypeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

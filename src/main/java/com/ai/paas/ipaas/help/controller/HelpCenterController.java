@@ -18,237 +18,223 @@ import com.alibaba.dubbo.config.annotation.Reference;
 @Controller
 @RequestMapping(value = "/help")
 public class HelpCenterController {
-	
+
 	@Reference
 	private ISysParamDubbo iSysParam;
-	
-	@RequestMapping(value="/center")
-	public String center(ModelMap model,HttpServletRequest request,HttpServletResponse response) throws Exception{
+
+	@RequestMapping(value = "/center")
+	public String center(ModelMap model, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		
 		SysParmRequest req = new SysParmRequest();
 		req.setTypeCode("CONTACTS");
 		req.setParamCode("CONTACTS");
+		
 		List<SysParamVo> list = iSysParam.getSysParams(req);
-		String contactName="";
-		String contactMobile="";
+		String contactName = "";
+		String contactMobile = "";
 		String contactMail = "";
 		String contactQQ = "";
-		for(SysParamVo vo : list){
-			if("CONTACTS_NAME".equals(vo.getServiceValue())){
-				contactName=vo.getServiceOption();
-			}else
-			if("CONTACTS_TEL".equals(vo.getServiceValue())){
-				contactMobile =vo.getServiceOption();
-			}else
-			if("CONTACTS_QQ".equals(vo.getServiceValue())){
-				contactQQ =vo.getServiceOption();
-			}
-			
-			else{
-				contactMail =vo.getServiceOption();
+		
+		for (SysParamVo vo : list) {
+			if ("CONTACTS_NAME".equals(vo.getServiceValue())) {
+				contactName = vo.getServiceOption();
+			} else if ("CONTACTS_TEL".equals(vo.getServiceValue())) {
+				contactMobile = vo.getServiceOption();
+			} else if ("CONTACTS_QQ".equals(vo.getServiceValue())) {
+				contactQQ = vo.getServiceOption();
+			} else {
+				contactMail = vo.getServiceOption();
 			}
 		}
+		
 		model.addAttribute("contactName", contactName);
 		model.addAttribute("contactMobile", contactMobile);
 		model.addAttribute("contactMail", contactMail);
 		model.addAttribute("contactQQ", contactQQ);
-		
+
 		SFTPUtils sftp = new SFTPUtils();
 		List<String> fileList = sftp.getFileList("2");
 		request.setAttribute("type", "2");
 		if (fileList.size() > 0) {
-			for(String fileName:fileList){
-				System.out.println("_______________"+fileName+"$$$$$$$$$$$$$$$$");
+			for (String fileName : fileList) {
+				System.out.println("_______________" + fileName
+						+ "$$$$$$$$$$$$$$$$");
 			}
 			request.setAttribute("fileList", fileList);
 		}
-		return "help/center";	
+		return "help/center";
 	}
-	
-	@RequestMapping(value="/nt")
-	public String ntLogin(ModelMap model,HttpServletRequest request,HttpServletResponse response) throws Exception{
+
+	@RequestMapping(value = "/nt")
+	public String ntLogin(ModelMap model, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		SysParmRequest req = new SysParmRequest();
 		req.setTypeCode("CONTACTS");
 		req.setParamCode("CONTACTS");
 		List<SysParamVo> list = iSysParam.getSysParams(req);
-		String contactName="";
-		String contactMobile="";
+		String contactName = "";
+		String contactMobile = "";
 		String contactMail = "";
 		String contactQQ = "";
-		for(SysParamVo vo : list){
-			if("CONTACTS_NAME".equals(vo.getServiceValue())){
-				contactName=vo.getServiceOption();
-			}else
-			if("CONTACTS_TEL".equals(vo.getServiceValue())){
-				contactMobile =vo.getServiceOption();
-			}else
-			if("CONTACTS_QQ".equals(vo.getServiceValue())){
-				contactQQ =vo.getServiceOption();
-			}
-			
-			else{
-				contactMail =vo.getServiceOption();
+		
+		for (SysParamVo vo : list) {
+			if ("CONTACTS_NAME".equals(vo.getServiceValue())) {
+				contactName = vo.getServiceOption();
+			} else if ("CONTACTS_TEL".equals(vo.getServiceValue())) {
+				contactMobile = vo.getServiceOption();
+			} else if ("CONTACTS_QQ".equals(vo.getServiceValue())) {
+				contactQQ = vo.getServiceOption();
+			} else {
+				contactMail = vo.getServiceOption();
 			}
 		}
+		
 		model.addAttribute("contactName", contactName);
 		model.addAttribute("contactMobile", contactMobile);
 		model.addAttribute("contactMail", contactMail);
 		model.addAttribute("contactQQ", contactQQ);
 		model.addAttribute("contactList", list);
-		return "help/ntLogin";	
-	}
-	@RequestMapping(value="/mail")
-	public String mailLogin(ModelMap model,HttpServletRequest request,HttpServletResponse response) throws Exception{
-		SysParmRequest req = new SysParmRequest();
-		req.setTypeCode("CONTACTS");
-		req.setParamCode("CONTACTS");
-		List<SysParamVo> list = iSysParam.getSysParams(req);
-		String contactName="";
-		String contactMobile="";
-		String contactMail = "";
-		String contactQQ = "";
-		for(SysParamVo vo : list){
-			if("CONTACTS_NAME".equals(vo.getServiceValue())){
-				contactName=vo.getServiceOption();
-			}else
-			if("CONTACTS_TEL".equals(vo.getServiceValue())){
-				contactMobile =vo.getServiceOption();
-			}else
-			if("CONTACTS_QQ".equals(vo.getServiceValue())){
-				contactQQ =vo.getServiceOption();
-			}
-			
-			else{
-				contactMail =vo.getServiceOption();
-			}
-		}
-		model.addAttribute("contactName", contactName);
-		model.addAttribute("contactMobile", contactMobile);
-		model.addAttribute("contactMail", contactMail);
-		model.addAttribute("contactQQ", contactQQ);
-		return "help/mailLogin";	
+		
+		return "help/ntLogin";
 	}
 
-	
-	@RequestMapping(value="/iaas")
-	public String iaapApply(ModelMap model,HttpServletRequest request,HttpServletResponse response) throws Exception{
+	@RequestMapping(value = "/mail")
+	public String mailLogin(ModelMap model, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		SysParmRequest req = new SysParmRequest();
 		req.setTypeCode("CONTACTS");
 		req.setParamCode("CONTACTS");
 		List<SysParamVo> list = iSysParam.getSysParams(req);
-		String contactName="";
-		String contactMobile="";
+		String contactName = "";
+		String contactMobile = "";
 		String contactMail = "";
 		String contactQQ = "";
-		for(SysParamVo vo : list){
-			if("CONTACTS_NAME".equals(vo.getServiceValue())){
-				contactName=vo.getServiceOption();
-			}else
-			if("CONTACTS_TEL".equals(vo.getServiceValue())){
-				contactMobile =vo.getServiceOption();
-			}else
-			if("CONTACTS_QQ".equals(vo.getServiceValue())){
-				contactQQ =vo.getServiceOption();
-			}
-			
-			else{
-				contactMail =vo.getServiceOption();
+		for (SysParamVo vo : list) {
+			if ("CONTACTS_NAME".equals(vo.getServiceValue())) {
+				contactName = vo.getServiceOption();
+			} else if ("CONTACTS_TEL".equals(vo.getServiceValue())) {
+				contactMobile = vo.getServiceOption();
+			} else if ("CONTACTS_QQ".equals(vo.getServiceValue())) {
+				contactQQ = vo.getServiceOption();
+			} else {
+				contactMail = vo.getServiceOption();
 			}
 		}
 		model.addAttribute("contactName", contactName);
 		model.addAttribute("contactMobile", contactMobile);
 		model.addAttribute("contactMail", contactMail);
 		model.addAttribute("contactQQ", contactQQ);
-		return "help/iaasApply";	
+		return "help/mailLogin";
 	}
-	@RequestMapping(value="/paas")
-	public String paasApply(ModelMap model,HttpServletRequest request,HttpServletResponse response) throws Exception{
+
+	@RequestMapping(value = "/iaas")
+	public String iaapApply(ModelMap model, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		SysParmRequest req = new SysParmRequest();
 		req.setTypeCode("CONTACTS");
 		req.setParamCode("CONTACTS");
 		List<SysParamVo> list = iSysParam.getSysParams(req);
-		String contactName="";
-		String contactMobile="";
+		String contactName = "";
+		String contactMobile = "";
 		String contactMail = "";
 		String contactQQ = "";
-		for(SysParamVo vo : list){
-			if("CONTACTS_NAME".equals(vo.getServiceValue())){
-				contactName=vo.getServiceOption();
-			}else
-			if("CONTACTS_TEL".equals(vo.getServiceValue())){
-				contactMobile =vo.getServiceOption();
-			}else
-			if("CONTACTS_QQ".equals(vo.getServiceValue())){
-				contactQQ =vo.getServiceOption();
-			}
-			
-			else{
-				contactMail =vo.getServiceOption();
+		for (SysParamVo vo : list) {
+			if ("CONTACTS_NAME".equals(vo.getServiceValue())) {
+				contactName = vo.getServiceOption();
+			} else if ("CONTACTS_TEL".equals(vo.getServiceValue())) {
+				contactMobile = vo.getServiceOption();
+			} else if ("CONTACTS_QQ".equals(vo.getServiceValue())) {
+				contactQQ = vo.getServiceOption();
+			} else {
+				contactMail = vo.getServiceOption();
 			}
 		}
 		model.addAttribute("contactName", contactName);
 		model.addAttribute("contactMobile", contactMobile);
 		model.addAttribute("contactMail", contactMail);
 		model.addAttribute("contactQQ", contactQQ);
-		return "help/paasApply";	
+		return "help/iaasApply";
 	}
-	
-	
-	@RequestMapping(value="/FAQ")
-	public String faq(ModelMap model,HttpServletRequest request,HttpServletResponse response) throws Exception{
+
+	@RequestMapping(value = "/paas")
+	public String paasApply(ModelMap model, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		SysParmRequest req = new SysParmRequest();
 		req.setTypeCode("CONTACTS");
 		req.setParamCode("CONTACTS");
 		List<SysParamVo> list = iSysParam.getSysParams(req);
-		String contactName="";
-		String contactMobile="";
+		String contactName = "";
+		String contactMobile = "";
 		String contactMail = "";
 		String contactQQ = "";
-		for(SysParamVo vo : list){
-			if("CONTACTS_NAME".equals(vo.getServiceValue())){
-				contactName=vo.getServiceOption();
-			}else
-			if("CONTACTS_TEL".equals(vo.getServiceValue())){
-				contactMobile =vo.getServiceOption();
-			}else
-			if("CONTACTS_QQ".equals(vo.getServiceValue())){
-				contactQQ =vo.getServiceOption();
-			}
-			
-			else{
-				contactMail =vo.getServiceOption();
+		for (SysParamVo vo : list) {
+			if ("CONTACTS_NAME".equals(vo.getServiceValue())) {
+				contactName = vo.getServiceOption();
+			} else if ("CONTACTS_TEL".equals(vo.getServiceValue())) {
+				contactMobile = vo.getServiceOption();
+			} else if ("CONTACTS_QQ".equals(vo.getServiceValue())) {
+				contactQQ = vo.getServiceOption();
+			} else {
+				contactMail = vo.getServiceOption();
 			}
 		}
 		model.addAttribute("contactName", contactName);
 		model.addAttribute("contactMobile", contactMobile);
 		model.addAttribute("contactMail", contactMail);
 		model.addAttribute("contactQQ", contactQQ);
-		return "help/faq";	
+		return "help/paasApply";
 	}
-	
-	@RequestMapping(value="/manual")
-	public String manual(ModelMap model,HttpServletRequest request,HttpServletResponse response) throws Exception{
+
+	@RequestMapping(value = "/FAQ")
+	public String faq(ModelMap model, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		SysParmRequest req = new SysParmRequest();
 		req.setTypeCode("CONTACTS");
 		req.setParamCode("CONTACTS");
 		List<SysParamVo> list = iSysParam.getSysParams(req);
-		String contactName="";
-		String contactMobile="";
+		String contactName = "";
+		String contactMobile = "";
 		String contactMail = "";
 		String contactQQ = "";
-		for(SysParamVo vo : list){
-			if("CONTACTS_NAME".equals(vo.getServiceValue())){
-				contactName=vo.getServiceOption();
-			}else
-			if("CONTACTS_TEL".equals(vo.getServiceValue())){
-				contactMobile =vo.getServiceOption();
-			}else
-			if("CONTACTS_QQ".equals(vo.getServiceValue())){
-				contactQQ =vo.getServiceOption();
+		for (SysParamVo vo : list) {
+			if ("CONTACTS_NAME".equals(vo.getServiceValue())) {
+				contactName = vo.getServiceOption();
+			} else if ("CONTACTS_TEL".equals(vo.getServiceValue())) {
+				contactMobile = vo.getServiceOption();
+			} else if ("CONTACTS_QQ".equals(vo.getServiceValue())) {
+				contactQQ = vo.getServiceOption();
+			} else {
+				contactMail = vo.getServiceOption();
 			}
-			
-			else{
-				contactMail =vo.getServiceOption();
+		}
+		model.addAttribute("contactName", contactName);
+		model.addAttribute("contactMobile", contactMobile);
+		model.addAttribute("contactMail", contactMail);
+		model.addAttribute("contactQQ", contactQQ);
+		return "help/faq";
+	}
+
+	@RequestMapping(value = "/manual")
+	public String manual(ModelMap model, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		SysParmRequest req = new SysParmRequest();
+		req.setTypeCode("CONTACTS");
+		req.setParamCode("CONTACTS");
+		List<SysParamVo> list = iSysParam.getSysParams(req);
+		String contactName = "";
+		String contactMobile = "";
+		String contactMail = "";
+		String contactQQ = "";
+		for (SysParamVo vo : list) {
+			if ("CONTACTS_NAME".equals(vo.getServiceValue())) {
+				contactName = vo.getServiceOption();
+			} else if ("CONTACTS_TEL".equals(vo.getServiceValue())) {
+				contactMobile = vo.getServiceOption();
+			} else if ("CONTACTS_QQ".equals(vo.getServiceValue())) {
+				contactQQ = vo.getServiceOption();
+			} else {
+				contactMail = vo.getServiceOption();
 			}
 		}
 		model.addAttribute("contactName", contactName);
@@ -261,7 +247,7 @@ public class HelpCenterController {
 		if (fileList.size() > 0) {
 			request.setAttribute("fileList", fileList);
 		}
-		return "help/manual";	
+		return "help/manual";
 	}
-	
+
 }

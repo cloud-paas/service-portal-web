@@ -5,8 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,18 +20,10 @@ import com.alibaba.dubbo.config.annotation.Reference;
 
 /**
  * DSS用户控制台
- * 
- * @author mapl
- * 
  */
-
 @RequestMapping(value = "/iaasConsole")
 @Controller
 public class UserIaasConsoleController {
-
-	private static final Logger logger = LogManager
-			.getLogger(UserIaasConsoleController.class.getName());
-
 	@Reference
 	private IaasConsoleDubboSv iaasConsoleDubboSv;
 	
@@ -90,6 +80,4 @@ public class UserIaasConsoleController {
 		
 		return "console/iaas/iaasMemoryConsole";
 	}
-
-
 }

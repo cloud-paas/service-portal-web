@@ -66,10 +66,6 @@ import com.google.gson.reflect.TypeToken;
 
 /**
  * Storm Task Managment.
- * 
- * @author yuanman
- * @since 2015-06-22
- * 
  */
 @Controller
 @RequestMapping(value = "/rcs")

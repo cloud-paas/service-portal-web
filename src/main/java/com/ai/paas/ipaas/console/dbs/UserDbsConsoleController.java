@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.PaasException;
-import com.ai.paas.ipaas.cache.CacheUtils;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IAtsConsoleDubboSv;
@@ -28,6 +27,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 /**
@@ -35,11 +35,9 @@ import com.alibaba.dubbo.config.annotation.Reference;
  * @author mapl
  * 
  */
-
 @RequestMapping(value = "/dbsConsole")
 @Controller
 public class UserDbsConsoleController {
-
 	private static final Logger logger = LogManager
 			.getLogger(UserDbsConsoleController.class.getName());
 
@@ -83,17 +81,18 @@ public class UserDbsConsoleController {
 	@ResponseBody
 	public Map<String, Object> queryDbsList(HttpServletRequest req,
 			HttpServletResponse resp) {
-
 		Map<String, Object> result = new HashMap<String, Object>();
 		SelectWithNoPageResponse<UserProdInstVo> response = null;
 		try {
+			String muiUrl = SystemConfigHandler.configMap.get("IPAAS-MUI.SERVICE.IP_PORT_SERVICE");
+			String prodId = String.valueOf(Constants.serviceType.DBS_CENTER);
 			SelectWithNoPageRequest<UserProdInstVo> selectWithNoPageRequest = new SelectWithNoPageRequest<UserProdInstVo>();
 			UserProdInstVo vo = new UserProdInstVo();
 			UserInfoVo userVo = UserUtil.getUserSession(req.getSession());
 			vo.setUserId(userVo.getUserId()); // 用户Id
-			String prodId = String.valueOf(Constants.serviceType.DBS_CENTER);
 			vo.setUserServiceId(prodId);
 			selectWithNoPageRequest.setSelectRequestVo(vo);
+			
 			response = atsConsoleDubboSv.selectUserProdInsts(selectWithNoPageRequest);
 			String resultCode = response.getResponseHeader().getResultCode();
 			List<UserProdInstVo> resultList = response.getResultList();
@@ -110,23 +109,19 @@ public class UserDbsConsoleController {
 					 userProdInstVo.setUserServParamMap(jsonMap);
 				}
 			}
-								
-	        String muiUrl = CacheUtils.getOptionByKey("IPAAS-MUI.SERVICE","IP_PORT_SERVICE");
+			
 			result.put("resultCode", resultCode);
 			result.put("resultMessage", response.getResponseHeader().getResultMessage());
 			result.put("resultList", resultList);
 			result.put("muiUrl", muiUrl);
-			
 		} catch (Exception e) {
 			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
 			result.put("resultMessage", "查询出现异常！");
 			logger.error(e);
-
 		}
 
 		return result;
 	}	
-	
 	
 	@RequestMapping(value = "/toModifyDbsServPwd")
 	public String toModifyDbsServPwd(HttpServletRequest req,HttpServletResponse resp) {
