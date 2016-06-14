@@ -48,7 +48,7 @@ public class ApplyAuditFilter implements Filter {
 		
 		//判断当前用户的邮箱，userid是否都在配置文件中，有一个不存在，就跳向没有权限页面
 		if(userVo !=null && !"".equals(userVo)){
-			if(userAccessList.indexOf(userVo.getUserEmail()) ==-1 || userAccessList.indexOf(userVo.getUserId()) ==-1){
+			if(userAccessList.indexOf(userVo.getUserEmail()) ==-1){
 				log.debug("当前用户无权------"+userVo.getUserEmail());
 				//跳转到错误页面
 				((HttpServletRequest)request).getRequestDispatcher("../jsp/apply/error.jsp").forward(request, response);
