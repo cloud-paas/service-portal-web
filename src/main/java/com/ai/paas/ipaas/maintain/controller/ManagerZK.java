@@ -15,13 +15,14 @@ import com.ai.paas.ipaas.maintain.model.UserIdModel;
 import com.ai.paas.ipaas.maintain.util.ConfigUtil;
 import com.ai.paas.ipaas.maintain.util.HttpClientUtil;
 import com.ai.paas.ipaas.maintain.util.HttpResponseUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.google.gson.Gson;
 
 @Controller
 @RequestMapping("/config/zk")
 public class ManagerZK {
 	
-    private final String url = ConfigUtil.getProperty("ipaas.rest.url");
+//    private final String url = ConfigUtil.getProperty("ipaas.rest.url");
     
     public void initUser(){
     }
@@ -43,6 +44,7 @@ public class ManagerZK {
     @RequestMapping("/insert")
     public void insert(HttpServletRequest request, HttpServletResponse response,@RequestBody CcsResourcePool param) {
          try{
+             String url = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
         	 String result = HttpClientUtil.sendPostRequest(url + "/ccs-component/maintain/insertZK", new Gson().toJson(param));
              HttpResponseUtil.sendResponse(result, response);
          }catch(Exception e){
@@ -50,26 +52,14 @@ public class ManagerZK {
          }
     }  
     
-    @RequestMapping("/initUser")
-    public void initUser(HttpServletRequest request, HttpServletResponse response,@RequestBody UserIdModel param) throws IOException {
-//    	String userInfo = ""; 
-    	try{
-//    		userInfo =  HttpRequestUtil.sendPost(
-//    				ConfigUtil.getProperty("ipaas.user.getUserID.rest.url"),
-// 					"userName="+param.getUserName());
-//         	 System.out.println("***********************"+userInfo);
-//             Gson gson = new Gson();
-//             UserIdModel userIdModel = gson.fromJson(userInfo, UserIdModel.class);
-//             if(StringUtil.isBlank(userIdModel.getUserId())){
-//            	 HttpResponseUtil.sendResponse("{\"resultCode\":\"999999\",\"resultMessage\":\"用户节点不存在\"}", response);
-//            	 return;
-//             }
-//             param.setUserName(userIdModel.getUserId());
-        	 String result = HttpClientUtil.sendPostRequest(url + "/ccs/manage/init", new Gson().toJson(param));
-             HttpResponseUtil.sendResponse(result, response);
-         }catch(Exception e){
-        	 HttpResponseUtil.sendResponse("{\"resultCode\":\"999999\",\"resultMessage\":\"用户不存在\"}", response);
-        	 //e.printStackTrace();
-         }
-    } 
+	@RequestMapping("/initUser")
+	public void initUser(HttpServletRequest request, HttpServletResponse response, @RequestBody UserIdModel param) throws IOException {
+		try {
+			String url = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
+			String result = HttpClientUtil.sendPostRequest(url + "/ccs/manage/init", new Gson().toJson(param));
+			HttpResponseUtil.sendResponse(result, response);
+		} catch (Exception e) {
+			HttpResponseUtil.sendResponse("{\"resultCode\":\"999999\",\"resultMessage\":\"用户不存在\"}", response);
+		}
+	}
 }
