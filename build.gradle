@@ -94,7 +94,7 @@ dependencies{
 	compile 'org.jasypt:jasypt:1.9.2'
 	compile 'org.jasypt:jasypt-spring31:1.9.2'
 	
-	compile 'com.ai:ipaas-sdk:0.2.1'
+	//compile 'com.ai:ipaas-sdk:0.2.1'
 	compile 'com.ai:ipaas-idps:0.1-SNAPSHOT'
 	
 	compile "org.mybatis:mybatis:3.1.1"
