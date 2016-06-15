@@ -358,9 +358,10 @@ configManager.prototype.getallcheckpath = function () {
 configManager.prototype.uploadFile = function () {
     this.printuploadfile();
     $("#uploadFileBtn").click(function () {
+    	var userId = $("#userId").val();
         $.ajaxFileUpload
         ({
-                url: _base + '/config/custom/upload/' + 1,
+                url: _base + '/config/custom/upload/' + userId,
                 secureuri: false,
                 fileElementId: 'uploadFile',
                 success: function (data) {

@@ -87,7 +87,7 @@
 			      			 	<ul>该导出功能将导出该用户下的所有配置信息！</ul>
 			      			 	<ul>
 			      			 		<button type="button" style="margin-left:400px" class="btn btn-default" data-dismiss="modal" id = "cancle_back">取消</button>
-			      			 		<a href="${_base }/config/download" class="btn btn-primary" onclick="configManager.download()">确认</a>
+			      			 		<a href="${_base }/config/download?serviceId=${serviceId}&userId=${userId}" class="btn btn-primary" onclick="configManager.download()">确认</a>
 			      			 	</ul>								
 			  				</div> 
 						</div>
