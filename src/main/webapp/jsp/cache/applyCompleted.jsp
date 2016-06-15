@@ -180,12 +180,12 @@
 		 
 		 <c:if test="${prod=='DBS'||prod=='TXS'||prod=='ATS'}">
 		 	<li>预计 ${dateStr } 完成处理，审核通过后将通过邮箱或<a style="color: #1699dc" href="${_base}/apply/purchaseRecords?prodType=2&currentPage=1">自助查询</a></li>
-		 	<li>如有问题请联系张振宇</li>
+		 	<li>如有问题请联系系统管理员</li>
 		 </c:if>
 		 
 		 <c:if test="${prod=='CCS'||prod=='MCS'||prod=='MDS'||prod=='DSS'}">
 		 	<li>预计 ${dateStr } 完成处理，审核通过后将通过邮箱或<a style="color: #1699dc" href="${_base}/apply/purchaseRecords?prodType=3&currentPage=1">自助查询</a></li>
-		 	<li>如有问题请联系张振宇</li>
+		 	<li>如有问题请联系系统管理员</li>
 		 </c:if>
 		 
 
