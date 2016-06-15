@@ -6,13 +6,13 @@
 
 	<bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <!-- 服务器 -->
-        <property name="host" value="mail.asiainfo.com" />
+        <property name="host" value="smtp.126.com" />
         <!-- 端口号 -->
         <property name="port" value="25" />
         <!-- 用户名 -->
-        <property name="username" value="ai-cloud@asiainfo.com" />
+        <property name="username" value="ai_cloud_001@126.com" />
         <!--  密码   -->
-        <property name="password" value="Paas0309_" />
+        <property name="password" value="yuanman123" />
         <!-- SMTP服务器验证 -->
         <property name="javaMailProperties">
             <props>
@@ -23,7 +23,7 @@
     </bean>
     
     <bean id="simpleMailMessage" class="org.springframework.mail.SimpleMailMessage">
-        <property name="from" value="ai-cloud@asiainfo.com" />
+        <property name="from" value="ai_cloud_001@126.com" />
     </bean>
     
     <bean id="emailSrv" class="com.ai.paas.ipaas.email.EmailServiceImpl">
