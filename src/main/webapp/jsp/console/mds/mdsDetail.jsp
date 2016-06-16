@@ -37,7 +37,7 @@
 			 <span style="color:rgb(22,154,219)">${userProdInstVo.userServParamMap.topicPartitions} </span>
 		</div> 
      	<div class="Open_cache">  
-		 <form  id="searchForm">
+		 <form  id="searchForm" onsubmit="return false;">
 	       <div class="xia_center">
 	       		<div class="xia_center_left">
 	       			
@@ -211,7 +211,7 @@
 			           <p onclick="search_message();" ><A href="javascript:void(0)"><img id="search_btn" src="${_base }/resources/images/wuli_3.png"></A></p>
 			          
 			           </li>
-			           <li id="search_clean" class="gunb"><A><img src="${_base }/resources/images/wuli_4.png" style="cursor:pointer;"></A></li>
+			           <li id="search_clean" class="gunb"><A><img src="${_base }/resources/images/wuli_4.png" width="20px" height="20px" style="cursor:pointer;margin-top:7px"></A></li>
 			           </ul>
 			            </div>
 			          <div class="xia_center_right_shuzi xx_nrie">消息内容：</div>
@@ -235,7 +235,45 @@
 <script type="text/javascript"> 
 
 function search_message(){
-	
+	var offset = parseInt($("#offset").val())-1;
+	var avalOffset=  parseInt($("#avalOffset").val());
+	var avalOffest1=parseInt($("#avalOffset").val());
+	var totalOffset = parseInt($("#totalOffset").val())-1;
+	var reg = new RegExp("^[0-9]*$"); 
+	if(offset == "查询分区消息内容"){
+		Modal.alert({
+			msg: "请输入偏移量"
+		}) 
+		return;
+	}
+	if(!reg.test(offset)){  
+		Modal.alert({
+			msg:"请输入大于0的数字!"
+		})
+        return;
+    }  
+
+	if(offset<avalOffset || offset >totalOffset){
+		Modal.alert({
+			msg: "请输入有效范围内的值！"
+		})
+		return ; 
+	}
+	var param =$("#searchForm").serialize();
+	var url ="searchMessage";
+	$.post(url,param,function(data){
+		if(data.resultCode=="000000"){
+			 
+			$("#topic_msg").val(data.resultMessage);
+			
+		}else{
+			Modal.alert({
+				msg: "查询失败"
+			})
+			 
+		}
+		
+	});
 	
 }
 $(function(){
@@ -257,49 +295,16 @@ $(function(){
 	});
 	
 	$("#search_btn").click(function(){
-		var offset = parseInt($("#offset").val())-1;
-		var avalOffset=  parseInt($("#avalOffset").val());
-		var avalOffest1=parseInt($("#avalOffset").val());
-		var totalOffset = parseInt($("#totalOffset").val())-1;
-		var reg = new RegExp("^[0-9]*$"); 
-		if(offset == "查询分区消息内容"){
-			Modal.alert({
-				msg: "请输入偏移量"
-			}) 
-			return;
-		}
-		if(!reg.test(offset)){  
-			Modal.alert({
-				msg:"请输入大于0的数字!"
-			})
-	        return;
-	    }  
-
-		if(offset<avalOffset || offset >totalOffset){
-			Modal.alert({
-				msg: "请输入有效范围内的值！"
-			})
-			return ; 
-		}
-		var param =$("#searchForm").serialize();
-		var url ="searchMessage";
-		$.post(url,param,function(data){
-			if(data.resultCode=="000000"){
-				 
-				$("#topic_msg").val(data.resultMessage);
-				
-			}else{
-				Modal.alert({
-					msg: "查询失败"
-				})
-				 
-			}
-			
-		});
-		
 		
 	});
 	
+	document.onkeydown=function(event){
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if(e && e.keyCode==13){ // enter 键
+        	search_message();
+        }
+    }; 
+    
 	$("#search_clean").click(function(){
 		
 		$("#topic_msg").val("");

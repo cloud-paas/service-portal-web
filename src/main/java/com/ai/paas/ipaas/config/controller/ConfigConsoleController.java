@@ -291,7 +291,9 @@ public class ConfigConsoleController {
 	public String customUpload(HttpSession session, HttpServletRequest request,@RequestParam MultipartFile uploadFile,@PathVariable String userId) throws Exception {
 //		String userId = (String) session.getAttribute("userId");
 //		serviceId = (String) session.getAttribute("serviceId");
-//		System.out.println("yinzf------userid---:"+userId);
+		String serviceId = userId.split(",")[1];
+		userId = userId.split(",")[0];
+		logger.info("yinzf------serviceId---:"+serviceId);
 		logger.info("yinzf------userid---:"+userId);
 		String result = "";
 		try {
@@ -309,7 +311,7 @@ public class ConfigConsoleController {
 			    Object value = entry.getValue();
 			    ConfigRequestParam param= new ConfigRequestParam();
 			    param.setUserId(userId);
-			    param.setServiceId("1");
+			    param.setServiceId(serviceId);
 			    param.setData((String)value);
 			    param.setPath(formatPath((String)key));
 			    paramList.add(param);
