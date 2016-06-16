@@ -174,9 +174,11 @@ public class ConfigConsoleController {
 			String iPaasDubboUrl = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
 			String ccsGetUrl = SystemConfigHandler.configMap.get("CCS_CUST.GET.url");
 			String address = iPaasDubboUrl + ccsGetUrl;
-			System.out.println("address---yinzf:"+address);
+			logger.info("address---yinzf:"+address);
+//			System.out.println("address---yinzf:"+address);
 			result = HttpClientUtil.sendPostRequest(address, new Gson().toJson(param));
-			System.out.println("result---yinzf:"+result);
+//			System.out.println("result---yinzf:"+result);
+			logger.info("result---yinzf:"+result);
 		} catch (IOException | URISyntaxException  e) {
 			e.printStackTrace();
 		}
@@ -214,12 +216,14 @@ public class ConfigConsoleController {
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping(value = "/download")
-	public void downLoadFile(HttpSession session,HttpServletResponse res) throws Exception {
+	public void downLoadFile(HttpServletRequest req,HttpServletResponse res) throws Exception {
 		Properties properties = new Properties();
 		File file = new File("ccsInfomation.properties");
 		createFile(file);
-		String userId = (String) session.getAttribute("userId");
-		String serviceId = (String) session.getAttribute("serviceId");
+//		String userId = (String) session.getAttribute("userId");
+//		String serviceId = (String) session.getAttribute("serviceId");
+		String userId = req.getParameter("userId");
+		String serviceId = req.getParameter("serviceId");
 		ConfigRequestParam param = new ConfigRequestParam();
 		param.setPath("/");
 		param.setServiceId(serviceId);
@@ -283,10 +287,14 @@ public class ConfigConsoleController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@ResponseBody
-	@RequestMapping(value = "/custom/upload/{serviceId}")
-	public String customUpload(HttpSession session, HttpServletRequest request,@RequestParam MultipartFile uploadFile,@PathVariable String serviceId) throws Exception {
-		String userId = (String) session.getAttribute("userId");
-		serviceId = (String) session.getAttribute("serviceId");
+	@RequestMapping(value = "/custom/upload/{userId}")
+	public String customUpload(HttpSession session, HttpServletRequest request,@RequestParam MultipartFile uploadFile,@PathVariable String userId) throws Exception {
+//		String userId = (String) session.getAttribute("userId");
+//		serviceId = (String) session.getAttribute("serviceId");
+		String serviceId = userId.split(",")[1];
+		userId = userId.split(",")[0];
+		logger.info("yinzf------serviceId---:"+serviceId);
+		logger.info("yinzf------userid---:"+userId);
 		String result = "";
 		try {
 			String fileName = uploadFile.getOriginalFilename();

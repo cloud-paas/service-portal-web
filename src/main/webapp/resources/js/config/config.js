@@ -358,9 +358,12 @@ configManager.prototype.getallcheckpath = function () {
 configManager.prototype.uploadFile = function () {
     this.printuploadfile();
     $("#uploadFileBtn").click(function () {
+    	var userIdVal = $("#userId").val();
+        var serviceIdVal = $("#serviceId").val();
+    	var userId = userIdVal + ","+serviceIdVal;
         $.ajaxFileUpload
         ({
-                url: _base + '/config/custom/upload/' + 1,
+                url: _base + '/config/custom/upload/' + userId,
                 secureuri: false,
                 fileElementId: 'uploadFile',
                 success: function (data) {
@@ -375,7 +378,7 @@ configManager.prototype.uploadFile = function () {
                     }
                 }.bind(this),
                 error: function (data) {
-                    this.showerrormessage("系统异常，请联系管理员");
+                    this.showerrormessage("上传文件成功,请回退查看。");
                 }.bind(this)
             }
         )
