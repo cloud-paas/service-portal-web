@@ -179,6 +179,8 @@ public class UserMdsConsoleController {
 		String data=JSonUtil.toJSon(params);
 		
 		String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
+		logger.info("============= web portalDubboUrl==========="+portalDubboUrl);
+		logger.info("============= web params.data==========="+data);
 		String result = HttpClientUtil.sendPostRequest(portalDubboUrl+"/mds/console/resendMessage", data);
 		
 		JSONObject object=new JSONObject(result);
