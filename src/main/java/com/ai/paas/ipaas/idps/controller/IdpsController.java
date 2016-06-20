@@ -92,9 +92,9 @@ public class IdpsController {
 		String prodId = Constants.serviceType.IDPS_CENTER + "";
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		if (!StringUtil.isBlank(cpuNum) || !StringUtil.isBlank(memSize)
-				|| !StringUtil.isBlank(nodeNum) || !StringUtil.isBlank(dssServicePwd)
-				|| !StringUtil.isBlank(dssServiceId) || !StringUtil.isBlank(serviceName)) {
+		if (StringUtil.isBlank(cpuNum) || StringUtil.isBlank(memSize)
+				|| StringUtil.isBlank(nodeNum) || StringUtil.isBlank(dssServicePwd)
+				|| StringUtil.isBlank(dssServiceId) || StringUtil.isBlank(serviceName)) {
 			resultMap.put("resultCode", "10001");
 			resultMap.put("resultMessage", "系统获取参数不全,请重新输入！");
 			return resultMap;
