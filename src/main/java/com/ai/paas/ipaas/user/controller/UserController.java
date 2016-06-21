@@ -336,7 +336,7 @@ public class UserController {
 		String sdkList = request.getParameter("sdkList");
 		String[] sdkListArr = sdkList.split(",");
 		
-		File file = new File("build_base.txt");
+		File file = new File("/gbuild/build_base.txt");
 		BufferedReader reader = null;
 		StringBuffer sb = new StringBuffer();
 		String line = null;
@@ -366,7 +366,7 @@ public class UserController {
 			
 			//重写build文件
 			 BufferedWriter writer = new BufferedWriter(new FileWriter(
-					 new File("D:\\eclipse\\service-sdk-fat\\build.gradle")));
+					 new File("/gbuild/build.gradle")));
 			 writer.write(sb.toString());
 			 writer.close();
 			 
