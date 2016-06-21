@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.PaasException;
+import com.ai.paas.ipaas.checkservice.ServiceCheck;
 import com.ai.paas.ipaas.config.ftp.SFTPConfig;
 import com.ai.paas.ipaas.config.ftp.SFTPConstants;
 import com.ai.paas.ipaas.config.ftp.SFTPException;
@@ -72,7 +73,8 @@ public class UserController {
 	
 	private static final String SECURITY_KEY = "7331c9b6b1a1d521363f7bca8acb095f";// md5
 	private static String directory = SFTPConfig.getString("SFTP.REQ.DIRECTORY");
-	
+	@SuppressWarnings("rawtypes")
+	static Class config_class = UserController.class;
 	@Reference
 	private IUser iUser;
 	
@@ -336,13 +338,13 @@ public class UserController {
 		String sdkList = request.getParameter("sdkList");
 		String[] sdkListArr = sdkList.split(",");
 		
-		File file = new File("/gbuild/build_base.txt");
 		BufferedReader reader = null;
 		StringBuffer sb = new StringBuffer();
 		String line = null;
 		boolean ctsFlg;
 		try {
 			//读取build文件
+			File file = new File(config_class.getResource("/gbuild/build_base.txt").toURI());
 			reader = new BufferedReader(new FileReader(file));
 			while ((line = reader.readLine())!=null) {
 				if(line.trim().startsWith("runtime")) {
@@ -366,7 +368,7 @@ public class UserController {
 			
 			//重写build文件
 			 BufferedWriter writer = new BufferedWriter(new FileWriter(
-					 new File("/gbuild/build.gradle")));
+					 new File(config_class.getResource("/gbuild/build.gradle").toURI())));
 			 writer.write(sb.toString());
 			 writer.close();
 			 
