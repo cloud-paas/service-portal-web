@@ -1,12 +1,20 @@
 package com.ai.paas.ipaas.user.controller;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -319,10 +327,65 @@ public class UserController {
 		}
 	}
 
+	//动态编辑build文件
+	@RequestMapping(value = "/tosdkLoading")
+	@ResponseBody
+	public Map<String, Object> tosdkLoading(HttpServletRequest request,
+			HttpServletResponse response) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String sdkList = request.getParameter("sdkList");
+		String[] sdkListArr = sdkList.split(",");
+		
+		File file = new File("build_base.txt");
+		BufferedReader reader = null;
+		StringBuffer sb = new StringBuffer();
+		String line = null;
+		boolean ctsFlg;
+		try {
+			//读取build文件
+			reader = new BufferedReader(new FileReader(file));
+			while ((line = reader.readLine())!=null) {
+				if(line.trim().startsWith("runtime")) {
+					ctsFlg = false;
+					for (String sdk : sdkListArr) {
+						if (line.contains(sdk)) {
+							ctsFlg=true;
+							break;
+						}
+					}
+					if (ctsFlg == true){
+						sb.append(line);
+						sb.append("\r\n");
+					}
+					continue;
+				}
+				sb.append(line);
+				sb.append("\r\n");
+			}
+			reader.close();
+			
+			//重写build文件
+			 BufferedWriter writer = new BufferedWriter(new FileWriter(
+					 new File("D:\\eclipse\\service-sdk-fat\\build.gradle")));
+			 writer.write(sb.toString());
+			 writer.close();
+			 
+//			 String cmd = "cmd /c cd D:\\eclipse\\service-sdk-fat\\ && gradle build -x test";
+//			 Runtime.getRuntime().exec(cmd); 
+			 result.put("resultCode", "000000");
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			result.put("resultCode", "999999");
+			e.printStackTrace();			
+		}
+		return result;
+	}
+	
+
 	@RequestMapping(value = "/toDownloadPage")
 	public String toDownloadPage(HttpServletRequest request,
-			HttpServletResponse response) {
-
+			HttpServletResponse response) {		
 		SFTPUtils sftp = new SFTPUtils();
 		String type = request.getParameter("type");
 		type = type == null ? "1" : type;
