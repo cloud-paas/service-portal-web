@@ -371,9 +371,10 @@ public class UserController {
 					 new File(config_class.getResource("/gbuild/build.gradle").toURI())));
 			 writer.write(sb.toString());
 			 writer.close();
-			 
-//			 String cmd = "cmd /c cd D:\\eclipse\\service-sdk-fat\\ && gradle build -x test";
-//			 Runtime.getRuntime().exec(cmd); 
+
+			 String cmd = "nohup /gbuild/gradlebuild.sh &";
+			 Runtime.getRuntime().exec(cmd);
+			  
 			 result.put("resultCode", "000000");
 		
 		} catch (Exception e) {
