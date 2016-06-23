@@ -1,6 +1,6 @@
 #!/bin/bash
 
-\cp rf /aifs01/users/tstusr11/applications/TD1_TST-S1/service-portal-web/WEB-INF/classes/gbuild/build.gradle /aifs01/users/tstusr11/applications/service-sdk-fat
+cp /aifs01/users/tstusr11/applications/TD1_TST-S1/service-portal-web/WEB-INF/classes/gbuild/build.gradle /aifs01/users/tstusr11/applications/service-sdk-fat
 
 echo "gradle build starting!"
 cd /aifs01/users/tstusr11/applications/service-sdk-fat && gradle publish
