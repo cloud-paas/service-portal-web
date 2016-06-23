@@ -378,7 +378,6 @@ public class UserController {
 //			 Runtime.getRuntime().exec(cmd);
 			 
 			 String shpath=config_class.getResource("/gbuild/gradlebuild.sh").getPath(); 
-			 shpath = shpath.replaceFirst("/", "");
 			 System.out.println("shpath is: "+ shpath);
 			 String cmdstring = "chmod 777 " + shpath;
 			 System.out.println("修改权限的cmd为： "+cmdstring);
