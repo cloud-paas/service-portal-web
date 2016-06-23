@@ -10,8 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -372,9 +374,26 @@ public class UserController {
 			 writer.write(sb.toString());
 			 writer.close();
 
-			 String cmd = "nohup /gbuild/gradlebuild.sh &";
-			 Runtime.getRuntime().exec(cmd);
-			  
+//			 String cmd = "nohup /gbuild/gradlebuild.sh &";
+//			 Runtime.getRuntime().exec(cmd);
+			 
+			 String shpath=config_class.getResource("/gbuild/gradlebuild.sh").getPath(); 
+			 shpath = shpath.replaceFirst("/", "");
+			 System.out.println("shpath is: "+ shpath);
+			 String cmdstring = "chmod 777 " + shpath;
+			 System.out.println("修改权限的cmd为： "+cmdstring);
+			 Process proc = Runtime.getRuntime().exec(cmdstring);
+			 proc.waitFor(); //阻塞，直到上述命令执行完
+			 cmdstring = "bash "+ shpath; //这里也可以是ksh等
+			 System.out.println("执行命令的cmd为： "+cmdstring);
+			 proc = Runtime.getRuntime().exec(cmdstring);
+			 // 注意下面的操作
+			 String ls;
+			 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			 while ( (ls=bufferedReader.readLine()) != null);
+			 bufferedReader.close();
+			 proc.waitFor();
+
 			 result.put("resultCode", "000000");
 		
 		} catch (Exception e) {
