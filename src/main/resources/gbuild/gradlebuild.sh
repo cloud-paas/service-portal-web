@@ -1,5 +1,10 @@
 #!/bin/bash
+echo "gradlebuild exec starting !!!"
+export JAVA_HOME=/opt/freeware/jdk1.7.0_71
+export PATH=$JAVA_HOME/bin:$PATH
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 
+echo "cope build.gradle file !!!"
 cp /aifs01/users/tstusr11/applications/TD1_TST-S1/service-portal-web/WEB-INF/classes/gbuild/build.gradle /aifs01/users/tstusr11/applications/service-sdk-fat
 
 echo "gradle build starting!"

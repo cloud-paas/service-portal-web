@@ -383,7 +383,7 @@ public class UserController {
 			 System.out.println("修改权限的cmd为： "+cmdstring);
 			 Process proc = Runtime.getRuntime().exec(cmdstring);
 			 proc.waitFor(); //阻塞，直到上述命令执行完
-			 cmdstring = "bash "+ shpath; //这里也可以是ksh等
+			 cmdstring = "sh "+ shpath; //这里也可以是ksh等
 			 System.out.println("执行命令的cmd为： "+cmdstring);
 			 proc = Runtime.getRuntime().exec(cmdstring);
 			 // 注意下面的操作
