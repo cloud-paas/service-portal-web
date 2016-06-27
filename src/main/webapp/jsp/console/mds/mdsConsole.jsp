@@ -68,6 +68,61 @@
 		});
 	}
 	
+	//订阅mds服务
+	function subscribeService(userServIpaasId,topicEnName)
+	{
+	    var subscribeName=prompt("请输入消费者名称");
+	    if(subscribeName)
+	    {
+	    	if("consumer" == subscribeName){
+	    		alert("订阅者不能以consumer命名");
+	    		return false;
+	    	}
+	        //此ajax用于验证此 本消息队列中输入的订阅者是否存在
+	        $.ajax({
+				type : "POST",
+				url : "${_base}/mdsConsole/getSubscribe",
+				dataType : "json",
+				data:"subscribeName="+subscribeName+"&topicEnName="+ topicEnName,
+				success : function(msg) {
+					if (msg.resultCode == '111111') {
+						alert("此订阅者已经存在，请重新输入!");
+					} else {
+						//alert("此订阅者可以使用!");
+						//创建订阅者---------1.向devrdb71.mds_user_subscribe表插入一条记录；2.向zk中插入一个节点 （mds-消息队列下）
+						createSubscribe(userServIpaasId,topicEnName,subscribeName);
+					}
+				},
+				error : function() {
+					alert("校验订阅者是否存在失败 !");
+				}
+			});
+			
+			
+	    }
+	}
+	
+	//创建消息订阅者
+	function createSubscribe(userServIpaasId,topicEnName,subscribeName){
+		var userId= "${userInfoVO.userId}";
+		$.ajax({
+			type : "POST",
+			url : "${_base}/mdsConsole/createSubscribe",
+			dataType : "json",
+			data:"userId="+userId+"&subscribeName="+subscribeName+"&userServIpaasId="+ userServIpaasId+"&topicEnName="+ topicEnName,
+			success : function(msg) {
+				if (msg.resultCode == '000000') {
+					alert("恭喜，MDS服务 "+topicEnName +" 订阅成功 !");
+				} else {
+					alert("MDS服务 "+topicEnName +" 订阅失败 !!!");
+				}
+			},
+			error : function() {
+				alert("MDS服务 "+topicEnName +" 订阅失败 !");
+			}
+		});
+	}
+	
 </script>
   
 </head> 
@@ -110,9 +165,10 @@
 								<td>${prod.userProdByname }</td>
 								<td>${prod.userServParamMap.topicEnName } </td>
 								<td>${prod.userServParamMap.topicPartitions }</td>
-								<td><a href="queryMdsInstById?userServId=${prod.userServId }">查看</a><br><br>
+								<td><a href="queryMdsInstById?userServId=${prod.userServId }&currentConsumer=consumer">查看</a><br><br>
 								<a id="cancle_back" onclick="cancle('${prod.userServId }');" href="javascript:void(0)">注销</a><br><br>
-								<a id="check_svc" onclick="checkService('${prod.userServIpaasId }','${prod.userServParamMap.topicEnName }');" href="javascript:void(0)">服务验证</a></td>
+								<a id="check_svc" onclick="checkService('${prod.userServIpaasId }','${prod.userServParamMap.topicEnName }');" href="javascript:void(0)">服务验证</a><br><br>
+								<a id="subscribe" onclick="subscribeService('${prod.userServIpaasId }','${prod.userServParamMap.topicEnName }');" href="javascript:void(0)">订阅</a></td>
 								
 							</tr>
 						</c:forEach>					

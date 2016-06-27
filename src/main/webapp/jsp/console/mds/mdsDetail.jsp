@@ -36,6 +36,24 @@
 			 <span>分片数：</span>
 			 <span style="color:rgb(22,154,219)">${userProdInstVo.userServParamMap.topicPartitions} </span>
 		</div> 
+		<div>
+		   <p>
+		   	<a href="queryMdsInstById?userServId=${userProdInstVo.userServId }&subscribeName=consumer&currentConsumer=consumer">
+		   		<button class="again-send" type="button" style="margin: 10 10px 0 0px;<c:if test= "${currentConsumer == 'consumer'}">color: red;font-weight:bold;</c:if>">
+		   			consumer
+		   		</button>	
+		   	</a>
+		　　 <c:forEach var="varBase"  items="${listSupPath}">
+				<c:if  test  =  "${varBase != 'consumer'}">
+					<a href="queryMdsInstById?userServId=${userProdInstVo.userServId }&subscribeName=${varBase}&currentConsumer=${varBase}" <c:if test= "${currentConsumer == varBase}">style="color: red;"</c:if>>
+						<button class="again-send" type="button" style="margin: 10 10px 0 -28px;<c:if test= "${currentConsumer == varBase}">color: red;font-weight:bold;</c:if>">
+							${varBase}
+						</button>	
+					</a>
+				</c:if>
+		 　　</c:forEach>
+		 
+		</div>
      	<div class="Open_cache">  
 		 <form  id="searchForm" onsubmit="return false;">
 	       <div class="xia_center">

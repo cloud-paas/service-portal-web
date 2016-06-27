@@ -27,7 +27,9 @@ import com.ai.paas.ipaas.user.dubbo.interfaces.IMdsConsoleDubboSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IaasConsoleDubboSv;
 import com.ai.paas.ipaas.user.dubbo.vo.MdsSearchMessageVo;
+import com.ai.paas.ipaas.user.dubbo.vo.MdsUserSubscribeVo;
 import com.ai.paas.ipaas.user.dubbo.vo.ResponseHeader;
+import com.ai.paas.ipaas.user.dubbo.vo.ResponseSubPathList;
 import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
@@ -81,15 +83,20 @@ public class UserMdsConsoleController {
 
 		SelectWithNoPageResponse<UserProdInstVo> response = null;
 		String userServId = req.getParameter("userServId"); 
-
+		String subscribeName = req.getParameter("subscribeName");
+		String currentConsumer = req.getParameter("currentConsumer");
+		List<String> listSupPath =null;
+		ResponseSubPathList listSupPathResponse = null;
 		try {
 			SelectWithNoPageRequest<UserProdInstVo> selectWithNoPageRequest = new SelectWithNoPageRequest<UserProdInstVo>();
 			UserProdInstVo vo = new UserProdInstVo();
 			UserInfoVo userVo = UserUtil.getUserSession(req.getSession());
 			vo.setUserId(userVo.getUserId()); // 用户Id
 			vo.setUserServId(Long.parseLong(userServId));
+			vo.setSubscribeName(subscribeName);
 			selectWithNoPageRequest.setSelectRequestVo(vo);
 			response = mdsConsoleDubboSv.selectMdsById(selectWithNoPageRequest);		
+			listSupPathResponse = mdsConsoleDubboSv.getListSubPath(selectWithNoPageRequest);	
 			if(Constants.OPERATE_CODE_SUCCESS.equals(response.getResponseHeader().getResultCode())){
 				UserProdInstVo prodVo = response.getResultList().get(0);
 				String str = prodVo.getUserServParam();
@@ -99,12 +106,16 @@ public class UserMdsConsoleController {
 				prodVo.getMdsUserPageVo().getTopicUsage();
 				req.setAttribute("userProdInstVo",prodVo);	
 			}	
+			if(Constants.OPERATE_CODE_SUCCESS.equals(listSupPathResponse.getResultCode())){
+				listSupPath =listSupPathResponse.getListSubPath();
+				req.setAttribute("listSupPath",listSupPath);	
+			}	
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 
 		}
-
+		req.setAttribute("currentConsumer", currentConsumer);
 		return "console/mds/mdsDetail";
 	}
 	
@@ -165,6 +176,61 @@ public class UserMdsConsoleController {
 		
 		return result;
 	}
+	
+	@RequestMapping(value = "/createSubscribe",produces = {"application/json;charset=UTF-8"})
+	@ResponseBody
+	public Map<String, Object> createSubscribe(HttpServletRequest req,
+			HttpServletResponse resp) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String userServIpaasId=req.getParameter("userServIpaasId");		//订阅服务的服务paasid
+		String userId = req.getParameter("userId");			
+		String subscribeName = req.getParameter("subscribeName"); //输入的订阅者
+		String topicEnName = req.getParameter("topicEnName");	//订阅服务的队列名称
+		ResponseHeader responseHeader = new ResponseHeader();
+		MdsUserSubscribeVo vo = new MdsUserSubscribeVo();
+		vo.setUserId(userId);
+		vo.setSubscribeName(subscribeName);
+		vo.setUserServIpaasId(userServIpaasId);
+		vo.setTopicEnName(topicEnName);
+		try {
+			// 注销
+			responseHeader = mdsConsoleDubboSv.createSubscribe(vo);
+			result.put("resultCode", responseHeader.getResultCode());
+			result.put("resultMessage", responseHeader.getResultMessage());
+		} catch (Exception e) {
+			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
+			result.put("resultMessage", "注销异常！");
+			logger.error(e.getMessage(),e);
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping(value = "/getSubscribe",produces = {"application/json;charset=UTF-8"})
+	@ResponseBody
+	public Map<String, Object> getSubscribe(HttpServletRequest req,
+			HttpServletResponse resp) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String subscribeName = req.getParameter("subscribeName"); //输入的订阅者
+		String topicEnName = req.getParameter("topicEnName");	//订阅服务的队列名称
+		ResponseHeader responseHeader = new ResponseHeader();
+		MdsUserSubscribeVo vo = new MdsUserSubscribeVo();
+		vo.setSubscribeName(subscribeName);
+		vo.setTopicEnName(topicEnName);
+		try {
+			// 验证是否存在
+			responseHeader = mdsConsoleDubboSv.getSubscribe(vo);
+			result.put("resultCode", responseHeader.getResultCode());
+			result.put("resultMessage", responseHeader.getResultMessage());
+		} catch (Exception e) {
+			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
+			result.put("resultMessage", "注销异常！");
+			logger.error(e.getMessage(),e);
+		}
+		
+		return result;
+	}
+	
 	
 	@RequestMapping(value="/resendMessage",method={RequestMethod.POST})
 	public @ResponseBody Map<String, String> resendMessage(HttpServletRequest request,HttpServletResponse response) throws PaasException, IOException, URISyntaxException{
