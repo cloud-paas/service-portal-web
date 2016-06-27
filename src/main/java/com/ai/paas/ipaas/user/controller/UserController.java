@@ -386,12 +386,12 @@ public class UserController {
 			 cmdstring = "sh "+ shpath; //这里也可以是ksh等
 			 System.out.println("执行命令的cmd为： "+cmdstring);
 			 proc = Runtime.getRuntime().exec(cmdstring);
+			 proc.waitFor();
 			 // 注意下面的操作
 			 String ls;
 			 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 			 while ( (ls=bufferedReader.readLine()) != null);
-			 bufferedReader.close();
-			 proc.waitFor();
+			 bufferedReader.close();			 
 
 			 result.put("resultCode", "000000");
 		
