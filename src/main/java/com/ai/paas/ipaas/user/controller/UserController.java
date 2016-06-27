@@ -1,12 +1,22 @@
 package com.ai.paas.ipaas.user.controller;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.PaasException;
+import com.ai.paas.ipaas.checkservice.ServiceCheck;
 import com.ai.paas.ipaas.config.ftp.SFTPConfig;
 import com.ai.paas.ipaas.config.ftp.SFTPConstants;
 import com.ai.paas.ipaas.config.ftp.SFTPException;
@@ -64,7 +75,8 @@ public class UserController {
 	
 	private static final String SECURITY_KEY = "7331c9b6b1a1d521363f7bca8acb095f";// md5
 	private static String directory = SFTPConfig.getString("SFTP.REQ.DIRECTORY");
-	
+	@SuppressWarnings("rawtypes")
+	static Class config_class = UserController.class;
 	@Reference
 	private IUser iUser;
 	
@@ -319,10 +331,82 @@ public class UserController {
 		}
 	}
 
+	//动态编辑build文件
+	@RequestMapping(value = "/tosdkLoading")
+	@ResponseBody
+	public Map<String, Object> tosdkLoading(HttpServletRequest request,
+			HttpServletResponse response) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		String sdkList = request.getParameter("sdkList");
+		String[] sdkListArr = sdkList.split(",");
+		
+		BufferedReader reader = null;
+		StringBuffer sb = new StringBuffer();
+		String line = null;
+		boolean ctsFlg;
+		try {
+			//读取build文件
+			File file = new File(config_class.getResource("/gbuild/build_base.txt").toURI());
+			reader = new BufferedReader(new FileReader(file));
+			while ((line = reader.readLine())!=null) {
+				if(line.trim().startsWith("runtime")) {
+					ctsFlg = false;
+					for (String sdk : sdkListArr) {
+						if (line.contains(sdk)) {
+							ctsFlg=true;
+							break;
+						}
+					}
+					if (ctsFlg == true){
+						sb.append(line);
+						sb.append("\r\n");
+					}
+					continue;
+				}
+				sb.append(line);
+				sb.append("\r\n");
+			}
+			reader.close();
+			
+			//重写build文件
+			 BufferedWriter writer = new BufferedWriter(new FileWriter(
+					 new File(config_class.getResource("/gbuild/build.gradle").toURI())));
+			 writer.write(sb.toString());
+			 writer.close();
+
+//			 String cmd = "nohup /gbuild/gradlebuild.sh &";
+//			 Runtime.getRuntime().exec(cmd);
+			 
+			 String shpath=config_class.getResource("/gbuild/gradlebuild.sh").getPath(); 
+			 System.out.println("shpath is: "+ shpath);
+			 String cmdstring = "chmod 777 " + shpath;
+			 System.out.println("修改权限的cmd为： "+cmdstring);
+			 Process proc = Runtime.getRuntime().exec(cmdstring);
+			 proc.waitFor(); //阻塞，直到上述命令执行完
+			 cmdstring = "sh "+ shpath; //这里也可以是ksh等
+			 System.out.println("执行命令的cmd为： "+cmdstring);
+			 proc = Runtime.getRuntime().exec(cmdstring);
+			 proc.waitFor();
+			 // 注意下面的操作
+			 String ls;
+			 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			 while ( (ls=bufferedReader.readLine()) != null);
+			 bufferedReader.close();			 
+
+			 result.put("resultCode", "000000");
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			result.put("resultCode", "999999");
+			e.printStackTrace();			
+		}
+		return result;
+	}
+	
+
 	@RequestMapping(value = "/toDownloadPage")
 	public String toDownloadPage(HttpServletRequest request,
-			HttpServletResponse response) {
-
+			HttpServletResponse response) {		
 		SFTPUtils sftp = new SFTPUtils();
 		String type = request.getParameter("type");
 		type = type == null ? "1" : type;
