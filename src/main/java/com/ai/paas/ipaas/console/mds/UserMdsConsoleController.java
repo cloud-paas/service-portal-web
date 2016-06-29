@@ -93,7 +93,9 @@ public class UserMdsConsoleController {
 			UserInfoVo userVo = UserUtil.getUserSession(req.getSession());
 			vo.setUserId(userVo.getUserId()); // 用户Id
 			vo.setUserServId(Long.parseLong(userServId));
-			vo.setSubscribeName(subscribeName);
+			Map<String , String> subscribeNameMap = new HashMap<String,String>();
+			subscribeNameMap.put("subscribeName", subscribeName);
+			vo.setUserServParamMap(subscribeNameMap);
 			selectWithNoPageRequest.setSelectRequestVo(vo);
 			response = mdsConsoleDubboSv.selectMdsById(selectWithNoPageRequest);		
 			listSupPathResponse = mdsConsoleDubboSv.getListSubPath(selectWithNoPageRequest);	
