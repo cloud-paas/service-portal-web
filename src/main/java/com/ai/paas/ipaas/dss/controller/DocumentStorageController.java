@@ -88,8 +88,8 @@ public class DocumentStorageController {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
-		if (!StringUtil.isBlank(pwd) && !StringUtil.isBlank(capacity)
-				&& !StringUtil.isBlank(singleFileSize) && !StringUtil.isBlank(serviceName)) {
+		if (StringUtil.isBlank(pwd) || StringUtil.isBlank(capacity)
+				|| StringUtil.isBlank(singleFileSize) || StringUtil.isBlank(serviceName)) {
 			resultMap.put("resultCode", "10001");
 			resultMap.put("resultMessage", "系统获取参数不全,请重新输入！");
 			return resultMap;
