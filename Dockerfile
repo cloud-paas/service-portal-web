@@ -21,8 +21,6 @@ RUN chmod 755 /etc/init.d/tomcat8 /*.sh && rm -fr /pkg
 
 ENV CATALINA_HOME /opt/apache-tomcat-8.0.35
 ENV PATH $CATALINA_HOME/bin:$PATH
-ENV DUBBO_FILE /opt/apache-tomcat-8.0.35/webapps/service-portal-web/WEB-INF/classes/common/dubbo.properties
-ENV ZOOKEEPER_FILE /opt/apache-tomcat-8.0.35/webapps/service-portal-web/WEB-INF/classes/zookeeper.properties
 
 # Expose ports.
 EXPOSE 8080
