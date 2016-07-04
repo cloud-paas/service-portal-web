@@ -2,6 +2,7 @@
 FROM centos:7
 
 RUN yum install -y java-1.8.0-openjdk
+RUN yum install -y unzip
 
 # Install tomcat7
 RUN mkdir pkg
@@ -17,6 +18,7 @@ COPY ./build/libs/service-portal-web.war /opt/apache-tomcat-8.0.35/webapps/servi
 COPY ./script/tomcat8.sh /etc/init.d/tomcat8
 COPY ./script/service-portal-web.sh /service-portal-web.sh
 
+RUN cd /opt/apache-tomcat-8.0.35/webapps && unzip -oq service-portal-web.war -d service-portal-web
 RUN chmod 755 /etc/init.d/tomcat8 /*.sh && rm -fr /pkg
 
 ENV CATALINA_HOME /opt/apache-tomcat-8.0.35
