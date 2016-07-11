@@ -14,7 +14,7 @@ $(function(){
 var message = '${message}'; 
 if(message){
 	alert("文件不存在！");
-	window.location.href = "${_base}/audit/toDownloadPage?type=1";
+	window.location.href = "${_base}/jsp/user/sdkSelect.jsp";
 }
 </script>
 <body>
@@ -29,17 +29,17 @@ if(message){
 	 				<div class="list_groups_none">
 	 					<ul>
 	 						<li class="biaot" style="background:rgb(22,154,219)"  onClick="turnit(6,2,this);">
-					             <a href="${_base}/audit/toDownloadPage?type=1" style="color:#fff">
+					             <a href="/jsp/user/sdkSelect.jsp" style="color:#fff">
 					             <p id="img2">下载</p>
 					             </a>
 					         </li>
 				             <li class="list_xinx"  id="content2" >
 				             	<c:if test="${type == 1}">
-					             <p class="xuanz"><A href="${_base}/audit/toDownloadPage?type=1"><span style="margin-top:2px;">SDK下载</span></A></p>
+					             <p class="xuanz"><A href="${_base}/jsp/user/sdkSelect.jsp"><span style="margin-top:2px;">SDK下载</span></A></p>
 					             <p><A href="${_base}/audit/toDownloadPage?type=2"><span style="margin-top:2px;">文档下载</span></A></p>
 								</c:if>
 								<c:if test="${type == 2}">
-									<p ><A href="${_base}/audit/toDownloadPage?type=1"><span style="margin-top:2px;">SDK下载</span></A></p>
+									<p ><A href="${_base}/jsp/user/sdkSelect.jsp"><span style="margin-top:2px;">SDK下载</span></A></p>
 					                <p class="xuanz"><A href="${_base}/audit/toDownloadPage?type=2"><span style="margin-top:2px;">文档下载</span></A></p>
 								</c:if>
 				             </li>

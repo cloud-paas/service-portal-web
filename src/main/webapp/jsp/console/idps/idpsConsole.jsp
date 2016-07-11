@@ -124,6 +124,7 @@
 						obj,
 						function(n, item) {
 							html += '<tr >';
+							html +='<input type="hidden" id="idps_'+item.userServIpaasId+'" value="'+item.userServBackParam+'"/>'
 							// 产品名称
 							html += '<td>' + item.prodName + '</td>';
 							// 服务名称
@@ -139,12 +140,85 @@
 							html += '<td>' + item.userServParamMap.cpuNum+ ' </td>';
 							//操作
 							html += '<td style="font-size:14px" align="left">' 
-								+'<a href="#"  >暂无可操作</a>'
+								+'<a onclick="stopIdpsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"停用"+'</a>'
+								+'<a onclick="startIdpsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"启用"+'</a>'
 								+ '</td>';
 							html += '</tr>';
 						});
 		$('#table_detail tbody').append(html);		
 	}
+	
+	//停止容器
+	function stopIdpsContainer(servIpaasId){
+		var prodBackPara=getProdBackParm(servIpaasId);
+		/* alert("停用---"+prodBackPara); */
+	    $.ajax({
+			 url:getContextPath()+"/idpsConsole/stopIdpsContainer",
+			 type:"POST",
+			 data:{
+				 prodBackPara:prodBackPara
+			 },
+				beforeSend : function() {
+					$('#loader').show();
+					$('#loader').shCircleLoader({
+						// 设置加载颜色
+						color : '#F0F0F0'
+					});
+				},
+			 success:function(data){
+				 if(data.resultCode=="000000"){
+					 $('#loader').hide();
+					 alert("容器停止成功");
+				 }else{
+					 $('#loader').hide();
+					 alert("容器停止失败"+data.resultMsg);
+				 }
+			 }
+		 })   
+		 
+	 }
+	
+	//启动容器
+	function startIdpsContainer(servIpaasId){
+		var hiddenServIpaasIdVal=getProdBackParm(servIpaasId);
+		/* alert("启用---"+hiddenServIpaasIdVal); */
+		$('#loader').show();
+	    $.ajax({
+			 url:getContextPath()+"/idpsConsole/startIdpsContainer",
+			 type:"POST",
+			 data:{
+				 prodBackPara:hiddenServIpaasIdVal
+			 },
+				beforeSend : function() {
+					$('#loader').shCircleLoader({
+						// 设置加载颜色
+						color : '#F0F0F0'
+					});
+				},
+			 success:function(data){
+				 if(data.resultCode=="000000"){
+					  $('#loader').hide();
+					 alert("容器启动成功");
+				 }else{
+						$('#loader').hide();
+					 alert("容器启动失败"+data.resultMsg);
+				 }
+			 }
+		 })   
+		 
+	 }
+	
+	//获得开通idps发返回值
+	function getProdBackParm(servIpaasId){
+		servIpaasId=servIpaasId+"";
+		 var start = 2;
+		 var end = servIpaasId.length-4;
+		 var serverId = servIpaasId.substr(start,end);
+		 var hiddenServIpaasId= "idps_"+serverId;
+		 var hiddenServIpaasIdVal=document.getElementById(hiddenServIpaasId).value;
+		 return hiddenServIpaasIdVal;
+	}
+	
 	
 </script>
   
@@ -167,7 +241,6 @@
 			</ul>  
         </div> 
 		<div class="Open_cache_table" style="background:rgb(245,245,245);height:30px;vertical-align:middle;text-align:center;line-height:30px;padding-left:40%">
-			 
 		</div> 
      	<div class="Open_cache">  
 	        <div class="Open_cache_list" style="margin:0"> 
@@ -190,7 +263,9 @@
  
   </div>
 </div>
-
+<div id="loader"
+							style="width: 100px; height: 100px; position: absolute; top: 20%; left: 50%; hite; z-index: 1002; overflow: auto;"></div>
+					</div>
 </div>
 </div>  
 <!--页脚-->

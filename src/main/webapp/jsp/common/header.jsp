@@ -67,7 +67,7 @@
 				<li class="product"><a id="active_prod" href="${_base }/virtualMachine/initapply" style="color: #7d7d7d">产品</a></li>
 				<%-- href="${_base }/ccs/introduce" --%>
 				<li><a id="active_download"
-					href="${_base}/audit/toDownloadPage" style="color: #7d7d7d">下载</a></li>
+					href="${_base}/jsp/user/sdkSelect.jsp" style="color: #7d7d7d">下载</a></li>
 				<li><a id="active_help"
 					href="${_base}/help/center" style="color: #7d7d7d">帮助中心</a></li>
 			</ul>

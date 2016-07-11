@@ -1,6 +1,8 @@
 package com.ai.paas.ipaas.console.idps;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +20,11 @@ import com.ai.paas.ipaas.user.dubbo.interfaces.IDssConsoleDubboSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IIdpsConsoleDubboSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IProdProductDubboSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
+import com.ai.paas.ipaas.user.dubbo.vo.CheckOrdersRequest;
+import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
+import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.ProdProductVo;
+import com.ai.paas.ipaas.user.dubbo.vo.ResponseHeader;
 import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
@@ -110,4 +116,50 @@ public class UserIdpsConsoleController {
 		return result;
 	}
 
+	/**
+	 *   启用容器
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/startIdpsContainer")
+	public Map<String, Object> startIdpsContainer(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String prodBackPara = request.getParameter("prodBackPara");
+		try {
+			//调用----portal_bandend----启用容器
+			ResponseHeader responseHeader = idpsConsoleDubboSv.startIdpsContainer(prodBackPara);
+			logger.info("======== apply audit end，apply result："+ responseHeader.getResultCode());
+			resultMap.put("resultCode", responseHeader.getResultCode());
+			resultMap.put("resultMessage", responseHeader.getResultMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			resultMap.put("resultCode", Constants.OPERATE_CODE_FAIL);
+			resultMap.put("resultMessage", "系统异常，请联系管理员!");
+		}
+		return resultMap;
+	}
+	
+	/**
+	 *   停用用容器
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/stopIdpsContainer")
+	public Map<String, Object> stopIdpsContainer(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String prodBackPara = request.getParameter("prodBackPara");
+		try {
+			//调用----portal_bandend----停用容器
+			ResponseHeader responseHeader =  idpsConsoleDubboSv.stopIdpsContainer(prodBackPara);
+			logger.info("======== apply audit end，apply result："+ responseHeader.getResultCode());
+			resultMap.put("resultCode", responseHeader.getResultCode());
+			resultMap.put("resultMessage", responseHeader.getResultMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			resultMap.put("resultCode", Constants.OPERATE_CODE_FAIL);
+			resultMap.put("resultMessage", "系统异常，请联系管理员!");
+		}
+		return resultMap;
+	}
+	
+	
+	
 }
