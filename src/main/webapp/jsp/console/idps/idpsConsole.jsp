@@ -140,8 +140,8 @@
 							html += '<td>' + item.userServParamMap.cpuNum+ ' </td>';
 							//操作
 							html += '<td style="font-size:14px" align="left">' 
-								+'<a onclick="stopIdpsContainer(/g'+item.userServIpaasId+'/g);" >'+"停用"+'</a>'
-								+'<a onclick="startIdpsContainer(/g'+item.userServIpaasId+'/g);" >'+"启用"+'</a>'
+								+'<a onclick="stopIdpsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"停用"+'</a>'
+								+'<a onclick="startIdpsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"启用"+'</a>'
 								+ '</td>';
 							html += '</tr>';
 						});
@@ -158,10 +158,19 @@
 			 data:{
 				 prodBackPara:prodBackPara
 			 },
+				beforeSend : function() {
+					$('#loader').show();
+					$('#loader').shCircleLoader({
+						// 设置加载颜色
+						color : '#F0F0F0'
+					});
+				},
 			 success:function(data){
 				 if(data.resultCode=="000000"){
+					 $('#loader').hide();
 					 alert("容器停止成功");
 				 }else{
+					 $('#loader').hide();
 					 alert("容器停止失败"+data.resultMsg);
 				 }
 			 }
@@ -173,16 +182,25 @@
 	function startIdpsContainer(servIpaasId){
 		var hiddenServIpaasIdVal=getProdBackParm(servIpaasId);
 		/* alert("启用---"+hiddenServIpaasIdVal); */
+		$('#loader').show();
 	    $.ajax({
 			 url:getContextPath()+"/idpsConsole/startIdpsContainer",
 			 type:"POST",
 			 data:{
 				 prodBackPara:hiddenServIpaasIdVal
 			 },
+				beforeSend : function() {
+					$('#loader').shCircleLoader({
+						// 设置加载颜色
+						color : '#F0F0F0'
+					});
+				},
 			 success:function(data){
 				 if(data.resultCode=="000000"){
+					  $('#loader').hide();
 					 alert("容器启动成功");
 				 }else{
+						$('#loader').hide();
 					 alert("容器启动失败"+data.resultMsg);
 				 }
 			 }
@@ -245,7 +263,9 @@
  
   </div>
 </div>
-
+<div id="loader"
+							style="width: 100px; height: 100px; position: absolute; top: 20%; left: 50%; hite; z-index: 1002; overflow: auto;"></div>
+					</div>
 </div>
 </div>  
 <!--页脚-->
