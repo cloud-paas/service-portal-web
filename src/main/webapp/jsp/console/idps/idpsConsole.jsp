@@ -276,7 +276,6 @@
 		 var end = servIpaasId.length-4;
 		 var serverId = servIpaasId.substr(start,end);
 		 var hiddenServIpaasId= "idps_"+serverId;
-		 alert(hiddenServIpaasId);
 		 var hiddenServIpaasIdVal=document.getElementById(hiddenServIpaasId).value;
 		 return hiddenServIpaasIdVal;
 	}
