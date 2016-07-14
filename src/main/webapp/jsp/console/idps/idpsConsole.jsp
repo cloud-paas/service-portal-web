@@ -241,32 +241,34 @@
 		 
 	 }
 	function destroyContainer(userServIpaasId,userServId) {
-		var hiddenServIpaasIdVal=getProdBackParm(userServIpaasId);
-		/*  alert("启用---"+hiddenServIpaasIdVal); */
-		$('#loader').show();
-	    $.ajax({
-			 url:getContextPath()+"/idpsConsole/destroyContainer",
-			 type:"POST",
-			 data:{
-				 prodBackPara:hiddenServIpaasIdVal,
-				 userServId:userServId
-			 },
-				beforeSend : function() {
-					$('#loader').shCircleLoader({
-						// 设置加载颜色
-						color : '#F0F0F0'
-					});
-				},
-			 success:function(data){
-				 var json=data		
-					if(json&&json.resultCode=="000000"){		
-						alert("注销成功");	
-						location.href="${_base}/idpsConsole/toIdpsConsole";
-					}else{									
-						alert("注销失败");	
-					}
-			 }
-		 })    
+		 if(confirm("确定要注销吗？注销后将删除此服务！")){
+			 var hiddenServIpaasIdVal=getProdBackParm(userServIpaasId);
+				/*  alert("启用---"+hiddenServIpaasIdVal); */
+				$('#loader').show();
+			    $.ajax({
+					 url:getContextPath()+"/idpsConsole/destroyContainer",
+					 type:"POST",
+					 data:{
+						 prodBackPara:hiddenServIpaasIdVal,
+						 userServId:userServId
+					 },
+						beforeSend : function() {
+							$('#loader').shCircleLoader({
+								// 设置加载颜色
+								color : '#F0F0F0'
+							});
+						},
+					 success:function(data){
+						 var json=data		
+							if(json&&json.resultCode=="000000"){		
+								alert("注销成功");	
+								location.href="${_base}/idpsConsole/toIdpsConsole";
+							}else{									
+								alert("注销失败");	
+							}
+					 }
+				 })    
+		 }
 	}
 	
 	//获得开通idps发返回值
