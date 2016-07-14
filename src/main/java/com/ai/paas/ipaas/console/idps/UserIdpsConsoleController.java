@@ -160,6 +160,49 @@ public class UserIdpsConsoleController {
 		return resultMap;
 	}
 	
+	/**
+	 *   升级容器
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/upgradleContainer")
+	public Map<String, Object> upgradleContainer(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String prodBackPara = request.getParameter("prodBackPara");
+		try {
+			//调用----portal_bandend----启用容器
+			ResponseHeader responseHeader = idpsConsoleDubboSv.upgradeContainer(prodBackPara);
+			logger.info("======== apply audit end，apply result："+ responseHeader.getResultCode());
+			resultMap.put("resultCode", responseHeader.getResultCode());
+			resultMap.put("resultMessage", responseHeader.getResultMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			resultMap.put("resultCode", Constants.OPERATE_CODE_FAIL);
+			resultMap.put("resultMessage", "系统异常，请联系管理员!");
+		}
+		return resultMap;
+	}
 	
+	/**
+	 *   注销容器
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/destroyContainer")
+	public Map<String, Object> destroyContainer(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		String prodBackPara = request.getParameter("prodBackPara");
+		String userServId = request.getParameter("userServId");
+		try {
+			//调用----portal_bandend----注销容器
+			ResponseHeader responseHeader = idpsConsoleDubboSv.destroyContainer(prodBackPara,userServId);
+			logger.info("======== 注销容器，apply result："+ responseHeader.getResultCode());
+			resultMap.put("resultCode", responseHeader.getResultCode());
+			resultMap.put("resultMessage", responseHeader.getResultMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			resultMap.put("resultCode", Constants.OPERATE_CODE_FAIL);
+			resultMap.put("resultMessage", "系统异常，请联系管理员!");
+		}
+		return resultMap;
+	}
 	
 }
