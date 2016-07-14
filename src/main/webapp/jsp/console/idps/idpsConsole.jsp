@@ -217,7 +217,7 @@
 		/* alert("启用---"+hiddenServIpaasIdVal); */
 		$('#loader').show();
 	    $.ajax({
-			 url:getContextPath()+"/idpsConsole/upgradleContainer",
+			 url:getContextPath()+"/idpsConsole/upgradeContainer",
 			 type:"POST",
 			 data:{
 				 prodBackPara:hiddenServIpaasIdVal

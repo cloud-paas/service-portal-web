@@ -158,8 +158,8 @@ public class UserIdpsConsoleController {
 	 *   升级容器
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/upgradleContainer")
-	public Map<String, Object> upgradleContainer(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping(value = "/upgradeContainer")
+	public Map<String, Object> upgradeContainer(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		String prodBackPara = request.getParameter("prodBackPara");
 		try {
