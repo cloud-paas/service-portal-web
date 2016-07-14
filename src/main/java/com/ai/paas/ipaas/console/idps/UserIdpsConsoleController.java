@@ -1,8 +1,6 @@
 package com.ai.paas.ipaas.console.idps;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,13 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IDssConsoleDubboSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IIdpsConsoleDubboSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IProdProductDubboSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
-import com.ai.paas.ipaas.user.dubbo.vo.CheckOrdersRequest;
-import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
-import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.ProdProductVo;
 import com.ai.paas.ipaas.user.dubbo.vo.ResponseHeader;
 import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
@@ -191,9 +185,10 @@ public class UserIdpsConsoleController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		String prodBackPara = request.getParameter("prodBackPara");
 		String userServId = request.getParameter("userServId");
+		prodBackPara = prodBackPara.substring(0, prodBackPara.length()-1)+",userServId:"+userServId+"}";
 		try {
 			//调用----portal_bandend----注销容器
-			ResponseHeader responseHeader = idpsConsoleDubboSv.destroyContainer(prodBackPara,userServId);
+			ResponseHeader responseHeader = idpsConsoleDubboSv.destroyContainer(prodBackPara);
 			logger.info("======== 注销容器，apply result："+ responseHeader.getResultCode());
 			resultMap.put("resultCode", responseHeader.getResultCode());
 			resultMap.put("resultMessage", responseHeader.getResultMessage());

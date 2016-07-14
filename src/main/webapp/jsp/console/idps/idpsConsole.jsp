@@ -133,7 +133,7 @@
 							html += '<td>' + item.userServIpaasId + '</td>';
 							
 							// 总容量（M）
-							html += '<td>'+ item.userServParamMap.nodeNum+ ' M</td>';
+							html += '<td>'+ item.userServParamMap.nodeNum+ ' </td>';
 							// 单文件大小（M）
 							html += '<td>' + item.userServParamMap.mem+ ' M</td>';
 							// 已使用量（M）
