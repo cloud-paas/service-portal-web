@@ -133,7 +133,7 @@
 							html += '<td>' + item.userServIpaasId + '</td>';
 							
 							// 总容量（M）
-							html += '<td>'+ item.userServParamMap.nodeNum+ ' M</td>';
+							html += '<td>'+ item.userServParamMap.nodeNum+ ' </td>';
 							// 单文件大小（M）
 							html += '<td>' + item.userServParamMap.mem+ ' M</td>';
 							// 已使用量（M）
@@ -142,6 +142,8 @@
 							html += '<td style="font-size:14px" align="left">' 
 								+'<a onclick="stopIdpsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"停用"+'</a>'
 								+'<a onclick="startIdpsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"启用"+'</a>'
+								+'<a onclick="upgradeContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"升级"+'</a>'
+								+'<a onclick="destroyContainer(/g'+item.userServIpaasId+'/g,'+item.userServId+');" style="cursor: pointer;">'+"注销"+'</a>'
 								+ '</td>';
 							html += '</tr>';
 						});
@@ -208,6 +210,67 @@
 		 
 	 }
 	
+
+	//升级容器
+	function upgradeContainer(servIpaasId){
+		var hiddenServIpaasIdVal=getProdBackParm(servIpaasId);
+		/* alert("启用---"+hiddenServIpaasIdVal); */
+		$('#loader').show();
+	    $.ajax({
+			 url:getContextPath()+"/idpsConsole/upgradeContainer",
+			 type:"POST",
+			 data:{
+				 prodBackPara:hiddenServIpaasIdVal
+			 },
+				beforeSend : function() {
+					$('#loader').shCircleLoader({
+						// 设置加载颜色
+						color : '#F0F0F0'
+					});
+				},
+			 success:function(data){
+				 if(data.resultCode=="000000"){
+					  $('#loader').hide();
+					 alert("容器升级成功");
+				 }else{
+						$('#loader').hide();
+					 alert("容器升级失败"+data.resultMsg);
+				 }
+			 }
+		 })   
+		 
+	 }
+	function destroyContainer(userServIpaasId,userServId) {
+		 if(confirm("确定要注销吗？注销后将删除此服务！")){
+			 var hiddenServIpaasIdVal=getProdBackParm(userServIpaasId);
+				/*  alert("启用---"+hiddenServIpaasIdVal); */
+				$('#loader').show();
+			    $.ajax({
+					 url:getContextPath()+"/idpsConsole/destroyContainer",
+					 type:"POST",
+					 data:{
+						 prodBackPara:hiddenServIpaasIdVal,
+						 userServId:userServId
+					 },
+						beforeSend : function() {
+							$('#loader').shCircleLoader({
+								// 设置加载颜色
+								color : '#F0F0F0'
+							});
+						},
+					 success:function(data){
+						 var json=data		
+							if(json&&json.resultCode=="000000"){		
+								alert("注销成功");	
+								location.href="${_base}/idpsConsole/toIdpsConsole";
+							}else{									
+								alert("注销失败");	
+							}
+					 }
+				 })    
+		 }
+	}
+	
 	//获得开通idps发返回值
 	function getProdBackParm(servIpaasId){
 		servIpaasId=servIpaasId+"";
@@ -218,8 +281,6 @@
 		 var hiddenServIpaasIdVal=document.getElementById(hiddenServIpaasId).value;
 		 return hiddenServIpaasIdVal;
 	}
-	
-	
 </script>
   
 </head> 
