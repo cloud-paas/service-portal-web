@@ -49,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</ul> --%>
 						<ul class="dia_yz">
 			       		  <li> 
-					       		<span style="float: left;"><input name="image" id ="image" type="text" class="yon_input_yz"/></span>
+					       		<span style="float: left;"><input name="image" id ="image" type="text" class="yon_input_yz"  style="color:#000000;" /></span>
 					       </li>
 					       <li><a class="di_yzm" href="#"><img src="${_base }/clinicCountManager/captcha-image" width="148" height="38" id="kaptchaImage" /></a></li>
 					       <label id="loginInvlid"></label>
@@ -162,6 +162,7 @@ $(document).ready(function(){
 						}
 						
 						if(data.returnFlag=="false"){
+							$("#image").val("");
 							$("#loginInvlid").text("验证码错误").addClass("error");
 							$("#loginInvlid").removeClass("hidden").show();
 							$("#kaptchaImage").hide().attr('src', '${_base}/clinicCountManager/captcha-image?' + Math.floor(Math.random()*100) ).fadeIn();
