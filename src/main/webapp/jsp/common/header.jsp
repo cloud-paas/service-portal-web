@@ -87,6 +87,7 @@
 				<li><a href="${_base }/dbs/introduce">分布式数据库DBS服务</a></li>
 				<li><a href="${_base }/txs/introduce">事务保障服务TXS</a></li>
 				<li><a href="${_base }/ats/introduce">最终事务一致ATS</a></li>
+				<li><a href="${_base }/rds/introduce">云数据库服务RDS</a></li>
 			</ul>
 			<ul class="save-ul">
 				<li class="common-li-tittle">存储</li>

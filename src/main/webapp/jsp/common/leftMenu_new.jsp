@@ -33,6 +33,7 @@
 		        <p><A href="${_base }/dbs/introduce"><span><img src="${_base }/resources/images/icon6.png"></span><span style="margin-top:2px;" id="list_2">分布式数据库服务DBS</span></A></p>
 				<p><A href="${_base }/txs/introduce"><span><img src="${_base }/resources/images/icon6.png"></span><span style="margin-top:2px;" id="list_6">事务保障服务TXS</span></A></p>
 				<p><A href="${_base }/ats/introduce"><span><img src="${_base }/resources/images/icon6.png"></span><span style="margin-top:2px;" id="list_7">最终事务一致ATS</span></A></p>
+				<p><A href="${_base }/rds/introduce"><span><img src="${_base }/resources/images/icon6.png"></span><span style="margin-top:2px;" id="list_2">云数据库服务RDS</span></A></p>
 	        </li>
 	    </ul>
         <ul>

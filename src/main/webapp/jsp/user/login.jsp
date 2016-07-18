@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </style>
 </head>
 
-<body>
+<body onload="document.forms[0].reset()">
 	<div class="big_k">
 		<!--包含头部 主体-->
 		<!--导航-->
@@ -150,12 +150,14 @@ $(document).ready(function(){
 						window.location.href=redirectUrl;
 					}else{
 						if(data.returnFlag=="0"){
+							$("#image").val("");
 							$("#loginInvlid").text("用户名或密码错误").addClass("error");
 							$("#loginInvlid").removeClass("hidden").show();
 							$("#kaptchaImage").hide().attr('src', '${_base}/clinicCountManager/captcha-image?' + Math.floor(Math.random()*100) ).fadeIn();
 						}
 						
 						if(data.returnFlag=="false_1"){
+							$("#image").val("");
 							$("#loginInvlid").text("账户未激活，请登录邮箱激活").addClass("error");
 							$("#loginInvlid").removeClass("hidden").show();
 							$("#kaptchaImage").hide().attr('src', '${_base}/clinicCountManager/captcha-image?' + Math.floor(Math.random()*100) ).fadeIn();

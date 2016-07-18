@@ -236,8 +236,16 @@
 				<a href="${_base }/dss/introduce"><span style="margin-top:20px;-moz-border-radius: 15px;border-radius: 15px;p;background:rgb(251,205,49);padding:5px 20px 5px 20px;color:#fff">继续购买</span></a>
 			</c:if>
 			
+			<c:if  test="${prod=='IDPS'}"> 
+				<a href="${_base }/idps/introduce"><span style="margin-top:20px;-moz-border-radius: 15px;border-radius: 15px;p;background:rgb(251,205,49);padding:5px 20px 5px 20px;color:#fff">继续购买</span></a>
+			</c:if>
+			
+			<c:if  test="${prod=='RDS'}"> 
+				<a href="${_base }/rds/introduce"><span style="margin-top:20px;-moz-border-radius: 15px;border-radius: 15px;p;background:rgb(251,205,49);padding:5px 20px 5px 20px;color:#fff">继续购买</span></a>
+			</c:if>
+			
 			<!-- //相当于else -->
-			<c:if  test="${prod!='IAAS_VIRTAL' && prod!='RCS' && prod!='DES' && prod!='SES' && prod!='DBS' &&  prod!='TXS' && prod!='ATS' && prod!='CCS' && prod!='MDS' && prod!='MCS' && prod!='DSS'}"> 
+			<c:if  test="${prod!='IAAS_VIRTAL' && prod!='RCS' && prod!='DES' && prod!='SES' && prod!='DBS' &&  prod!='TXS' && prod!='ATS' && prod!='CCS' && prod!='MDS' && prod!='MCS' && prod!='DSS' && prod!='IDPS' && prod!='RDS'}"> 
 				<a href="${_base }/virtualMachine/initapply"><span style="margin-top:20px;-moz-border-radius: 15px;border-radius: 15px;p;background:rgb(251,205,49);padding:5px 20px 5px 20px;color:#fff">继续购买</span></a>
 			</c:if>
 			
