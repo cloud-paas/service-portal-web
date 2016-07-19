@@ -142,8 +142,8 @@
 							html += '<td style="font-size:14px" align="left">' 
 								+'<a onclick="stopIdpsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"停用"+'</a>'
 								+'<a onclick="startIdpsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"启用"+'</a>'
-								+'<a onclick="upgradeContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"升级"+'</a>'
 								+'<a onclick="destroyContainer(/g'+item.userServIpaasId+'/g,'+item.userServId+');" style="cursor: pointer;">'+"注销"+'</a>'
+								+'<a onclick="upgradeContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"重新部署"+'</a>'
 								+ '</td>';
 							html += '</tr>';
 						});
