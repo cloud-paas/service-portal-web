@@ -9,9 +9,7 @@ sed -i "s/8005/${SHUTDOWN_PORT}/g" /opt/apache-tomcat-8.0.35/conf/server.xml
 sed -i "s/8009/${APJ_PORT}/g" /opt/apache-tomcat-8.0.35/conf/server.xml
 
 
-if [ ! -n "$LOG_LEVEL" ] ;then  
-    sed -i "s/\<Root level=.*/\<Root level=\"INFO\"\>/g" /opt/apache-tomcat-8.0.35/webapps/service-portal-web/WEB-INF/classes/log4j2.xml 
-else  
+if [ -n "$LOG_LEVEL" ]; then   
     sed -i "s/\<Root level=.*/\<Root level=\"${LOG_LEVEL}\"\>/g" /opt/apache-tomcat-8.0.35/webapps/service-portal-web/WEB-INF/classes/log4j2.xml   
 fi
 
