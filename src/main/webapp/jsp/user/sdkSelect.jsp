@@ -83,10 +83,10 @@ $(function(){
                    <br><br>
                    <table width="30%" border="0" bordercolor="#FFFFFF">
                    
-                   <li class="xil" style=" float:center;">
-      	<A href="#"  id="sdk_submit"  style="padding:5px 25px 5px 25px; float:left; background:#78bd5a; border-radius:20px; margin-left:20px; text-align:center; color:#fff; font-size:14px;border:1px solid #78bd5a;">&nbsp;&nbsp;提交&nbsp;&nbsp;</A>
-      	<A href="#" id="sdk_cancle" style="padding:5px 25px 5px 25px; float:left; background:#f5f5f5; border-radius:20px; margin-left:20px; text-align:center; color:#78bd5a; font-size:14px; border:1px solid #78bd5a;" >取消</A>
-      </li>
+                    <li class="xil" style=" float:center;">
+      	              <A href="#"  id="sdk_submit"  style="padding:5px 25px 5px 25px; float:left; background:#78bd5a; border-radius:20px; margin-left:20px; text-align:center; color:#fff; font-size:14px;border:1px solid #78bd5a;">&nbsp;&nbsp;提交&nbsp;&nbsp;</A>
+      	              <A href="#" id="sdk_cancle" style="padding:5px 25px 5px 25px; float:left; background:#f5f5f5; border-radius:20px; margin-left:20px; text-align:center; color:#78bd5a; font-size:14px; border:1px solid #78bd5a;" >取消</A>
+                    </li>
                      </table>
                  <!-- </form> -->   
                 </div>
