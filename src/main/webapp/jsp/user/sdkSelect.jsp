@@ -56,7 +56,6 @@ $(function(){
 						</li>
 					</ul>
 		 		</div>
-		 		<div>
 		 		<!-- <form action="downloadCenter.jsp" mgethod="post" name="form1" > -->
 		 		  <table width="60%" border="0" bordercolor="#FFFFFF">
 		 		  <tr bordercolor="#004080">
@@ -91,7 +90,6 @@ $(function(){
                      </table>
                  <!-- </form> -->   
                 </div>
-		 	</div>
 		 	</div>
 	 </div>
 </div>
