@@ -25,6 +25,7 @@ public class Constants {
 		public final static String DES_CENTER = "14";
 		public final static String SES_CENTER = "15";
 		public final static int IDPS_CENTER = 16;
+		public final static int RDS_CENTER = 17;
 	}
 
 	public static class serviceName {
@@ -43,6 +44,7 @@ public class Constants {
 		public final static String DES = "DES";
 		public final static String SES = "SES";
 		public final static String IDPS = "IDPS";
+		public final static String RDS = "RDS";
 
 		public final static String IAAS_PHYSICAL = "IAAS_PHYSICAL";
 		public final static String IAAS_VIRTAL = "IAAS_VIRTAL";
