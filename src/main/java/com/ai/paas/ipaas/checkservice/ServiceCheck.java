@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -213,7 +214,7 @@ public class ServiceCheck {
 		try{
 			AuthDescriptor ad = new AuthDescriptor(AUTHURL, pid, servicePwd, serviceId);
 			IImageClient im = ImageClientFactory.getSearchClient(ad);
-			Class config_class = ServiceCheck.class;
+			Class<ServiceCheck> config_class = ServiceCheck.class;
 			@SuppressWarnings("resource")
 			InputStream inStream = new FileInputStream(new File(config_class.getResource("/config/test.jpg").toURI()));
 			byte[] buff= new byte[100];
@@ -223,9 +224,8 @@ public class ServiceCheck {
 	            swapStream.write(buff, 0, rc);  
 	        }  
 			String imageId = im.upLoadImage(swapStream.toByteArray(), ".jpg");
-			System.out.println(imageId);
+			result.put("idpsMsg", im.getImageUrl(imageId, ".jpg"));
 			result.put("idpsCode", "111111");
-			result.put("idpsMsg", imageId);
 		}catch (Exception e){
 			result.put("idpsCode", "000000");
 			e.printStackTrace();
