@@ -10,13 +10,9 @@ package com.ai.paas.ipaas.checkservice;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +38,7 @@ import com.ai.paas.ipaas.search.service.ISearchClient;
 import com.ai.paas.ipaas.search.service.SearchClientFactory;
 import com.ai.paas.ipaas.uac.vo.AuthDescriptor;
 import com.ai.paas.ipaas.util.StringUtil;
+import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.ai.paas.ipaas.ccs.ConfigFactory;
 import com.ai.paas.ipaas.ccs.IConfigClient;
 import com.ai.paas.ipaas.ccs.inner.CCSComponentFactory;
@@ -54,27 +51,10 @@ import com.ai.paas.ipaas.dss.interfaces.IDSSClient;
 @RequestMapping(value = "/ServiceCheck")
 public class ServiceCheck {
 
-    private static Properties mConfig = new Properties();
-    private static String AUTHURL;
     private static Map<String, Object> result = new HashMap<String, Object>();
-
-	static{
-		Class config_class = ServiceCheck.class;
-        try {
-			InputStream is = new FileInputStream(new File(config_class.getResource("/config/param.properties").toURI()));
-			try {
-				mConfig.load(is);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-			AUTHURL = mConfig.getProperty("AUTHURL");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-	}
+    private static String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
+    private static String authSdkUrl = SystemConfigHandler.configMap.get("AUTH.SDKUrl.1");
+    private static String AUTHURL = authServiceUrl + authSdkUrl;//auth认证地址
 	
 	@RequestMapping(value = "/toCheckCcsService")
 	@ResponseBody
@@ -93,7 +73,7 @@ public class ServiceCheck {
 	}
 	private static  Map<String, Object> testCCSIN() {
 		try {
-			String ccs = mConfig.getProperty("CCSPARAM_INNER");
+			String ccs = SystemConfigHandler.configMap.get("CCS_INNER.PARAM.1");
 			if(StringUtil.isBlank(ccs)) {
 				System.out.println("CCS IN Not configed, skipped!");
 				result.put("innerCode", "000000");
@@ -234,7 +214,7 @@ public class ServiceCheck {
 		try{
 			AuthDescriptor ad = new AuthDescriptor(AUTHURL, pid, servicePwd, serviceId);
 			IImageClient im = ImageClientFactory.getSearchClient(ad);
-			Class config_class = ServiceCheck.class;
+			Class<ServiceCheck> config_class = ServiceCheck.class;
 			@SuppressWarnings("resource")
 			InputStream inStream = new FileInputStream(new File(config_class.getResource("/config/test.jpg").toURI()));
 			byte[] buff= new byte[100];
