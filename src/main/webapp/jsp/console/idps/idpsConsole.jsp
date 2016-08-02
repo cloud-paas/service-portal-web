@@ -275,7 +275,7 @@
 	//idps服务验证
 	function checkIdpsService(userServIpaasId)
 	{
-		var servIpaasId=getProdBackParm(userServIpaasId);
+		var servIpaasId=userServIpaasId.substr(2,userServIpaasId.length-4);
 		var svcPwd=prompt("请输入服务密码：");
 	    if(svcPwd)
 	    {
