@@ -144,7 +144,7 @@
 								+'<a onclick="startIdpsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"启用"+'</a>'
 								+'<a onclick="destroyContainer(/g'+item.userServIpaasId+'/g,'+item.userServId+');" style="cursor: pointer;">'+"注销"+'</a>'
 								+'<a onclick="upgradeContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"重新部署"+'</a>'
-								+'<a onclick="checkIdpsService(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"服务验证"+'</a>'
+								+'<a onclick="checkIdpsService('+item.userServIpaasId+');" style="cursor: pointer;">'+"服务验证"+'</a>'
 								+ '</td>';
 							html += '</tr>';
 						});
