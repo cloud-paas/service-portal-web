@@ -275,6 +275,7 @@
 	//idps服务验证
 	function checkIdpsService(userServIpaasId)
 	{
+		alert(userServIpaasId);
 		var servIpaasId=userServIpaasId.substr(2,userServIpaasId.length-4);
 		var svcPwd=prompt("请输入服务密码：");
 	    if(svcPwd)
@@ -289,8 +290,8 @@
 			data:"serviceId="+servIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd,
 			
 			success : function(msg) {
-				if (msg.sesCode == '111111') {
-					alert("恭喜，IDPS服务 "+servIpaasId +" 验证成功 ! \n 查看请点击如下链接 ：\n"+msg.sesMsg);
+				if (msg.idpsCode == '111111') {
+					alert("恭喜，IDPS服务 "+servIpaasId +" 验证成功 ! \n 查看请点击如下链接 ：\n"+msg.idpsMsg);
 				} else {
 					alert("IDPS服务 "+servIpaasId +" 验证失败 !");
 				}
