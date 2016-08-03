@@ -223,7 +223,7 @@ public class ServiceCheck {
 	        while ((rc = inStream.read(buff, 0, 100)) > 0) {  
 	            swapStream.write(buff, 0, rc);  
 	        }  
-			String imageId = im.upLoadImage(swapStream.toByteArray(), ".jpg");
+			String imageId = im.upLoadImage(swapStream.toByteArray(), "test.jpg");
 			result.put("idpsMsg", im.getImageUrl(imageId, ".jpg"));
 			result.put("idpsCode", "111111");
 		}catch (Exception e){
