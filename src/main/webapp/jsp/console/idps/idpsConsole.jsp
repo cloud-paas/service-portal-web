@@ -277,6 +277,7 @@
 	{
 		alert(userServIpaasId);
 		var servIpaasId=userServIpaasId.substr(2,userServIpaasId.length-4);
+		alert(servIpaasId);
 		var svcPwd=prompt("请输入服务密码：");
 	    if(svcPwd)
 	    {
