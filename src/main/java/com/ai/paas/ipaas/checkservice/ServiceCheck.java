@@ -74,6 +74,7 @@ public class ServiceCheck {
 	private static  Map<String, Object> testCCSIN() {
 		try {
 			String ccs = SystemConfigHandler.configMap.get("CCS_INNER.PARAM.1");
+			System.out.println(ccs);
 			if(StringUtil.isBlank(ccs)) {
 				System.out.println("CCS IN Not configed, skipped!");
 				result.put("innerCode", "000000");
