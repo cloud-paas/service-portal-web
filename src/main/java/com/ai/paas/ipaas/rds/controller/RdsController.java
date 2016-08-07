@@ -75,16 +75,19 @@ public class RdsController {
 		String prodId = Constants.serviceType.RDS_CENTER + "";
 		orderDetailRequest.setProdId(prodId); // 产品id
 		orderDetailRequest.setProdByname(Constants.serviceName.RDS); // 别名
-
-		String masterNum = request.getParameter("masterNum"); // 主库数量
-		String my_name = request.getParameter("my_name"); // 主库数量
-		String dssServicePwd = request.getParameter("servicePassword");
 		
 		Gson prodParam = new Gson();
 		Map<String, Object> serviceMap = new HashMap<String, Object>();
-		serviceMap.put("serviceName", my_name);
-		serviceMap.put("masterNum", masterNum);
-		serviceMap.put("dssServicePwd", dssServicePwd);
+		
+		serviceMap.put("depId", request.getParameter("depId"));
+		serviceMap.put("incName", request.getParameter("incName"));
+		serviceMap.put("incType", request.getParameter("incType"));
+		serviceMap.put("incTag", request.getParameter("incTag"));
+		serviceMap.put("incLocation", request.getParameter("incLocation"));
+		serviceMap.put("incDescribe", request.getParameter("incDescribe"));
+		serviceMap.put("dbStoreage", request.getParameter("dbStoreage"));
+		serviceMap.put("maxConnectNum", request.getParameter("maxConnectNum"));
+		
 		orderDetailRequest.setProdParam(prodParam.toJson(serviceMap)); // 配置中心参数为空
 		orderDetailRequest.setUserServIpaasPwd(request.getParameter("servicePassword"));// 服务密码
 
