@@ -30,7 +30,7 @@
      	<div class="Open_cache">  
 	        <div class="Open_cache_list" style="margin:0"> 
 	          	<div class="Open_cache_list_tow" style="vertical-align:middle;line-height:30px">  
-	          	<div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 20px">主节点信息：</div>
+	          	<div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 20px;font-size:16px">主节点信息：</div>
 				<div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 20px">
 	          		 <ul>
 			          <li class="font-title" style="margin-left:27px;">IP地址：</li>				          
@@ -63,13 +63,13 @@
 			          </li>	
 			          </ul>
 			          <ul>
-			          <li class="font-title" style="margin-left:27px;">主实例名称：</li>				          
+			          <li class="font-title" style="margin-left:27px;">实例名称：</li>				          
 			          <li >			          
 									${userProdInstVo.userServBackParamMap.incSimList[0].incName}
 			          </li>	
 		          	 </ul>
 	           </div> 
-	           <div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 20px">从节点信息：</div>
+	           <div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 20px;font-size:16px;margin-top:10px;">从节点信息：</div>
 				<div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 20px">
 	          		 <ul>
 			          <li class="font-title" style="margin-left:27px;">IP地址：</li>				          
@@ -102,7 +102,7 @@
 			          </li>	
 			          </ul>
 			          <ul>
-			          <li class="font-title" style="margin-left:27px;">主实例名称：</li>				          
+			          <li class="font-title" style="margin-left:27px;">实例名称：</li>				          
 			          <li >			          
 									${userProdInstVo.userServBackParamMap.incSimList[1].incName}
 			          </li>	
