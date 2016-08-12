@@ -21,24 +21,32 @@
 
             $.templates.opencmsTmpl.link("#opencms", {})
 
-            jQuery.validator.addMethod("regexpName", function(val) {
-    			return new RegExp("^[A-Za-z0-9_\u4e00-\u9fa5]+$").test(val);
-    		},"请输入合法的服务名称");
+            jQuery.validator.addMethod("rootNameReg", function(val) {
+            	var booleanVal =true;
+            	if(val=='root' || val=='ROOT'){
+            		 booleanVal = false;
+            	}
+    			return booleanVal;
+    		},"超级权限账户不能为默认的root");
             
             jQuery.validator.addMethod("regexpPwd", function(val) {
     			return new RegExp("^[A-Za-z0-9_]+$").test(val);
     		},"只能输入字母数字和下划线");
             
-            jQuery.validator.addMethod("regexpNum", function(val) {
+            jQuery.validator.addMethod("dbStoreageReg", function(val) {
     			return new RegExp("^([1-9][0-9]*)$").test(val);
-    		},"申请的主库数量不能为0");
+    		},"申请的存储大小不能为0或者为非数字");
+            
+            jQuery.validator.addMethod("maxConnectNumReg", function(val) {
+    			return new RegExp("^([1-9][0-9]*)$").test(val);
+    		},"申请的最大连接不能为0或者为非数字");
             
             var configserverregister = $("#configserverregister");
             configserverregister.validate({
             	errorClass: "my-error-class",
                 rules: {
                 	rootName: {
-                    	regexpName: true,
+                		rootNameReg: true,
                         required: true,
                         rangelength:[1,128]
                     },
@@ -73,24 +81,24 @@
                         rangelength:[1,128]
                     },
                     dbStoreage: {
-                    	regexpName: true,
+                    	dbStoreageReg: true,
                         required: true,
                         rangelength:[1,128]
                     },
                     maxConnectNum: {
-                    	regexpName: true,
+                    	maxConnectNumReg: true,
                         required: true,
                         rangelength:[1,128]
                     },
                 },
                 messages: {
                 	rootName:{
-                		required:"请输入用户名称",
-                		rangelength:"用户名称最大长度不超过50"
+                		required:"请输入高级权限账号",
+                		rangelength:"高级权限账号最大长度不超过50"
                 	},
                 	rootPassword:{
-                		required:"请输入用户密码",
-                		rangelength:"用户密码就最大长度不超过50"
+                		required:"请输入高级权限密码",
+                		rangelength:"高级权限密码就最大长度不超过50"
                 	},
                 	depId:{
                 		required:"请输入部门名称",
@@ -233,11 +241,11 @@
                         </ul>
 
 						<ul>
-                            <li class="lef_zi">用户名称：</li>
+                            <li class="lef_zi">高级权限账号：</li>
                             <li><input name="rootName" type="text" class="pei_input" id="rootName"/></li>
                         </ul>
 						<ul>
-                            <li class="lef_zi">用户密码：</li>
+                            <li class="lef_zi">高级权限密码：</li>
                             <li><input name="rootPassword" type="text" class="pei_input" id="rootPassword"/></li>
                         </ul>
 						<ul>
