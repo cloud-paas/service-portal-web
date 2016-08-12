@@ -132,7 +132,7 @@ public class UserRdsConsoleController {
 			vo.setUserServId(Long.parseLong(userServId));
 			selectWithNoPageRequest.setSelectRequestVo(vo);
 			response = rdsConsoleDubboSv
-					.selectUserProdInsts(selectWithNoPageRequest);
+					.selectUserProdInstById(selectWithNoPageRequest);
 			if(Constants.OPERATE_CODE_SUCCESS.equals(response.getResponseHeader().getResultCode())){
 				UserProdInstVo prodVo = response.getResultList().get(0);
 				String str = prodVo.getUserServParam();

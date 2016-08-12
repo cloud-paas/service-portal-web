@@ -79,6 +79,8 @@ public class RdsController {
 		Gson prodParam = new Gson();
 		Map<String, Object> serviceMap = new HashMap<String, Object>();
 		
+		serviceMap.put("rootName", request.getParameter("rootName"));
+		serviceMap.put("rootPassword", request.getParameter("rootPassword"));
 		serviceMap.put("depId", request.getParameter("depId"));
 		serviceMap.put("incName", request.getParameter("incName"));
 		serviceMap.put("incType", request.getParameter("incType"));

@@ -37,6 +37,16 @@
             configserverregister.validate({
             	errorClass: "my-error-class",
                 rules: {
+                	rootName: {
+                    	regexpName: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
+                    rootPassword: {
+                    	regexpName: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
                     depId: {
                     	regexpName: true,
                         required: true,
@@ -74,6 +84,14 @@
                     },
                 },
                 messages: {
+                	rootName:{
+                		required:"请输入用户名称",
+                		rangelength:"用户名称最大长度不超过50"
+                	},
+                	rootPassword:{
+                		required:"请输入用户密码",
+                		rangelength:"用户密码就最大长度不超过50"
+                	},
                 	depId:{
                 		required:"请输入部门名称",
                 		rangelength:"部门名称最大长度不超过50"
@@ -122,6 +140,12 @@
                         url: '${_base}/rds/openRds',
                         dataType: 'json',
                         data: {
+                        	rootName: function () {
+                                 return $("#rootName").val();
+                             },
+                             rootPassword: function () {
+                                 return $("#rootPassword").val();
+                             },
                             depId: function () {
                                 return $("#depId").val();
                             },
@@ -208,6 +232,14 @@
                             <li>云数据库服务RDS</li>
                         </ul>
 
+						<ul>
+                            <li class="lef_zi">用户名称：</li>
+                            <li><input name="rootName" type="text" class="pei_input" id="rootName"/></li>
+                        </ul>
+						<ul>
+                            <li class="lef_zi">用户密码：</li>
+                            <li><input name="rootPassword" type="text" class="pei_input" id="rootPassword"/></li>
+                        </ul>
 						<ul>
                             <li class="lef_zi">部门名称：</li>
                             <li><input name="depId" type="text" class="pei_input" id="depId"/></li>
