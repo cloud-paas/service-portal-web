@@ -45,13 +45,13 @@
 			          </li>	
 			          </ul>
 			           <ul>
-			           <li class="font-title" style="margin-left:27px;">用户名：</li>				          
+			           <li class="font-title" style="margin-left:27px;">高级权限账号：</li>				          
 			          <li >			          
 									${userProdInstVo.userServBackParamMap.incSimList[0].rootName}
 			          </li>	
 			          </ul>
 			          <ul>
-			          <li class="font-title" style="margin-left:27px;">密码：</li>				          
+			          <li class="font-title" style="margin-left:27px;">高级权限密码：</li>				          
 			          <li >			          
 									${userProdInstVo.userServBackParamMap.incSimList[0].rootPassword}
 			          </li>	
