@@ -24,6 +24,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.google.gson.Gson;
 
 /**
  * RDS用户控制台
@@ -109,6 +110,46 @@ public class UserRdsConsoleController {
 
 		return result;
 	}
+	
+	/**
+	 * 根据条件，查看RDS列表
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/queryRdsListById")
+	public String queryRdsListById(HttpServletRequest req,
+			HttpServletResponse resp) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		SelectWithNoPageResponse<UserProdInstVo> response = null;
+		try {
+			String userServId = req.getParameter("userServId");
+			SelectWithNoPageRequest<UserProdInstVo> selectWithNoPageRequest = new SelectWithNoPageRequest<UserProdInstVo>();
+			UserProdInstVo vo = new UserProdInstVo();
+			UserInfoVo userVo = UserUtil.getUserSession(req.getSession());
+			vo.setUserId(userVo.getUserId()); // 用户Id
+			String prodId = String.valueOf(Constants.serviceType.RDS_CENTER);
+			vo.setUserServiceId(prodId);
+			vo.setUserServId(Long.parseLong(userServId));
+			selectWithNoPageRequest.setSelectRequestVo(vo);
+			response = rdsConsoleDubboSv
+					.selectUserProdInstById(selectWithNoPageRequest);
+			if(Constants.OPERATE_CODE_SUCCESS.equals(response.getResponseHeader().getResultCode())){
+				UserProdInstVo prodVo = response.getResultList().get(0);
+				String str = prodVo.getUserServParam();
+				Map<String , String > map = new HashMap<String,String>();
+				map = new Gson().fromJson(str, map.getClass());
+				prodVo.setUserServParamMap(map);
+				req.setAttribute("userProdInstVo",prodVo);	
+			}	
+
+		} catch (Exception e) {
+			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
+			result.put("resultMessage", "查询出现异常！");
+			logger.error(e);
+		}
+
+		return "console/rds/rdsDetail";
+	}
 
 	/**
 	 *   启用RDS
@@ -164,10 +205,10 @@ public class UserRdsConsoleController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		String prodBackPara = request.getParameter("prodBackPara");
 		String userServId = request.getParameter("userServId");
-		prodBackPara = prodBackPara.substring(0, prodBackPara.length()-1)+",userServId:"+userServId+"}";
+		String prodBackParaVal = "{\"prodBackPara\":"+"\""+prodBackPara+"\""+",\"userServId\":"+"\""+userServId+"\""+"}";
 		try {
 			//调用----portal_bandend----注销RDS
-			ResponseHeader responseHeader = rdsConsoleDubboSv.destroyContainer(prodBackPara);
+			ResponseHeader responseHeader = rdsConsoleDubboSv.destroyContainer(prodBackParaVal);
 			logger.info("======== 注销RDS，apply result："+ responseHeader.getResultCode());
 			resultMap.put("resultCode", responseHeader.getResultCode());
 			resultMap.put("resultMessage", responseHeader.getResultMessage());

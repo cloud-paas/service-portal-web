@@ -21,50 +21,112 @@
 
             $.templates.opencmsTmpl.link("#opencms", {})
 
-            jQuery.validator.addMethod("regexpName", function(val) {
-    			return new RegExp("^[A-Za-z0-9_\u4e00-\u9fa5]+$").test(val);
-    		},"请输入合法的服务名称");
+            jQuery.validator.addMethod("rootNameReg", function(val) {
+            	var booleanVal =true;
+            	if(val=='root' || val=='ROOT'){
+            		 booleanVal = false;
+            	}
+    			return booleanVal;
+    		},"超级权限账户不能为默认的root");
             
             jQuery.validator.addMethod("regexpPwd", function(val) {
     			return new RegExp("^[A-Za-z0-9_]+$").test(val);
     		},"只能输入字母数字和下划线");
             
-            jQuery.validator.addMethod("regexpNum", function(val) {
+            jQuery.validator.addMethod("dbStoreageReg", function(val) {
     			return new RegExp("^([1-9][0-9]*)$").test(val);
-    		},"申请的主库数量不能为0");
+    		},"申请的存储大小不能为0或者为非数字");
+            
+            jQuery.validator.addMethod("maxConnectNumReg", function(val) {
+    			return new RegExp("^([1-9][0-9]*)$").test(val);
+    		},"申请的最大连接不能为0或者为非数字");
             
             var configserverregister = $("#configserverregister");
             configserverregister.validate({
             	errorClass: "my-error-class",
                 rules: {
-                	masterNum: {
+                	rootName: {
+                		rootNameReg: true,
                         required: true,
-                        digits:true,
-                		regexpNum:true,
+                        rangelength:[1,128]
                     },
-                    servicePassword: {
-                    	regexpPwd: true,
-                    	required: true,
-                    	rangelength:[6,16]
-                    },
-                    my_name: {
+                    rootPassword: {
                     	regexpName: true,
                         required: true,
                         rangelength:[1,128]
-                    }
+                    },
+                    depId: {
+                    	regexpName: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
+                    incName: {
+                    	regexpName: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
+                    incTag: {
+                    	regexpName: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
+                    incLocation: {
+                    	regexpName: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
+                    incDescribe: {
+                    	regexpName: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
+                    dbStoreage: {
+                    	dbStoreageReg: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
+                    maxConnectNum: {
+                    	maxConnectNumReg: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
                 },
                 messages: {
-                	masterNum: {
-                		required: "请输入申请的主库数量",
-                        digits:"申请的主库数量必须为整数",
+                	rootName:{
+                		required:"请输入高级权限账号",
+                		rangelength:"高级权限账号最大长度不超过50"
                 	},
-                	servicePassword: {
-                    	required: "请输入服务密码",
-                    	rangelength: "密码长度应为6~16个字符",
-                    },
-                    my_name:{
-                		required:"请输入服务名称",
-                		rangelength:"服务名称最大长度不超过50"
+                	rootPassword:{
+                		required:"请输入高级权限密码",
+                		rangelength:"高级权限密码就最大长度不超过50"
+                	},
+                	depId:{
+                		required:"请输入部门名称",
+                		rangelength:"部门名称最大长度不超过50"
+                	},
+                	incName:{
+                		required:"请输入实例名称",
+                		rangelength:"实例名称最大长度不超过50"
+                	},
+                	incTag:{
+                		required:"请输入实例标签",
+                		rangelength:"实例标签最大长度不超过50"
+                	},
+                	incLocation:{
+                		required:"请输入实例位置",
+                		rangelength:"实例位置最大长度不超过50"
+                	},
+                	incDescribe:{
+                		required:"请输入实例描述",
+                		rangelength:"实例描述最大长度不超过50"
+                	},
+                	dbStoreage:{
+                		required:"请输入存储大小",
+                		rangelength:"存储大小最大长度不超过50"
+                	},
+                	maxConnectNum:{
+                		required:"请输入最大连接",
+                		rangelength:"最大连接最大长度不超过50"
                 	}
                 },
                 success: function (label, element) {
@@ -86,14 +148,35 @@
                         url: '${_base}/rds/openRds',
                         dataType: 'json',
                         data: {
-                        	masterNum: function () {
-                                return $("#masterNum").val();
+                        	rootName: function () {
+                                 return $("#rootName").val();
+                             },
+                             rootPassword: function () {
+                                 return $("#rootPassword").val();
+                             },
+                            depId: function () {
+                                return $("#depId").val();
                             },
-                            servicePassword: function () {
-                                return $("#servicePassword").val();
+                            incName: function () {
+                                return $("#incName").val();
                             },
-                            my_name: function () {
-                                return $("#my_name").val();
+                            incTag: function () {
+                                return $("#incTag").val();
+                            },
+                            incLocation: function () {
+                                return $("#incLocation").val();
+                            },
+                            incDescribe: function () {
+                                return $("#incDescribe").val();
+                            },
+                            dbStoreage: function () {
+                                return $("#dbStoreage").val();
+                            },
+                            maxConnectNum: function () {
+                                return $("#maxConnectNum").val();
+                            },
+                            incType: function () {
+                                return $("#incType").val();
                             },
                         },
                         success: function (data) {
@@ -156,19 +239,47 @@
                             <li class="lef_zi">产品名称：</li>
                             <li>云数据库服务RDS</li>
                         </ul>
-					<ul>
-			          <li class="lef_zi">服务名称：</li>
-			          <li><input id="my_name" name="my_name" type="text"  class="pei_input"></li>
-		          	</ul>
-                        <ul>
-                            <li class="lef_zi">主库数量：</li>
-                            <li><input name="masterNum" id="masterNum" type="text" class="pei_input" id="masterNum"/></li>
-							
+
+						<ul>
+                            <li class="lef_zi">高级权限账号：</li>
+                            <li><input name="rootName" type="text" class="pei_input" id="rootName"/></li>
                         </ul>
- 						<ul>
-                            <li class="lef_zi">服务密码：</li>
-                            <li><input name="servicePassword" type="text" class="pei_input" id="servicePassword"/></li>
+						<ul>
+                            <li class="lef_zi">高级权限密码：</li>
+                            <li><input name="rootPassword" type="text" class="pei_input" id="rootPassword"/></li>
                         </ul>
+						<ul>
+                            <li class="lef_zi">部门名称：</li>
+                            <li><input name="depId" type="text" class="pei_input" id="depId"/></li>
+                        </ul>
+						<ul>
+                            <li class="lef_zi">实例名称：</li>
+                            <li><input name="incName" type="text" class="pei_input" id="incName"/></li>
+                        </ul>
+						<ul>
+                            <li class="lef_zi">实例标签：</li>
+                            <li><input name="incTag" type="text" class="pei_input" id="incTag"/></li>
+                        </ul>
+						<ul>
+                            <li class="lef_zi">实例位置：</li>
+                            <li><input name="incLocation" type="text" class="pei_input" id="incLocation"/></li>
+                        </ul>
+						<ul>
+                            <li class="lef_zi">实例描述：</li>
+                            <li><input name="incDescribe" type="text" class="pei_input" id="incDescribe"/></li>
+                        </ul>
+						<ul>
+                            <li class="lef_zi">存储大小：</li>
+                            <li><input name="dbStoreage" type="text" class="pei_input" id="dbStoreage"/></li>
+                        </ul>
+						<ul>
+                            <li class="lef_zi">最大连接：</li>
+                            <li>
+									<input name="maxConnectNum" type="text" class="pei_input" id="maxConnectNum"/>
+									<input name="incType" type="hidden"  id="incType" value="1"/>
+							</li>
+                        </ul>
+
                         <ul>
                             <li class="open_btn"><A href="javascript:void(0);" id="registerBtn">立即开通</A></li>
                         </ul>

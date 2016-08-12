@@ -242,6 +242,7 @@
 	
 	function checkService(userServIpaasId)
 	{
+		alert("温馨提示：请先创建如下模型，再做服务验证：\n {\"abc\":{\"type\":\"string\"}}")
 		var svcPwd=prompt("请输入服务密码：");
 	    if(svcPwd)
 	    {

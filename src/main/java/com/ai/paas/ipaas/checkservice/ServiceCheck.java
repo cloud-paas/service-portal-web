@@ -54,7 +54,7 @@ public class ServiceCheck {
     private static Map<String, Object> result = new HashMap<String, Object>();
     private static String authServiceUrl = SystemConfigHandler.configMap.get("iPaas-Auth.SERVICE.IP_PORT_SERVICE");
     private static String authSdkUrl = SystemConfigHandler.configMap.get("AUTH.SDKUrl.1");
-    private static String AUTHURL = authServiceUrl + authSdkUrl;//auth认证地址
+	private static String AUTHURL = authServiceUrl + authSdkUrl;
 	
 	@RequestMapping(value = "/toCheckCcsService")
 	@ResponseBody
@@ -74,7 +74,6 @@ public class ServiceCheck {
 	private static  Map<String, Object> testCCSIN() {
 		try {
 			String ccs = SystemConfigHandler.configMap.get("CCS_INNER.PARAM.1");
-			System.out.println(ccs);
 			if(StringUtil.isBlank(ccs)) {
 				System.out.println("CCS IN Not configed, skipped!");
 				result.put("innerCode", "000000");
@@ -224,10 +223,9 @@ public class ServiceCheck {
 	        while ((rc = inStream.read(buff, 0, 100)) > 0) {  
 	            swapStream.write(buff, 0, rc);  
 	        }  
-			String imageId = im.upLoadImage(swapStream.toByteArray(), ".jpg");
-			System.out.println(imageId);
+			String imageId = im.upLoadImage(swapStream.toByteArray(), "test.jpg");
+			result.put("idpsMsg", im.getImageUrl(imageId, ".jpg"));
 			result.put("idpsCode", "111111");
-			result.put("idpsMsg", imageId);
 		}catch (Exception e){
 			result.put("idpsCode", "000000");
 			e.printStackTrace();

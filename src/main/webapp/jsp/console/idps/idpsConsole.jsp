@@ -144,6 +144,7 @@
 								+'<a onclick="startIdpsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"启用"+'</a>'
 								+'<a onclick="destroyContainer(/g'+item.userServIpaasId+'/g,'+item.userServId+');" style="cursor: pointer;">'+"注销"+'</a>'
 								+'<a onclick="upgradeContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"重新部署"+'</a>'
+								+'<a onclick="checkIdpsService(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"服务验证"+'</a>'
 								+ '</td>';
 							html += '</tr>';
 						});
@@ -269,6 +270,38 @@
 					 }
 				 })    
 		 }
+	}
+	
+	//idps服务验证
+	function checkIdpsService(userServIpaasId)
+	{
+		alert(userServIpaasId);
+		userServIpaasId=userServIpaasId+"";
+		var servIpaasId=userServIpaasId.substr(2,userServIpaasId.length-4);
+		alert(servIpaasId);
+		var svcPwd=prompt("请输入服务密码：");
+	    if(svcPwd)
+	    {
+	    	var pid= "${userInfoVO.pid}";
+	        alert("服务ID: "+servIpaasId+" & 服务密码: "+ svcPwd+ " & PID："+pid);       
+	    }
+	    $.ajax({
+			type : "POST",
+			url : "${_base}/ServiceCheck/toCheckIdpsService",
+			dataType : "json",
+			data:"serviceId="+servIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd,
+			
+			success : function(msg) {
+				if (msg.idpsCode == '111111') {
+					alert("恭喜，IDPS服务 "+servIpaasId +" 验证成功 ! \n 查看请点击如下链接 ：\n"+msg.idpsMsg);
+				} else {
+					alert("IDPS服务 "+servIpaasId +" 验证失败 !");
+				}
+			},
+			error : function() {
+				alert("IDPS服务 "+servIpaasId +" 验证失败 !");
+			}
+		});
 	}
 	
 	//获得开通idps发返回值

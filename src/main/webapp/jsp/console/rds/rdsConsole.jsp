@@ -3,7 +3,7 @@
 <head>
 <title>${prodName}</title>
 <%@ include file="/jsp/common/common.jsp"%>
-
+<script src="${_base }/resources/js/storm/jquery.form.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		// 页面初始化
@@ -34,10 +34,9 @@
 								html += '<tr>';		
 								html += '<th>产品名称</th>';
 								html += '<th>服务名称</th>';
-								html += '<th>IPAAS编码</th>';								
-								html += '<th>总容量（M）</th>';
-								html += '<th>单文件大小（M）</th>';
-								html += '<th>使用量（M / B）</th>';
+								html += '<th>IPAAS编码</th>';	
+								html += '<th>IP地址</th>';								
+								html += '<th>端口</th>';
 								html += '<th>操作</th>'; 		
 								html += '</tr>';
 								
@@ -61,10 +60,9 @@
 							html += '<tr>';		
 							html += '<th>产品名称</th>';
 							html += '<th>服务名称</th>';
-							html += '<th>IPAAS编码</th>';							
-							html += '<th>总容量（M）</th>';
-							html += '<th>单文件大小（M）</th>';
-							html += '<th>使用量（M / B）</th>';
+							html += '<th>IPAAS编码</th>';	
+							html += '<th>IP地址</th>';							
+							html += '<th>端口</th>';
 							html += '<th>操作</th>'; 		
 							html += '</tr>';
 							
@@ -94,10 +92,9 @@
 			html += '<tr>';	
 			html += '<th>产品名称</th>';
 			html += '<th>服务名称</th>';
-			html += '<th>IPAAS编码</th>';			
-			html += '<th>总容量（M）</th>';
-			html += '<th>单文件大小（M）</th>';
-			html += '<th>使用量（M / B）</th>';
+			html += '<th>IPAAS编码</th>';	
+			html += '<th>IP地址</th>';			
+			html += '<th>端口</th>';
 			html += '<th>操作</th>'; 		
 			html += '</tr>';
 			
@@ -112,11 +109,10 @@
 		html += '<tr>';		
 		html += '<th>产品名称</th>';
 		html += '<th>服务名称</th>';
-		html += '<th>IPAAS编码</th>';		
-		html += '<th>节点数量（个）</th>';
-		html += '<th>内存大小（M）</th>';
-		html += '<th>CPU（GHZ）</th>';
-		html += '<th>操作</th>'; 		
+		html += '<th>IPAAS编码</th>';	
+		html += '<th>IP地址</th>';			
+		html += '<th>端口</th>';
+		html += '<th>操作</th>'; 			
 		html += '</tr>';
 		
 		$
@@ -124,33 +120,33 @@
 						obj,
 						function(n, item) {
 							html += '<tr >';
-							html +='<input type="hidden" id="idps_'+item.userServIpaasId+'" value="'+item.userServBackParam+'"/>'
 							// 产品名称
 							html += '<td>' + item.prodName + '</td>';
 							// 服务名称
-							html += '<td >' +item.serviceName + '</td>';									
+							html += '<td >' +item.userServBackParamMap.incSimList[0].incName + '</td>';			
 							// IPAAS编码
 							html += '<td>' + item.userServIpaasId + '</td>';
 							
-							// 总容量（M）
-							html += '<td>'+ item.userServParamMap.nodeNum+ ' </td>';
-							// 单文件大小（M）
-							html += '<td>' + item.userServParamMap.mem+ ' M</td>';
-							// 已使用量（M）
-							html += '<td>' + item.userServParamMap.cpuNum+ ' </td>';
+							// IP地址
+							html += '<td> 主：' + item.userServBackParamMap.incSimList[0].incIp +'<br/>从：'+item.userServBackParamMap.incSimList[1].incIp + '</td>';
+							
+							// 端口
+							html += '<td> 主：' + item.userServBackParamMap.incSimList[0].incPort +'<br/>从：'+item.userServBackParamMap.incSimList[1].incPort + '</td>';
 							//操作
 							html += '<td style="font-size:14px" align="left">' 
-								+'<a onclick="" style="cursor: pointer;">'+"停用"+'</a>'
-								+'<a onclick="" style="cursor: pointer;">'+"启用"+'</a>'
-								+'<a onclick="" style="cursor: pointer;">'+"注销"+'</a>'
+								+'<a onclick="stopRdsContainer('+item.userServBackParamMap.incSimList[0].id+');" style="cursor: pointer;">'+"停用"+'</a>'
+								+'<a onclick="starRdsContainer('+item.userServBackParamMap.incSimList[0].id+');" style="cursor: pointer;">'+"启用"+'</a>'
+								+'<a onclick="destroyRdsContainer('+item.userServBackParamMap.incSimList[0].id+','+item.userServId+');" style="cursor: pointer;">'+"注销"+'</a>'
+								+'<a  href="queryRdsListById?userServId='+item.userServId+'" style="cursor: pointer;">'+"查看"+'</a>'
+								+'<a onclick="manageRds();" style="cursor: pointer;">'+"管理"+'</a>'
 								+ '</td>';
 							html += '</tr>';
 							
 							/**
 							html += '<td style="font-size:14px" align="left">' 
-							+'<a onclick="stopIdpsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"停用"+'</a>'
-							+'<a onclick="startIdpsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"启用"+'</a>'
-							+'<a onclick="destroyContainer(/g'+item.userServIpaasId+'/g,'+item.userServId+');" style="cursor: pointer;">'+"注销"+'</a>'
+							+'<a onclick="stopRdsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"停用"+'</a>'
+							+'<a onclick="starRdsContainer(/g'+item.userServIpaasId+'/g);" style="cursor: pointer;">'+"启用"+'</a>'
+							+'<a onclick="destroyRdsContainer(/g'+item.userServIpaasId+'/g,'+item.userServId+');" style="cursor: pointer;">'+"注销"+'</a>'
 							+ '</td>';
 							*/
 							
@@ -159,14 +155,13 @@
 	}
 	
 	//停止容器
-	function stopIdpsContainer(servIpaasId){
-		var prodBackPara=getProdBackParm(servIpaasId);
+	function stopRdsContainer(servIpaasId){
 		/* alert("停用---"+prodBackPara); */
 	    $.ajax({
-			 url:getContextPath()+"/idpsConsole/stopIdpsContainer",
+			 url:getContextPath()+"/rdsConsole/stopRDSContainer",
 			 type:"POST",
 			 data:{
-				 prodBackPara:prodBackPara
+				 prodBackPara:servIpaasId
 			 },
 				beforeSend : function() {
 					$('#loader').show();
@@ -176,12 +171,12 @@
 					});
 				},
 			 success:function(data){
-				 if(data.resultCode=="000000"){
+				 if(data.resultCode=="1"){
 					 $('#loader').hide();
-					 alert("容器停止成功");
+					 alert("RDS停止成功");
 				 }else{
 					 $('#loader').hide();
-					 alert("容器停止失败"+data.resultMsg);
+					 alert("RDS停止失败"+data.resultMsg);
 				 }
 			 }
 		 })   
@@ -189,15 +184,14 @@
 	 }
 	
 	//启动容器
-	function startIdpsContainer(servIpaasId){
-		var hiddenServIpaasIdVal=getProdBackParm(servIpaasId);
+	function starRdsContainer(servIpaasId){
 		/* alert("启用---"+hiddenServIpaasIdVal); */
 		$('#loader').show();
 	    $.ajax({
-			 url:getContextPath()+"/idpsConsole/startIdpsContainer",
+			 url:getContextPath()+"/rdsConsole/startRdsContainer",
 			 type:"POST",
 			 data:{
-				 prodBackPara:hiddenServIpaasIdVal
+				 prodBackPara:servIpaasId
 			 },
 				beforeSend : function() {
 					$('#loader').shCircleLoader({
@@ -206,7 +200,7 @@
 					});
 				},
 			 success:function(data){
-				 if(data.resultCode=="000000"){
+				 if(data.resultCode=="1"){
 					  $('#loader').hide();
 					 alert("容器启动成功");
 				 }else{
@@ -218,16 +212,15 @@
 		 
 	 }
 	
-	function destroyContainer(userServIpaasId,userServId) {
+	function destroyRdsContainer(userServIpaasId,userServId) {
 		 if(confirm("确定要注销吗？注销后将删除此服务！")){
-			 var hiddenServIpaasIdVal=getProdBackParm(userServIpaasId);
 				/*  alert("启用---"+hiddenServIpaasIdVal); */
 				$('#loader').show();
 			    $.ajax({
-					 url:getContextPath()+"/idpsConsole/destroyContainer",
+					 url:getContextPath()+"/rdsConsole/destroyContainer",
 					 type:"POST",
 					 data:{
-						 prodBackPara:hiddenServIpaasIdVal,
+						 prodBackPara:userServIpaasId,
 						 userServId:userServId
 					 },
 						beforeSend : function() {
@@ -238,9 +231,9 @@
 						},
 					 success:function(data){
 						 var json=data		
-							if(json&&json.resultCode=="000000"){		
+							if(json&&json.resultCode=="1"){		
 								alert("注销成功");	
-								location.href="${_base}/idpsConsole/toIdpsConsole";
+								location.href="${_base}/rdsConsole/toRdsConsole";
 							}else{									
 								alert("注销失败");	
 							}
@@ -248,6 +241,61 @@
 				 })    
 		 }
 	}
+	
+	 function manageRds(){
+		 window.open("http://10.1.245.224:12345/phpmyadmin/index.php");
+		 
+		/*  $.post("http://10.1.245.224:12345/phpmyadmin/index.php",
+		  {pma_servername:"10.1.228.202:31316",
+         	pma_username:"devrdbusr21",
+        	pma_password:"devrdbusr21",
+        	server:"1",
+        	target:"index.php",
+        	token:"def1d9d467a96e7d606663b4508b566f"})  
+	      .done(function(data){  
+	        document.getElementById("msg").innerHTML = data.name + ' ' + data.gender;  
+	      }); */
+	   //   var dataJsonVal = {pma_servername:"10.1.228.202:31316",pma_username:"devrdbusr21",pma_password:"devrdbusr21",server:"1",target:"index.php",token:"def1d9d467a96e7d606663b4508b566f"};
+	    /*   $("#test").ajaxSubmit({
+	    	     type: "post",
+	    	     url: "http://10.1.245.224:12345/phpmyadmin/db_structure.php?ajax_request=1&favorite_table=1&sync_favorite_tables=1&token=d882fe305410463592387a9c52fb1151",
+	    	     dataType: "json",
+	    	     success: function(result){
+	    	           //返回提示信息       
+	    	           alert(result);
+	    	     }
+	    	 }); */
+		 
+		  /* $.ajax({
+		            type:"POST",
+		            url:"http://10.1.245.224:12345/phpmyadmin/index.php",
+		            data:{
+		            	pma_servername:"10.1.228.202:31316",
+		            	pma_username:"devrdbusr21",
+		            	pma_password:"devrdbusr21",
+		            	server:"1",
+		            	target:"index.php",
+		            	token:""},
+		            datatype: "html",//"xml", "html", "script", "json", "jsonp", "text".
+		            success:function(data){
+		            	alert(data);
+		               // $("#msg").html(decodeURI(data));          
+		            	//window.open("http://10.1.245.224:12345/phpmyadmin/index.php");
+		             }      
+		         });   */
+		  /* 
+			  $..ajax({
+			      "type":"post",
+			      "url":"http://10.1.245.224:12345/phpmyadmin/index.php", 
+			      "success":function(rel){
+			           if(rel.isSuccess){ 
+			                window.open(rel.url,"_blank");
+			    }
+			      }
+			}); 
+ */
+		  }
+	 
 	
 	//获得开通idps发返回值
 	function getProdBackParm(servIpaasId){
@@ -288,10 +336,8 @@
 						<tr>
 							<th>服务名称</th>
 							<th>产品名称</th>
-							<th>IPAAS编码</th>							
-							<th>总容量（M）</th>
-							<th>单文件大小（M）</th>
-							<th>使用量</th>
+							<th>IP地址</th>							
+							<th>端口</th>
 							<th>操作</th> 
 						</tr>						
 					 </table>
@@ -299,7 +345,8 @@
 	        </div>  
     	</div>   
      </div> 
- 
+ 	<div id="msg"></div>
+ 	<form id="test"></form>
   </div>
 </div>
 <div id="loader"

@@ -5,7 +5,7 @@
 		<wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/resources"/>
 		<wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/java"/>
 		<wb-resource deploy-path="/" source-path="src/main/webapp"/>
-		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib//Users/yinzf/.gradle/caches/modules-2/files-2.1/com.ai/ipaas-user/0.29-SNAPSHOT/b5ab4e452e3881d7a8541065d1207a216ba3d3b0/ipaas-user-0.29-SNAPSHOT.jar">
+		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib//Users/yinzf/.gradle/caches/modules-2/files-2.1/com.ai/ipaas-user/0.3-SNAPSHOT/3c1f1a1b15c85dfb23c9d8ac661dbeefe5e6698e/ipaas-user-0.3-SNAPSHOT.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib//Users/yinzf/.gradle/caches/modules-2/files-2.1/com.ai/asiainfocasclient/1.0.4/bfb6608c96f8820ca67063170fe7a1f8acb8ca3d/asiainfocasclient-1.0.4.jar">
