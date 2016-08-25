@@ -256,6 +256,7 @@
 				data:"serviceId="+userServIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd,
 				
 				success : function(msg) {
+					alert("msg.sesCode is: "+msg.sesCode);
 					if (msg.sesCode == '111111') {
 						alert("恭喜，SES服务 "+userServIpaasId +" 验证成功 ! \n SESMessage is ："+msg.sesMsg);
 					} else {
