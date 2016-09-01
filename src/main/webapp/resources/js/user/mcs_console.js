@@ -19,9 +19,18 @@ function queryMcsList() {
 								+ obj.userServIpaasId
 								+ "</td><td>"
 								+ obj.capacity
-								+ "</td><td>"
-								+ ((userServParamMap.haMode == "single") ? '单机' : '集群')
-								+ "</td><td><a href='javascript:;' onclick='toMethodPage(\""+obj.userServId+"\",\"toModifyMcsServPwd\")'>修改服务密码</a>";
+								+ "</td><td>";
+						switch case userServParamMap.haMode:
+						case "single": 
+							tableContents += '单机';break;
+						case "cluster": 
+							tableContents += '集群';break;
+						case "replication": 
+							tableContents += '主从';break;
+						default：
+						    tableContents += 'sentinel';
+											
+						tableContents += "</td><td><a href='javascript:;' onclick='toMethodPage(\""+obj.userServId+"\",\"toModifyMcsServPwd\")'>修改服务密码</a>";
 						if(obj.userServRunState == 1 || obj.userServRunState == null) {
 							tableContents += "|<a href='javascript:;' onclick='operatServ(\""+obj.userId + "\", \"" + obj.userServId+ "\",\"/mcs/manage/start\", \"" + obj.userServIpaasId + "\", \"" + obj.capacity+"\", \"" + userServParamMap.haMode +  "\", \"" + userServParamMap.serviceName +  "\", \"启动\")'>启动</a>";
 						} else if(obj.userServRunState == 0) {
