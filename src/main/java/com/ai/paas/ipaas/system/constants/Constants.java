@@ -53,6 +53,7 @@ public class Constants {
 
 	public static class paramCode {
 		public final static String OPTIONS = "OPTIONS";
+		public final static String MODES = "MODES";
 		public final static String OPEN_RESULT = "OPEN_RESULT"; // ORDER_DETAIL表中OPEN_RESUIT字段
 		public final static String ORDER_CHECK_RESULT = "ORDER_CHECK_RESULT"; // ORDER_DETAIL表中ORDER_CHECK_RESULT字段
 		public final static String SELETE_TYPE = "SELETE_TYPE"; // ORDER_DETAIL表中ORDER_CHECK_RESULT字段
