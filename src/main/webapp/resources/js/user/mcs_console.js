@@ -19,8 +19,7 @@ function queryMcsList() {
 								+ obj.userServIpaasId
 								+ "</td><td>"
 								+ obj.capacity
-								+ "</td><td>";
-						alert(userServParamMap.haMode);
+								+ "</td><td>";						
 						switch (userServParamMap.haMode)
 						{ 
 						    case "single": 
@@ -29,7 +28,7 @@ function queryMcsList() {
 								tableContents += '集群'; break;
 							case "replication": 
 								tableContents += '主从'; break;
-							default：
+							default:
 							    tableContents += 'sentinel';
 						}									
 						tableContents += "</td><td><a href='javascript:;' onclick='toMethodPage(\""+obj.userServId+"\",\"toModifyMcsServPwd\")'>修改服务密码</a>";
