@@ -20,14 +20,15 @@ function queryMcsList() {
 								+ "</td><td>"
 								+ obj.capacity
 								+ "</td><td>";
+						alert(userServParamMap.haMode);
 						switch (userServParamMap.haMode)
 						{ 
 						    case "single": 
-						    	 tableContents += '单机';break;
+						    	tableContents += '单机'; break;
 							case "cluster": 
-								tableContents += '集群';break;
+								tableContents += '集群'; break;
 							case "replication": 
-								tableContents += '主从';break;
+								tableContents += '主从'; break;
 							default：
 							    tableContents += 'sentinel';
 						}									
