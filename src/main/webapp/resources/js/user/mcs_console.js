@@ -20,7 +20,7 @@ function queryMcsList() {
 								+ "</td><td>"
 								+ obj.capacity
 								+ "</td><td>";
-						switch case userServParamMap.haMode:
+						switch userServParamMap.haMode:
 						case "single": 
 							tableContents += '单机';break;
 						case "cluster": 
