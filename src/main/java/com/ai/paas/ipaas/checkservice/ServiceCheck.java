@@ -166,7 +166,7 @@ public class ServiceCheck {
 	}
 	
 	
-	//TODO {"abc":{"type":"string"}} 测试前提创建模型
+	//测试前提创建模型: {"abc":{"type":"string","index":true,"analyze":true,"store":false,"agged":false}} 
 	@RequestMapping(value = "/toCheckSesService")
 	@ResponseBody
 	public static Map<String, Object> toCheckSesService(HttpServletRequest req,HttpServletResponse resp) {

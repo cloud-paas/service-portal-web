@@ -76,6 +76,11 @@ public class CacheController {
 		req.setParamCode(Constants.paramCode.OPTIONS);
 		List<SysParamVo> sizeList = iSysParam.getSysParams(req);
 		request.setAttribute("sizeList", sizeList);
+		//MCS模式
+		req.setTypeCode(Constants.serviceName.MCS);
+		req.setParamCode(Constants.paramCode.MODES);
+		List<SysParamVo> modeList = iSysParam.getSysParams(req);
+		request.setAttribute("modeList", modeList);
 		return "cache/openCache";	
 	}
 	

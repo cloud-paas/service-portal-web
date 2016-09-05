@@ -50,10 +50,8 @@
 							var my_name=$(_this.settings.NAME_ID).val();
 							var my_password=$(_this.settings.PASSWORD_ID).val();
 							//if(my_password=="")
-							var my_haMode="single";
-							if($(_this.settings.HAMODE_ID).is(":checked")){
-								my_haMode="cluster";
-							}
+							var my_haMode=$(_this.settings.HAMODE_ID).val();
+							
 							$('.waitCover').show();
 							$.ajax({
 								async : true,
@@ -189,10 +187,17 @@
 			          <li><input id="my_password" name="my_password"  type="text" class="form-control"aria-describedby="sizing-addon2"></li>
 			          <li><label style="color:red;" id="my_password_error"></label></li>
 		          	</ul>
-		          	<ul>
-							<li class="lef_zi">集群模式：</li>
-                            <li><input name="my_haMode" type="checkbox" id="my_haMode" checked></li>
-                     </ul>
+                     <ul>
+	          			<li class="font-title">服务模式：</li>
+	          			<li>
+	          				<select id="my_haMode"  name="my_haMode" class="ch_select">
+	          					<c:forEach items="${modeList}" var="my_mode">
+	          					<option value="${my_mode.serviceValue}">${my_mode.serviceOption}</option>
+	          					</c:forEach>
+	          				</select>
+	          
+	          			</li>
+	         		</ul>
 					<ul style="padding-left:10%">   
 			          <li>
 						<a id="my_submit" href="#"><div style="margin-top:20px;text-align:center;-moz-border-radius: 15px;border-radius: 15px;width:130px;height:30px;background:rgb(121,189,90);line-height:30px;vertical-align:middle;color:#fff">立即开通</div></a>

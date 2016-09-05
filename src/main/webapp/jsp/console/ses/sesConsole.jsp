@@ -242,30 +242,32 @@
 	
 	function checkService(userServIpaasId)
 	{
-		alert("温馨提示：请先创建如下模型，再做服务验证：\n {\"abc\":{\"type\":\"string\"}}")
-		var svcPwd=prompt("请输入服务密码：");
-	    if(svcPwd)
-	    {
-	    	var pid= "${userInfoVO.pid}";
-	        alert("服务ID: "+userServIpaasId+" & 服务密码: "+ svcPwd+ " & PID："+pid);       
-	    }
-	    $.ajax({
-			type : "POST",
-			url : "${_base}/ServiceCheck/toCheckSesService",
-			dataType : "json",
-			data:"serviceId="+userServIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd,
-			
-			success : function(msg) {
-				if (msg.sesCode == '111111') {
-					alert("恭喜，SES服务 "+userServIpaasId +" 验证成功 ! \n SESMessage is ："+msg.sesMsg);
-				} else {
+		if (confirm("温馨提示：请确认先创建如下模型，再做服务验证：\n {\"abc\":{\"type\":\"string\",\"index\":true,\"analyze\":true,\"store\":false,\"agged\":false}}")) {
+			var svcPwd=prompt("请输入服务密码：");
+		    if(svcPwd)
+		    {
+		    	var pid= "${userInfoVO.pid}";
+		        alert("服务ID: "+userServIpaasId+" & 服务密码: "+ svcPwd+ " & PID："+pid);       
+		    }
+		    $.ajax({
+				type : "POST",
+				url : "${_base}/ServiceCheck/toCheckSesService",
+				dataType : "json",
+				data:"serviceId="+userServIpaasId+"&pid="+pid+"&servicePwd="+ svcPwd,
+				
+				success : function(msg) {
+					alert("msg.sesCode is: "+msg.sesCode);
+					if (msg.sesCode == '111111') {
+						alert("恭喜，SES服务 "+userServIpaasId +" 验证成功 ! \n SESMessage is ："+msg.sesMsg);
+					} else {
+						alert("SES服务 "+userServIpaasId +" 验证失败 !");
+					}
+				},
+				error : function() {
 					alert("SES服务 "+userServIpaasId +" 验证失败 !");
 				}
-			},
-			error : function() {
-				alert("SES服务 "+userServIpaasId +" 验证失败 !");
-			}
-		});
+			});
+		}		
 	}
 	
 </script>
