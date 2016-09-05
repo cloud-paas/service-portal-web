@@ -213,7 +213,7 @@
 			           <li  style="padding-top:0.5%;font-size:18px;font-weight:400">个</li>			          		          
 		          	</ul>
 		          	<ul>
-			          <li class="font-title" style="margin-left:2px;">服务名称：</li>
+			          <li class="font-title" style="margin-left:15px;">服务名称：</li>
 			          <li ><input name="serviceName" id="serviceName" type="text" class="form-control"aria-describedby="sizing-addon2"></li>
 			          <li><label style="color:red;" id="serviceName_error"></label></li>
 		          	</ul>		          	
