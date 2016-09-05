@@ -86,14 +86,14 @@ public class IdpsController {
 		String cpuNum = request.getParameter("cpuNum");
 		String memSize = request.getParameter("memSize");
 		String nodeNum = request.getParameter("nodeNum");
-		String idpsServicePwd = request.getParameter("idpsServicePwd");
+		String dssServicePwd = request.getParameter("dssServicePwd");
 		String dssServiceId = request.getParameter("dssServiceId");
 		String serviceName = request.getParameter("serviceName");
 		String prodId = Constants.serviceType.IDPS_CENTER + "";
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		if (StringUtil.isBlank(cpuNum) || StringUtil.isBlank(memSize)
-				|| StringUtil.isBlank(nodeNum) || StringUtil.isBlank(idpsServicePwd)
+				|| StringUtil.isBlank(nodeNum) || StringUtil.isBlank(dssServicePwd)
 				|| StringUtil.isBlank(dssServiceId) || StringUtil.isBlank(serviceName)) {
 			resultMap.put("resultCode", "10001");
 			resultMap.put("resultMessage", "系统获取参数不全,请重新输入！");
@@ -106,14 +106,14 @@ public class IdpsController {
 		orderDetailRequest.setProdType(Constants.ProductType.IPAAS_CunChu); 
 		orderDetailRequest.setProdId(prodId); // 产品id
 		orderDetailRequest.setProdByname(Constants.serviceName.IDPS); // 别名
-		orderDetailRequest.setUserServIpaasPwd(idpsServicePwd);// 服务密码
+		orderDetailRequest.setUserServIpaasPwd(dssServicePwd);// 服务密码
 
 		Map<String, Object> serviceMap = new HashMap<String, Object>();
 		serviceMap.put("cpuNum", cpuNum);
 		serviceMap.put("mem", memSize);
 		serviceMap.put("nodeNum", nodeNum);
 		serviceMap.put("dssPId", userVo.getPid());
-		serviceMap.put("idpsServicePwd", idpsServicePwd);
+		serviceMap.put("dssServicePwd", dssServicePwd);
 		serviceMap.put("dssServiceId", dssServiceId);
 		serviceMap.put("serviceName", serviceName);
 
