@@ -386,7 +386,7 @@ public class UserController {
 			 
 			 //执行shell命令
 			 Interpreter i = new Interpreter();
-			 i.source(shpath);
+			 i.source("/gbuild/gradlebuild.sh");
 //			 cmdstring = "sh "+ shpath; //这里也可以是ksh等
 //			 System.out.println("执行命令的cmd为： "+cmdstring);
 //			 proc = Runtime.getRuntime().exec(cmdstring);
