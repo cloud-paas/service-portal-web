@@ -40,6 +40,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import bsh.Interpreter;
+
 import com.ai.paas.ipaas.PaasException;
 import com.ai.paas.ipaas.checkservice.ServiceCheck;
 import com.ai.paas.ipaas.config.ftp.SFTPConfig;
@@ -374,24 +376,26 @@ public class UserController {
 			 writer.write(sb.toString());
 			 writer.close();
 
-//			 String cmd = "nohup /gbuild/gradlebuild.sh &";
-//			 Runtime.getRuntime().exec(cmd);
-			 
+			 //修改shell的执行权限
 			 String shpath=config_class.getResource("/gbuild/gradlebuild.sh").getPath(); 
 			 System.out.println("shpath is: "+ shpath);
 			 String cmdstring = "chmod 777 " + shpath;
 			 System.out.println("修改权限的cmd为： "+cmdstring);
 			 Process proc = Runtime.getRuntime().exec(cmdstring);
 			 proc.waitFor(); //阻塞，直到上述命令执行完
-			 cmdstring = "sh "+ shpath; //这里也可以是ksh等
-			 System.out.println("执行命令的cmd为： "+cmdstring);
-			 proc = Runtime.getRuntime().exec(cmdstring);
-			 proc.waitFor();
-			 // 注意下面的操作
-			 String ls;
-			 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-			 while ( (ls=bufferedReader.readLine()) != null);
-			 bufferedReader.close();			 
+			 
+			 //执行shell命令
+			 Interpreter i = new Interpreter();
+			 i.source(shpath);
+//			 cmdstring = "sh "+ shpath; //这里也可以是ksh等
+//			 System.out.println("执行命令的cmd为： "+cmdstring);
+//			 proc = Runtime.getRuntime().exec(cmdstring);
+//			 proc.waitFor();
+//			 // 注意下面的操作
+//			 String ls;
+//			 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+//			 while ( (ls=bufferedReader.readLine()) != null);
+//			 bufferedReader.close();			 
 
 			 result.put("resultCode", "000000");
 		
