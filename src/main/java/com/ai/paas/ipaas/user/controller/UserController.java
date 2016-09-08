@@ -382,7 +382,11 @@ public class UserController {
 			 cmdstring = "/bin/sh "+ shpath; //这里也可以是ksh等
 			 System.out.println("执行命令的cmd为： "+cmdstring);
 			 proc = Runtime.getRuntime().exec(cmdstring);
-			 proc.waitFor();
+			 if (proc.waitFor() !=0)
+			 {
+				 result.put("resultCode", "999999");
+				 return result;
+			 }
 			 
 			 // 注意下面的操作
 			 String ls;
