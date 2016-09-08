@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
@@ -377,18 +378,17 @@ public class UserController {
 			 Process proc = Runtime.getRuntime().exec(cmdstring);
 			 proc.waitFor(); //阻塞，直到上述命令执行完
 			 
-			 //执行shell命令
-			 Interpreter i = new Interpreter();
-			 i.source(shpath);
-//			 cmdstring = "sh "+ shpath; //这里也可以是ksh等
-//			 System.out.println("执行命令的cmd为： "+cmdstring);
-//			 proc = Runtime.getRuntime().exec(cmdstring);
-//			 proc.waitFor();
-//			 // 注意下面的操作
-//			 String ls;
-//			 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-//			 while ( (ls=bufferedReader.readLine()) != null);
-//			 bufferedReader.close();			 
+			 
+			 cmdstring = "/bin/sh "+ shpath; //这里也可以是ksh等
+			 System.out.println("执行命令的cmd为： "+cmdstring);
+			 proc = Runtime.getRuntime().exec(cmdstring);
+			 proc.waitFor();
+			 
+			 // 注意下面的操作
+			 String ls;
+			 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			 while ( (ls=bufferedReader.readLine()) != null);
+			 bufferedReader.close();			 
 
 			 result.put("resultCode", "000000");
 		
