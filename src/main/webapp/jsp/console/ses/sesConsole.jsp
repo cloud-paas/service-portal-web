@@ -122,6 +122,7 @@
 									+'|<a href="#" onclick=toStop("'+ item.userServId +'","'+item.serviceName+'"); >停止</a>'
 									+'|<a href="#" onclick=toCancle("'+ item.userServId +'","'+item.serviceName+'"); >注销</a>'
 									+'|<a href="#" onclick=checkService("'+ item.userServIpaasId +'"); >服务验证</a>'
+									+'|<a href="#" onclick=goSesControl("'+ item.userServParamMap.serivcePwd +'","'+ item.userServIpaasId +'","'+ item.userServBackParamMap.webUrl +'"); >控制台</a>'
 									+ '</td>';
 							}else if(item.userServRunState=='1'){
 								html += '<td>' 
@@ -129,6 +130,7 @@
 									+'|<a href="#" onclick=toStart("'+ item.userServId +'","'+item.serviceName+'"); >启动</a>'
 									+'|<a href="#" onclick=toCancle("'+ item.userServId+'","'+item.serviceName +'"); >注销</a>'	
 									+'|<a href="#" onclick=checkService("'+ item.userServIpaasId +'"); >服务验证</a>'
+									+'|<a href="#" onclick=goSesControl("'+ item.userServParamMap.serivcePwd +'","'+ item.userServIpaasId +'","'+ item.userServBackParamMap.webUrl +'"); >控制台</a>'
 									+ '</td>';
 							}else{
 								html += '<td>' 
@@ -136,6 +138,7 @@
 									+'|<a href="#" onclick=toStop("'+ item.userServId +'","'+item.serviceName+'"); >停止</a>'
 									+'|<a href="#" onclick=toCancle("'+ item.userServId +'","'+item.serviceName+'"); >注销</a>'
 									+'|<a href="#" onclick=checkService("'+ item.userServIpaasId +'"); >服务验证</a>'
+									+'|<a href="#" onclick=goSesControl("'+ item.userServParamMap.serivcePwd +'","'+ item.userServIpaasId +'","'+ item.userServBackParamMap.webUrl +'"); >控制台</a>'
 									+ '</td>';
 							}
 						
@@ -268,6 +271,17 @@
 				}
 			});
 		}		
+	}
+	
+	function goSesControl(serivcePwd,userServIpaasId,webUrl){
+		//alert("serivcePwd:"+serivcePwd);
+		//alert("userServIpaasId:"+userServIpaasId);
+		if(webUrl =='undefined'){
+			alert("ses开通的url或者密码有问题");
+			return false;
+		}
+		var sesUrl = webUrl+"login/portalLogin?userName="+userName+"&serviceId="+userServIpaasId+"&servicePwd="+serivcePwd+"";
+		window.open(sesUrl);
 	}
 	
 </script>
