@@ -148,6 +148,7 @@ public class SesController {
 		prodparms.put("shardNum", request.getParameter("shardNum"));
 		prodparms.put("sesMem", request.getParameter("sesMem"));
 		prodparms.put("replicasNum", request.getParameter("replicasNum"));
+		prodparms.put("serivcePwd", request.getParameter("serivcePwd"));
 		orderDetailRequest.setProdByname(Constants.serviceName.SES);
 		orderDetailRequest.setOperateType(Constants.OperateType.APPLY);
 		orderDetailRequest.setProdParam(prodparms.toString());
