@@ -46,9 +46,7 @@ dependencies {
 	
 	runtime "com.ai:ipaas-rcs:0.2-SNAPSHOT"+moduleMode
 	
-	runtime ("com.ai:ipaas-txs:0.3.0"+moduleMode){
-		exclude group: 'org.mongodb', module: 'mongo-java-driver'
-	}
+	runtime ("com.ai:ipaas-txs:0.3.0"+moduleMode){exclude group: 'org.mongodb', module: 'mongo-java-driver'}
 	runtime "com.ai:ipaas-ses:0.2.2"+moduleMode
 	runtime "com.ai:ipaas-des:0.2"+moduleMode
 
