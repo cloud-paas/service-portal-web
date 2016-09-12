@@ -372,8 +372,7 @@ public class UserController {
 					 new File(config_class.getResource("/gbuild/build.gradle").toURI()));
 			OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8"); 
 			osw.write(content.toString());
-	        osw.flush(); 
-	        
+	        osw.flush(); 	        
 	        
 			 //修改shell的执行权限
 			 String shpath=config_class.getResource("/gbuild/gradlebuild.sh").getPath(); 
@@ -381,22 +380,17 @@ public class UserController {
 			 String cmdstring = "chmod 777 " + shpath;
 			 System.out.println("修改权限的cmd为： "+cmdstring);
 			 Process proc = Runtime.getRuntime().exec(cmdstring);
-			 proc.waitFor(); //阻塞，直到上述命令执行完
-			 
+			 proc.waitFor(); //阻塞，直到上述命令执行完	 
 			 
 			 cmdstring = "/bin/sh "+ shpath; //这里也可以是ksh等
 			 System.out.println("执行命令的cmd为： "+cmdstring);
-			 proc = Runtime.getRuntime().exec(cmdstring);
-			 if (proc.waitFor() !=0)
-			 {
-				 result.put("resultCode", "999999");
-				 return result;
-			 }
-			 
+			 proc.waitFor(); //阻塞，直到上述命令执行完
 			 // 注意下面的操作
 			 String ls;
 			 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-			 while ( (ls=bufferedReader.readLine()) != null);
+			 while ( (ls=bufferedReader.readLine()) != null) {
+				 System.out.println(ls);
+			 }
 			 bufferedReader.close();			 
 		
 			 result.put("resultCode", "000000");
