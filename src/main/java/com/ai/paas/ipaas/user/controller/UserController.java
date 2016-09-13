@@ -384,6 +384,7 @@ public class UserController {
 			 
 			 cmdstring = "/bin/sh "+ shpath; //这里也可以是ksh等
 			 System.out.println("执行命令的cmd为： "+cmdstring);
+			 proc = Runtime.getRuntime().exec(cmdstring);
 			 proc.waitFor(); //阻塞，直到上述命令执行完
 			 // 注意下面的操作
 			 String ls;
@@ -391,7 +392,13 @@ public class UserController {
 			 while ( (ls=bufferedReader.readLine()) != null) {
 				 System.out.println(ls);
 			 }
-			 bufferedReader.close();			 
+			//waitFor()判断Process进程是否终止，通过返回值判断是否正常终止。0代表正常终止
+			 int c=proc.waitFor();
+			   if(c!=0){
+				   result.put("resultCode", "999999");
+				   result.put("message", "执行gradlebuild.sh异常终止");
+				   return result;
+			   }
 		
 			 result.put("resultCode", "000000");
 		
