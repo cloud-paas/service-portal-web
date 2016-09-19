@@ -5,18 +5,13 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.RandomAccessFile;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,8 +35,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import bsh.Interpreter;
+
 import com.ai.paas.ipaas.PaasException;
-import com.ai.paas.ipaas.checkservice.ServiceCheck;
 import com.ai.paas.ipaas.config.ftp.SFTPConfig;
 import com.ai.paas.ipaas.config.ftp.SFTPConstants;
 import com.ai.paas.ipaas.config.ftp.SFTPException;
@@ -374,19 +370,24 @@ public class UserController {
 			 writer.write(sb.toString());
 			 writer.close();
 
-//			 String cmd = "nohup /gbuild/gradlebuild.sh &";
-//			 Runtime.getRuntime().exec(cmd);
-			 
+			 //修改shell的执行权限
 			 String shpath=config_class.getResource("/gbuild/gradlebuild.sh").getPath(); 
 			 System.out.println("shpath is: "+ shpath);
 			 String cmdstring = "chmod 777 " + shpath;
 			 System.out.println("修改权限的cmd为： "+cmdstring);
 			 Process proc = Runtime.getRuntime().exec(cmdstring);
 			 proc.waitFor(); //阻塞，直到上述命令执行完
-			 cmdstring = "sh "+ shpath; //这里也可以是ksh等
+			 
+			 
+			 cmdstring = "/bin/sh "+ shpath; //这里也可以是ksh等
 			 System.out.println("执行命令的cmd为： "+cmdstring);
 			 proc = Runtime.getRuntime().exec(cmdstring);
-			 proc.waitFor();
+			 if (proc.waitFor() !=0)
+			 {
+				 result.put("resultCode", "999999");
+				 return result;
+			 }
+			 
 			 // 注意下面的操作
 			 String ls;
 			 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
