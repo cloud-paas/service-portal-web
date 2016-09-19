@@ -21,6 +21,8 @@ COPY ./script/service-portal-web.sh /service-portal-web.sh
 RUN cd /opt/apache-tomcat-8.0.35/webapps && unzip -oq service-portal-web.war -d service-portal-web
 RUN chmod 755 /etc/init.d/tomcat8 /*.sh && rm -fr /pkg
 
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
 ENV CATALINA_HOME /opt/apache-tomcat-8.0.35
 ENV PATH $CATALINA_HOME/bin:$PATH
 
