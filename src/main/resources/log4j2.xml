@@ -6,16 +6,14 @@
    </Console>
    
    <RollingFile name="RollingFile"
-     fileName="logs/service-portal-web.log" filePattern="logs/service-portal-web-%d{yyyy-MM-dd}-%i.log">
+     fileName="logs/service-portal-web.log" filePattern="logs/service-portal-web-%d{yyyy-MM-dd-HH-mm}-%i.log">
       <PatternLayout>
          <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
       </PatternLayout>
       <Policies>
-         <!-- 每24小时更新一次 -->
-         <TimeBasedTriggeringPolicy  modulate="true" interval="24" />         
+         <TimeBasedTriggeringPolicy/>         
          <SizeBasedTriggeringPolicy size="10 MB"/>
        </Policies>
-       <!-- 最多备份10个 -->
        <DefaultRolloverStrategy max="10"/>
     </RollingFile>
  </Appenders>
