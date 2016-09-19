@@ -6,13 +6,13 @@
    </Console>
    
    <RollingFile name="RollingFile"
-     fileName="logs/service-portal-web.log" filePattern="logs/service-portal-web-%d{yyyy-MM-dd-HH-mm}-%i.log">
+     fileName="logs/service-portal-web.log" filePattern="logs/service-portal-web-%d{yyyy-MM-dd-HH}-%i.log">
       <PatternLayout>
          <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
       </PatternLayout>
       <Policies>
          <TimeBasedTriggeringPolicy/>         
-         <SizeBasedTriggeringPolicy size="10 MB"/>
+         <SizeBasedTriggeringPolicy size="1KB"/>
        </Policies>
        <DefaultRolloverStrategy max="10"/>
     </RollingFile>
