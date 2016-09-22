@@ -20,7 +20,7 @@ public class LogListener {
 	/**  
      * 定时计算。每天凌晨 01:00 执行一次  
      */    
-    @Scheduled(cron = "0 0 1 * * *")   
+    //@Scheduled(cron = "0 0 1 * * *")   
     public void run() {
 		logger.info("---【监听器监听到开始删除日志文件】---");
 		
@@ -40,6 +40,7 @@ public class LogListener {
 			for (int i = 0; i < logs.length; i++) {
 				// 获取第i个文件
 				File log = logs[i];
+				logger.info("==========文件名： "+ log.getName() +"\r\n");
 				// 获取第i个文件的名称，若属于被删除日期的日志则删除
 				if (log.getName().contains(delDate)) {
 					logger.info("----监听器中，开始删除3天前的日志文件:" + log);
