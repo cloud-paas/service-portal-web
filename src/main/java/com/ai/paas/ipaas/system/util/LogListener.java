@@ -29,7 +29,7 @@ public class LogListener {
 		/**
 		 * 定时删除任务
 		 */
-		// 获取当前日期往前推5天的时间
+		// 获取当前日期往前推3天的时间
 		String delDate = getDelDateByDay(3);
 
 		// 首先进入目录去匹配是否有该文件夹
