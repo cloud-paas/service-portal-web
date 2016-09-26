@@ -1,4 +1,4 @@
-﻿apply plugin: "java"
+apply plugin: "java"
 apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.7
@@ -36,14 +36,20 @@ configurations {
 dependencies {
 	runtime "com.ai:ipaas-uac:0.2"+moduleMode
 	runtime "com.ai:ipaas-ccs:0.2"+moduleMode
-	runtime "com.ai:ipaas-dbs:0.2.1"+moduleMode	
+	runtime "com.ai:ipaas-dbs:0.2.1"+moduleMode
+	
 	runtime "com.ai:ipaas-dss:0.2"+moduleMode
+	
+//	runtime "com.ai:ipaas-mcs:0.1"+moduleMode
 	runtime "com.ai:ipaas-mcs:0.2"+moduleMode
 	runtime "com.ai:ipaas-mds:0.2.9"+moduleMode
-	runtime "com.ai:ipaas-rcs:0.2-SNAPSHOT"+moduleMode	
+	
+	runtime "com.ai:ipaas-rcs:0.2-SNAPSHOT"+moduleMode
+	
 	runtime ("com.ai:ipaas-txs:0.3.0"+moduleMode){exclude group: 'org.mongodb', module: 'mongo-java-driver'}
 	runtime "com.ai:ipaas-ses:0.2.2"+moduleMode
 	runtime "com.ai:ipaas-des:0.2"+moduleMode
+
 }
 
 jar {
