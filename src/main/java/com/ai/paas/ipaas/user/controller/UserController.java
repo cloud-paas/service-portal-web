@@ -5,10 +5,13 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
@@ -34,7 +37,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import bsh.Interpreter;
 
 import com.ai.paas.ipaas.PaasException;
@@ -337,13 +339,14 @@ public class UserController {
 		String[] sdkListArr = sdkList.split(",");
 		
 		BufferedReader reader = null;
-		StringBuffer sb = new StringBuffer();
+		StringBuffer content = new StringBuffer();
 		String line = null;
 		boolean ctsFlg;
 		try {
 			//读取build文件
-			File file = new File(config_class.getResource("/gbuild/build_base.txt").toURI());
-			reader = new BufferedReader(new FileReader(file));
+			FileInputStream file = new FileInputStream(new File(config_class.getResource("/gbuild/build_base.txt").toURI()));
+			InputStreamReader isr = new InputStreamReader(file,"UTF-8");
+			reader = new BufferedReader(isr); 
 			while ((line = reader.readLine())!=null) {
 				if(line.trim().startsWith("runtime")) {
 					ctsFlg = false;
@@ -354,46 +357,49 @@ public class UserController {
 						}
 					}
 					if (ctsFlg == true){
-						sb.append(line);
-						sb.append("\r\n");
+						content.append(line);
+						content.append("\r\n");
 					}
 					continue;
 				}
-				sb.append(line);
-				sb.append("\r\n");
+				content.append(line);
+				content.append("\r\n");
 			}
 			reader.close();
 			
 			//重写build文件
-			 BufferedWriter writer = new BufferedWriter(new FileWriter(
-					 new File(config_class.getResource("/gbuild/build.gradle").toURI())));
-			 writer.write(sb.toString());
-			 writer.close();
-
+			FileOutputStream  fos = new FileOutputStream(
+					 new File(config_class.getResource("/gbuild/build.gradle").toURI()));
+			OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8"); 
+			osw.write(content.toString());
+	        osw.flush(); 	        
+	        
 			 //修改shell的执行权限
 			 String shpath=config_class.getResource("/gbuild/gradlebuild.sh").getPath(); 
 			 System.out.println("shpath is: "+ shpath);
 			 String cmdstring = "chmod 777 " + shpath;
 			 System.out.println("修改权限的cmd为： "+cmdstring);
 			 Process proc = Runtime.getRuntime().exec(cmdstring);
-			 proc.waitFor(); //阻塞，直到上述命令执行完
-			 
+			 proc.waitFor(); //阻塞，直到上述命令执行完	 
 			 
 			 cmdstring = "/bin/sh "+ shpath; //这里也可以是ksh等
 			 System.out.println("执行命令的cmd为： "+cmdstring);
 			 proc = Runtime.getRuntime().exec(cmdstring);
-			 if (proc.waitFor() !=0)
-			 {
-				 result.put("resultCode", "999999");
-				 return result;
-			 }
-			 
+			 proc.waitFor(); //阻塞，直到上述命令执行完
 			 // 注意下面的操作
 			 String ls;
 			 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-			 while ( (ls=bufferedReader.readLine()) != null);
-			 bufferedReader.close();			 
-
+			 while ( (ls=bufferedReader.readLine()) != null) {
+				 System.out.println(ls);
+			 }
+			//waitFor()判断Process进程是否终止，通过返回值判断是否正常终止。0代表正常终止
+			 int c=proc.waitFor();
+			   if(c!=0){
+				   result.put("resultCode", "999999");
+				   result.put("message", "执行gradlebuild.sh异常终止");
+				   return result;
+			   }
+		
 			 result.put("resultCode", "000000");
 		
 		} catch (Exception e) {
