@@ -219,7 +219,6 @@
 	    $.ajax({
 			 url:getContextPath()+"/idpsConsole/upgradeContainer",
 			 type:"POST",
-			 timeout:360000,
 			 data:{
 				 prodBackPara:hiddenServIpaasIdVal
 			 },
@@ -364,6 +363,5 @@
 </div>  
 <!--页脚-->
 <jsp:include page="/jsp/common/footer_new.jsp"></jsp:include>
- 
   </body>
 </html>

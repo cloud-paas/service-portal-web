@@ -959,7 +959,7 @@ jQuery.ready.promise = function( obj ) {
 							// http://javascript.nwbox.com/IEContentLoaded/
 							top.doScroll("left");
 						} catch(e) {
-							return setTimeout( doScrollCheck, 500 );
+							return setTimeout( doScrollCheck, 50 );
 						}
 
 						// detach all dom ready events
@@ -1917,7 +1917,7 @@ getText = Sizzle.getText = function( elem ) {
 Expr = Sizzle.selectors = {
 
 	// Can be adjusted by the user
-	cacheLength: 500,
+	cacheLength: 50,
 
 	createPseudo: markFunction,
 
