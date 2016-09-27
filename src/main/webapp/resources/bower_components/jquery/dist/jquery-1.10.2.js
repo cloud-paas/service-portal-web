@@ -1917,7 +1917,7 @@ getText = Sizzle.getText = function( elem ) {
 Expr = Sizzle.selectors = {
 
 	// Can be adjusted by the user
-	cacheLength: 50,
+	cacheLength: 500,
 
 	createPseudo: markFunction,
 
