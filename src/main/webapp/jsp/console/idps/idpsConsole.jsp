@@ -3,7 +3,7 @@
 <head>
 <title>${prodName}</title>
 <%@ include file="/jsp/common/common.jsp"%>
-
+<script src="${_base }/resources/bower_components/jquery/dist/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		// 页面初始化
