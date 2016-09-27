@@ -959,7 +959,7 @@ jQuery.ready.promise = function( obj ) {
 							// http://javascript.nwbox.com/IEContentLoaded/
 							top.doScroll("left");
 						} catch(e) {
-							return setTimeout( doScrollCheck, 50 );
+							return setTimeout( doScrollCheck, 500 );
 						}
 
 						// detach all dom ready events
