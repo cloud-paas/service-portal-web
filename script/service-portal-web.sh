@@ -13,4 +13,4 @@ if [ -n "$LOG_LEVEL" ]; then
     sed -i "s/<Root level=.*/<Root level=\"${LOG_LEVEL}\">/g" /opt/apache-tomcat-8.0.35/webapps/service-portal-web/WEB-INF/classes/log4j2.xml   
 fi
 
-nohup /opt/apache-tomcat-8.0.35/bin/catalina.sh run >> /service-portal-web.log
+nohup /opt/apache-tomcat-8.0.35/bin/catalina.sh run
