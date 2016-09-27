@@ -220,7 +220,7 @@
 	    $.ajax({
 			 url:getContextPath()+"/idpsConsole/upgradeContainer",
 			 type:"POST",
-			 timeout: 300000,
+			 timeout: 360000,
 			 data:{
 				 prodBackPara:hiddenServIpaasIdVal
 			 },
