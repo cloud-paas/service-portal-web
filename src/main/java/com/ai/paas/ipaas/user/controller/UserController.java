@@ -414,7 +414,7 @@ public class UserController {
 			proc.waitFor(); // 阻塞，直到上述命令执行完
 
 			cmdstring = "/bin/sh " + shpath; // 这里也可以是ksh等
-			logger.info("执行命令的cmd为： " + cmdstring);
+			System.out.println("执行命令的cmd为： " + cmdstring);
 			proc = Runtime.getRuntime().exec(cmdstring);
 
 			// 读取标准输出流
@@ -422,28 +422,31 @@ public class UserController {
 					new InputStreamReader(proc.getInputStream(), "UTF-8"));
 			String outLine;
 			while ((outLine = bufferedReader.readLine()) != null) {
-				logger.info(outLine);
+				System.out.println(outLine);
 			}
 			// 读取标准错误流
 			BufferedReader brError = new BufferedReader(new InputStreamReader(
 					proc.getErrorStream(), "UTF-8"));
 			String errline = null;
 			while ((errline = brError.readLine()) != null) {
-				logger.info(errline);
+				System.out.println(errline);
 			}
 			// waitFor()判断Process进程是否终止，通过返回值判断是否正常终止。0代表正常终止
 			int c = proc.waitFor();
 			if (c != 0) {
+				System.out.println("error 1: "+ c);
 				result.put("resultCode", "999999");
 				result.put("message", "执行gradlebuild.sh异常终止");
 				return result;
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
+			System.out.println("error 2 ");
 			result.put("resultCode", "999999");
 			result.put("message", "执行gradlebuild.sh异常终止");
 			return result;
 		} catch (Exception e1) {
+			System.out.println("error 3 ");
 			e1.printStackTrace();
 			result.put("resultCode", "999999");
 			result.put("message", "执行gradlebuild.sh异常终止");
