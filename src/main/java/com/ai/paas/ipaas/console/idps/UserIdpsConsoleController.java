@@ -163,8 +163,14 @@ public class UserIdpsConsoleController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		String prodBackPara = request.getParameter("prodBackPara");
 		try {
+			long starTime=System.currentTimeMillis();
+			System.out.println("容器重新部署开始时间================"+starTime);
 			//调用----portal_bandend----启用容器
 			ResponseHeader responseHeader = idpsConsoleDubboSv.upgradeContainer(prodBackPara);
+			 long endTime=System.currentTimeMillis();
+			  long Time=endTime-starTime;
+			  System.out.println("容器重新部署结束时间================"+endTime);
+			  System.out.println("容器重新部署共计时间-------------================"+Time);
 			logger.info("======== apply audit end，apply result："+ responseHeader.getResultCode());
 			resultMap.put("resultCode", responseHeader.getResultCode());
 			resultMap.put("resultMessage", responseHeader.getResultMessage());
