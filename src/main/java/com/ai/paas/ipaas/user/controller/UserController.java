@@ -409,27 +409,27 @@ public class UserController {
 					.getPath();
 			System.out.println("shpath is: " + shpath);
 			String cmdstring = "chmod 777 " + shpath;
-			System.out.println("修改权限的cmd为： " + cmdstring);
+			logger.info("修改权限的cmd为： " + cmdstring);
 			Process proc = Runtime.getRuntime().exec(cmdstring);
 			proc.waitFor(); // 阻塞，直到上述命令执行完
 
 			cmdstring = "/bin/sh " + shpath; // 这里也可以是ksh等
-			System.out.println("执行命令的cmd为： " + cmdstring);
+			logger.info("执行命令的cmd为： " + cmdstring);
 			proc = Runtime.getRuntime().exec(cmdstring);
 
 			// 读取标准输出流
 			BufferedReader bufferedReader = new BufferedReader(
-					new InputStreamReader(proc.getInputStream()));
-			String ouLine;
-			while ((ouLine = bufferedReader.readLine()) != null) {
-				System.out.println(ouLine);
+					new InputStreamReader(proc.getInputStream(), "UTF-8"));
+			String outLine;
+			while ((outLine = bufferedReader.readLine()) != null) {
+				logger.info(outLine);
 			}
 			// 读取标准错误流
 			BufferedReader brError = new BufferedReader(new InputStreamReader(
-					proc.getErrorStream(), "gb2312"));
+					proc.getErrorStream(), "UTF-8"));
 			String errline = null;
 			while ((errline = brError.readLine()) != null) {
-				System.out.println(errline);
+				logger.info(errline);
 			}
 			// waitFor()判断Process进程是否终止，通过返回值判断是否正常终止。0代表正常终止
 			int c = proc.waitFor();
