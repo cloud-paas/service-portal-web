@@ -70,6 +70,9 @@
 		          	 </ul>
 	           </div> 
 	           <div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 20px;font-size:16px;margin-top:10px;">从节点信息：</div>
+				
+				
+				
 				<div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 20px">
 	          		 <ul>
 			          <li class="font-title" style="margin-left:27px;">IP地址：</li>				          
@@ -108,6 +111,87 @@
 			          </li>	
 		          	 </ul>
 	           </div> 
+	           
+	           <c:if test="${userProdInstVo.userServBackParamMap.incSimList[2] !=null}">
+	           			<div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 20px">
+	          		 <ul>
+			          <li class="font-title" style="margin-left:27px;">IP地址：</li>				          
+			          <li >			          
+									${userProdInstVo.userServBackParamMap.incSimList[2].incIp}
+			          </li>	
+			          </ul>
+			           <ul>
+			          <li class="font-title" style="margin-left:27px;">实例id：</li>				          
+			          <li >			          
+									${userProdInstVo.userServBackParamMap.incSimList[2].id}
+			          </li>	
+			          </ul>
+			           <ul>
+			           <li class="font-title" style="margin-left:27px;">用户名：</li>				          
+			          <li >			          
+									${userProdInstVo.userServBackParamMap.incSimList[2].rootName}
+			          </li>	
+			          </ul>
+			          <ul>
+			          <li class="font-title" style="margin-left:27px;">密码：</li>				          
+			          <li >			          
+									${userProdInstVo.userServBackParamMap.incSimList[2].rootPassword}
+			          </li>	
+			          </ul>
+			          <ul>
+			          <li class="font-title" style="margin-left:27px;">端口：</li>				          
+			          <li >			          
+									${userProdInstVo.userServBackParamMap.incSimList[2].incPort}
+			          </li>	
+			          </ul>
+			          <ul>
+			          <li class="font-title" style="margin-left:27px;">实例名称：</li>				          
+			          <li >			          
+									${userProdInstVo.userServBackParamMap.incSimList[2].incName}
+			          </li>	
+		          	 </ul>
+	           </div> 
+	           </c:if>
+	            <c:if test="${userProdInstVo.userServBackParamMap.incSimList[3] !=null}">
+	           			<div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 20px">
+	          		 <ul>
+			          <li class="font-title" style="margin-left:27px;">IP地址：</li>				          
+			          <li >			          
+									${userProdInstVo.userServBackParamMap.incSimList[3].incIp}
+			          </li>	
+			          </ul>
+			           <ul>
+			          <li class="font-title" style="margin-left:27px;">实例id：</li>				          
+			          <li >			          
+									${userProdInstVo.userServBackParamMap.incSimList[3].id}
+			          </li>	
+			          </ul>
+			           <ul>
+			           <li class="font-title" style="margin-left:27px;">用户名：</li>				          
+			          <li >			          
+									${userProdInstVo.userServBackParamMap.incSimList[3].rootName}
+			          </li>	
+			          </ul>
+			          <ul>
+			          <li class="font-title" style="margin-left:27px;">密码：</li>				          
+			          <li >			          
+									${userProdInstVo.userServBackParamMap.incSimList[3].rootPassword}
+			          </li>	
+			          </ul>
+			          <ul>
+			          <li class="font-title" style="margin-left:27px;">端口：</li>				          
+			          <li >			          
+									${userProdInstVo.userServBackParamMap.incSimList[3].incPort}
+			          </li>	
+			          </ul>
+			          <ul>
+			          <li class="font-title" style="margin-left:27px;">实例名称：</li>				          
+			          <li >			          
+									${userProdInstVo.userServBackParamMap.incSimList[3].incName}
+			          </li>	
+		          	 </ul>
+	           </div> 
+	           </c:if>
 	           <div class="Open_cache_list_tow" style="vertical-align:middle; line-height:0px; padding:0px 0px 0px 0px">
 	          	 <label style="color:red;margin-left:80px;" id="modify_error"></label>	          		 
 	           </div>    		
