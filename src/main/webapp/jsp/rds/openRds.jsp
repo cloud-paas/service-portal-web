@@ -75,23 +75,8 @@
                         required: true,
                         rangelength:[1,128]
                     },
-                    depId: {
-                    	regexpName: true,
-                        required: true,
-                        rangelength:[1,128]
-                    },
                     incName: {
                     	regexpName: true,
-                        required: true,
-                        rangelength:[1,128]
-                    },
-                    incTag: {
-                    	regexpName: true,
-                        required: true,
-                        rangelength:[1,128]
-                    },
-                    incLocation: {
-                    	regexpName: false,
                         required: true,
                         rangelength:[1,128]
                     },
@@ -125,16 +110,6 @@
                         required: true,
                         rangelength:[1,128]
                     },
-                    sqlAudit: {
-                    	regexpName: true,
-                        required: true,
-                        rangelength:[1,128]
-                    },
-                    syncStrategy: {
-                    	regexpName: true,
-                        required: true,
-                        rangelength:[1,128]
-                    },
                      whiteList: {
                     	regexpName: false,
                         required: true,
@@ -155,21 +130,9 @@
                 		required:"请输入高级权限密码",
                 		rangelength:"高级权限密码就最大长度不超过50"
                 	},
-                	depId:{
-                		required:"请输入部门名称",
-                		rangelength:"部门名称最大长度不超过50"
-                	},
                 	incName:{
                 		required:"请输入实例名称",
                 		rangelength:"实例名称最大长度不超过50"
-                	},
-                	incTag:{
-                		required:"请输入实例标签",
-                		rangelength:"实例标签最大长度不超过50"
-                	},
-                	incLocation:{
-                		required:"请输入实例位置",
-                		rangelength:"实例位置最大长度不超过50"
                 	},
                 	incDescribe:{
                 		required:"请输入实例描述",
@@ -198,14 +161,6 @@
                 	netBandwidth:{
                 		required:"请输入网络带宽",
                 		rangelength:"网络带宽最大长度不超过50"
-                	},
-                	sqlAudit:{
-                		required:"请输入sql审计",
-                		rangelength:"sql审计最大长度不超过50"
-                	},
-                	syncStrategy:{
-                		required:"请输入同步方式",
-                		rangelength:"同步方式最大长度不超过50"
                 	},
                 	maxConnectNum:{
                 		required:"请输入最大连接",
@@ -353,20 +308,8 @@
                             <li><input name="rootPassword" type="text" class="pei_input" id="rootPassword"/></li>
                         </ul>
 						<ul>
-                            <li class="lef_zi">部门名称：</li>
-                            <li><input name="depId" type="text" class="pei_input" id="depId"/></li>
-                        </ul>
-						<ul>
                             <li class="lef_zi">实例名称：</li>
                             <li><input name="incName" type="text" class="pei_input" id="incName"/></li>
-                        </ul>
-						<ul>
-                            <li class="lef_zi">实例标签：</li>
-                            <li><input name="incTag" type="text" class="pei_input" id="incTag"/></li>
-                        </ul>
-						<ul>
-                            <li class="lef_zi">实例位置：</li>
-                            <li><input name="incLocation" type="text" class="pei_input" id="incLocation"/></li>
                         </ul>
 						<ul>
                             <li class="lef_zi">实例描述：</li>
@@ -374,42 +317,55 @@
                         </ul>
 						<ul>
                             <li class="lef_zi">存储大小：</li>
-                            <li><input name="dbStoreage" type="text" class="pei_input" id="dbStoreage"/></li>
+                            <li><input name="dbStoreage" type="text" class="pei_input" id="dbStoreage"/>GB</li>
                         </ul>
 						<ul>
                             <li class="lef_zi">最大连接：</li>
                             <li>
-									<input name="maxConnectNum" type="text" class="pei_input" id="maxConnectNum"/>
+									<input name="maxConnectNum" type="text" class="pei_input" id="maxConnectNum"/>个
 									<input name="incType" type="hidden"  id="incType" value="1"/>
+									<input name="depId" type="hidden" class="pei_input" id="depId"/>
+									<input name="incLocation" type="hidden" class="pei_input" id="incLocation"/>
+									<input name="incTag" type="hidden" class="pei_input" id="incTag"/>
 							</li>
                         </ul>
 						<ul>
                             <li class="lef_zi">IP白名单：</li>
-                            <li><input name="whiteList" type="text" class="pei_input" id="whiteList"/></li>
+                            <li><input name="whiteList" type="text" class="pei_input" id="whiteList"/>ip逗号分割：192.168.10.11,%.%.%.%</li>
                         </ul>
 						<ul>
                             <li class="lef_zi">CPU数量：</li>
-                            <li><input name="cpuInfo" type="text" class="pei_input" id="cpuInfo"/></li>
+                            <li><input name="cpuInfo" type="text" class="pei_input" id="cpuInfo"/>个</li>
                         </ul>
 						<ul>
                             <li class="lef_zi">网络带宽：</li>
-                            <li><input name="netBandwidth" type="text" class="pei_input" id="netBandwidth"/></li>
+                            <li><input name="netBandwidth" type="text" class="pei_input" id="netBandwidth"/>MB</li>
                         </ul>
 						<ul>
                             <li class="lef_zi">sql审计：</li>
-                            <li><input name="sqlAudit" type="text" class="pei_input" id="sqlAudit"/></li>on\off
+                            <li>
+									<select id="sqlAudit" name="sqlAudit"  class="ch_select">
+										<option value="off">关闭</option>
+										<option value="on">打开</option>
+								</select>
+							</li>
                         </ul>
 						<ul>
                             <li class="lef_zi">同步方式：</li>
-                            <li><input name="syncStrategy" type="text" class="pei_input" id="syncStrategy"/></li>semisynchronous\asynchronous
+                            <li>
+								<select id="syncStrategy" name="syncStrategy"  class="ch_select">
+										<option value="asynchronous">异步</option>
+										<option value="semisynchronous">半同步</option>
+								</select>
+							</li>
                         </ul>
 					    <ul>
                             <li class="lef_zi">从库数量：</li>
-                            <li><input name="createSlaverNum" type="text" class="pei_input" id="createSlaverNum"/></li>
+                            <li><input name="createSlaverNum" type="text" class="pei_input" id="createSlaverNum"/>个</li>
                         </ul>
 					   <ul>
                             <li class="lef_zi">内存大小：</li>
-                            <li><input name="intStorage" type="text" class="pei_input" id="intStorage"/></li>
+                            <li><input name="intStorage" type="text" class="pei_input" id="intStorage"/>GB</li>
                         </ul>
                         <ul>
                             <li class="open_btn"><A href="javascript:void(0);" id="registerBtn">立即开通</A></li>

@@ -123,6 +123,7 @@
 							var incIp3 = '';
 							var incPort2= '';
 							var incPort3='';
+							if(item.userServBackParamMap !=undefined){
 							if(item.userServBackParamMap.incSimList[2] !=undefined){
 								incIp2 =item.userServBackParamMap.incSimList[2].incIp 
 							}
@@ -134,6 +135,7 @@
 							}
 							if(item.userServBackParamMap.incSimList[3] !=undefined){
 								incPort3 =item.userServBackParamMap.incSimList[3].incPort 
+							}
 							}
 							html += '<tr >';
 							// 产品名称
