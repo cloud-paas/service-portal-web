@@ -169,7 +169,7 @@ $(function(){
 	   							location.href="${_base}/audit/toDownloadPage?type=1";
 	   						} else {
 	   							location.href="${_base}/jsp/user/sdkSelect.jsp";
-	   							alert("請重新選擇SDK下載項！~");
+	   							confirm("請重新選擇SDK下載項！~");
 	   						}
 	   					},
 	   					complete : function() {

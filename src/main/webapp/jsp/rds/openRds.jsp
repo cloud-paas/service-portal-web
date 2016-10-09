@@ -37,9 +37,29 @@
     			return new RegExp("^([1-9][0-9]*)$").test(val);
     		},"申请的存储大小不能为0或者为非数字");
             
+            jQuery.validator.addMethod("cpuInfoReg", function(val) {
+    			return new RegExp("^([1-9][0-9]*)$").test(val);
+    		},"申请的CPU数量不能为0或者为非数字");
+            
+            jQuery.validator.addMethod("createSlaverNumReg", function(val) {
+    			return new RegExp("^([1-9][0-9]*)$").test(val);
+    		},"申请的从库数量不能为0或者为非数字");
+            
+            jQuery.validator.addMethod("intStorageReg", function(val) {
+    			return new RegExp("^([1-9][0-9]*)$").test(val);
+    		},"申请的内存大小不能为0或者为非数字");
+            
+            jQuery.validator.addMethod("netBandwidthReg", function(val) {
+    			return new RegExp("^([1-9][0-9]*)$").test(val);
+    		},"申请的网络带宽不能为0或者为非数字");
+            
             jQuery.validator.addMethod("maxConnectNumReg", function(val) {
     			return new RegExp("^([1-9][0-9]*)$").test(val);
     		},"申请的最大连接不能为0或者为非数字");
+            
+            jQuery.validator.addMethod("regexpName", function(val) {
+    			return new RegExp("^[A-Za-z0-9_\u4e00-\u9fa5]+$").test(val);
+    		},"请输入合法的数据");
             
             var configserverregister = $("#configserverregister");
             configserverregister.validate({
@@ -51,26 +71,11 @@
                         rangelength:[1,128]
                     },
                     rootPassword: {
-                    	regexpName: true,
-                        required: true,
-                        rangelength:[1,128]
-                    },
-                    depId: {
-                    	regexpName: true,
+                    	regexpPwd: true,
                         required: true,
                         rangelength:[1,128]
                     },
                     incName: {
-                    	regexpName: true,
-                        required: true,
-                        rangelength:[1,128]
-                    },
-                    incTag: {
-                    	regexpName: true,
-                        required: true,
-                        rangelength:[1,128]
-                    },
-                    incLocation: {
                     	regexpName: true,
                         required: true,
                         rangelength:[1,128]
@@ -82,6 +87,31 @@
                     },
                     dbStoreage: {
                     	dbStoreageReg: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
+                    cpuInfo: {
+                    	cpuInfoReg: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
+                    createSlaverNum: {
+                    	createSlaverNumReg: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
+                    intStorage: {
+                    	intStorageReg: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
+                    netBandwidth: {
+                    	netBandwidthReg: true,
+                        required: true,
+                        rangelength:[1,128]
+                    },
+                     whiteList: {
+                    	regexpName: false,
                         required: true,
                         rangelength:[1,128]
                     },
@@ -100,21 +130,9 @@
                 		required:"请输入高级权限密码",
                 		rangelength:"高级权限密码就最大长度不超过50"
                 	},
-                	depId:{
-                		required:"请输入部门名称",
-                		rangelength:"部门名称最大长度不超过50"
-                	},
                 	incName:{
                 		required:"请输入实例名称",
                 		rangelength:"实例名称最大长度不超过50"
-                	},
-                	incTag:{
-                		required:"请输入实例标签",
-                		rangelength:"实例标签最大长度不超过50"
-                	},
-                	incLocation:{
-                		required:"请输入实例位置",
-                		rangelength:"实例位置最大长度不超过50"
                 	},
                 	incDescribe:{
                 		required:"请输入实例描述",
@@ -123,6 +141,26 @@
                 	dbStoreage:{
                 		required:"请输入存储大小",
                 		rangelength:"存储大小最大长度不超过50"
+                	},
+                	whiteList:{
+                		required:"请输入IP白名单",
+                		rangelength:"IP白名单最大长度不超过50"
+                	},
+                	cpuInfo:{
+                		required:"请输入CPU数量",
+                		rangelength:"CPU数量最大长度不超过50"
+                	},
+                	createSlaverNum:{
+                		required:"请输入从库数量",
+                		rangelength:"从库数量最大长度不超过50"
+                	},
+                	intStorage:{
+                		required:"请输入内存大小",
+                		rangelength:"内存大小最大长度不超过50"
+                	},
+                	netBandwidth:{
+                		required:"请输入网络带宽",
+                		rangelength:"网络带宽最大长度不超过50"
                 	},
                 	maxConnectNum:{
                 		required:"请输入最大连接",
@@ -171,6 +209,27 @@
                             },
                             dbStoreage: function () {
                                 return $("#dbStoreage").val();
+                            },
+                            whiteList: function () {
+                                return $("#whiteList").val();
+                            },
+                            cpuInfo: function () {
+                                return $("#cpuInfo").val();
+                            },
+                            netBandwidth: function () {
+                                return $("#netBandwidth").val();
+                            },
+                            sqlAudit: function () {
+                                return $("#sqlAudit").val();
+                            },
+                            syncStrategy: function () {
+                                return $("#syncStrategy").val();
+                            },
+                            createSlaverNum: function () {
+                                return $("#createSlaverNum").val();
+                            },
+                            intStorage: function () {
+                                return $("#intStorage").val();
                             },
                             maxConnectNum: function () {
                                 return $("#maxConnectNum").val();
@@ -249,20 +308,8 @@
                             <li><input name="rootPassword" type="text" class="pei_input" id="rootPassword"/></li>
                         </ul>
 						<ul>
-                            <li class="lef_zi">部门名称：</li>
-                            <li><input name="depId" type="text" class="pei_input" id="depId"/></li>
-                        </ul>
-						<ul>
                             <li class="lef_zi">实例名称：</li>
                             <li><input name="incName" type="text" class="pei_input" id="incName"/></li>
-                        </ul>
-						<ul>
-                            <li class="lef_zi">实例标签：</li>
-                            <li><input name="incTag" type="text" class="pei_input" id="incTag"/></li>
-                        </ul>
-						<ul>
-                            <li class="lef_zi">实例位置：</li>
-                            <li><input name="incLocation" type="text" class="pei_input" id="incLocation"/></li>
                         </ul>
 						<ul>
                             <li class="lef_zi">实例描述：</li>
@@ -270,16 +317,56 @@
                         </ul>
 						<ul>
                             <li class="lef_zi">存储大小：</li>
-                            <li><input name="dbStoreage" type="text" class="pei_input" id="dbStoreage"/></li>
+                            <li><input name="dbStoreage" type="text" class="pei_input" id="dbStoreage"/>GB</li>
                         </ul>
 						<ul>
                             <li class="lef_zi">最大连接：</li>
                             <li>
-									<input name="maxConnectNum" type="text" class="pei_input" id="maxConnectNum"/>
+									<input name="maxConnectNum" type="text" class="pei_input" id="maxConnectNum"/>个
 									<input name="incType" type="hidden"  id="incType" value="1"/>
+									<input name="depId" type="hidden" class="pei_input" id="depId"/>
+									<input name="incLocation" type="hidden" class="pei_input" id="incLocation"/>
+									<input name="incTag" type="hidden" class="pei_input" id="incTag"/>
 							</li>
                         </ul>
-
+						<ul>
+                            <li class="lef_zi">IP白名单：</li>
+                            <li><input name="whiteList" type="text" class="pei_input" id="whiteList"/>ip逗号分割：192.168.10.11,%.%.%.%</li>
+                        </ul>
+						<ul>
+                            <li class="lef_zi">CPU数量：</li>
+                            <li><input name="cpuInfo" type="text" class="pei_input" id="cpuInfo"/>个</li>
+                        </ul>
+						<ul>
+                            <li class="lef_zi">网络带宽：</li>
+                            <li><input name="netBandwidth" type="text" class="pei_input" id="netBandwidth"/>MB</li>
+                        </ul>
+						<ul>
+                            <li class="lef_zi">sql审计：</li>
+                            <li>
+									<select id="sqlAudit" name="sqlAudit"  class="ch_select">
+										<option value="off">关闭</option>
+										<option value="on">打开</option>
+								</select>
+							</li>
+                        </ul>
+						<ul>
+                            <li class="lef_zi">同步方式：</li>
+                            <li>
+								<select id="syncStrategy" name="syncStrategy"  class="ch_select">
+										<option value="asynchronous">异步</option>
+										<option value="semisynchronous">半同步</option>
+								</select>
+							</li>
+                        </ul>
+					    <ul>
+                            <li class="lef_zi">从库数量：</li>
+                            <li><input name="createSlaverNum" type="text" class="pei_input" id="createSlaverNum"/>个</li>
+                        </ul>
+					   <ul>
+                            <li class="lef_zi">内存大小：</li>
+                            <li><input name="intStorage" type="text" class="pei_input" id="intStorage"/>GB</li>
+                        </ul>
                         <ul>
                             <li class="open_btn"><A href="javascript:void(0);" id="registerBtn">立即开通</A></li>
                         </ul>

@@ -119,6 +119,24 @@
 				.each(
 						obj,
 						function(n, item) {
+							var incIp2 = '';
+							var incIp3 = '';
+							var incPort2= '';
+							var incPort3='';
+							if(item.userServBackParamMap !=undefined){
+							if(item.userServBackParamMap.incSimList[2] !=undefined){
+								incIp2 =item.userServBackParamMap.incSimList[2].incIp 
+							}
+							if(item.userServBackParamMap.incSimList[3] !=undefined){
+								incIp3 =item.userServBackParamMap.incSimList[3].incIp 
+							}
+							if(item.userServBackParamMap.incSimList[2] !=undefined){
+								incPort2 =item.userServBackParamMap.incSimList[2].incPort 
+							}
+							if(item.userServBackParamMap.incSimList[3] !=undefined){
+								incPort3 =item.userServBackParamMap.incSimList[3].incPort 
+							}
+							}
 							html += '<tr >';
 							// 产品名称
 							html += '<td>' + item.prodName + '</td>';
@@ -128,10 +146,28 @@
 							html += '<td>' + item.userServIpaasId + '</td>';
 							
 							// IP地址
-							html += '<td> 主：' + item.userServBackParamMap.incSimList[0].incIp +'<br/>从：'+item.userServBackParamMap.incSimList[1].incIp + '</td>';
+							html += '<td> 主：' 
+							+ item.userServBackParamMap.incSimList[0].incIp +
+							'<br/>从：'
+							+item.userServBackParamMap.incSimList[1].incIp 
+							+'&nbsp;&nbsp;'
+							+incIp2
+							+'&nbsp;&nbsp;'
+							+incIp3
+							+'&nbsp;&nbsp;'
+							+ '</td>';
 							
 							// 端口
-							html += '<td> 主：' + item.userServBackParamMap.incSimList[0].incPort +'<br/>从：'+item.userServBackParamMap.incSimList[1].incPort + '</td>';
+							html += '<td> 主：' 
+							+ item.userServBackParamMap.incSimList[0].incPort 
+							+'<br/>从：'
+							+item.userServBackParamMap.incSimList[1].incPort 
+							+'&nbsp;&nbsp;'
+							+incPort2
+							+'&nbsp;&nbsp;'
+							+incPort3
+							+'&nbsp;&nbsp;'
+							+ '</td>';
 							//操作
 							html += '<td style="font-size:14px" align="left">' 
 								+'<a onclick="stopRdsContainer('+item.userServBackParamMap.incSimList[0].id+');" style="cursor: pointer;">'+"停用"+'</a>'
@@ -243,7 +279,7 @@
 	}
 	
 	 function manageRds(){
-		 window.open("http://10.1.245.224:12345/phpmyadmin/index.php");
+		 window.open("http://10.1.245.226:12345");
 		 
 		/*  $.post("http://10.1.245.224:12345/phpmyadmin/index.php",
 		  {pma_servername:"10.1.228.202:31316",

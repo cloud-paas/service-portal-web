@@ -90,6 +90,14 @@ public class RdsController {
 		serviceMap.put("dbStoreage", request.getParameter("dbStoreage"));
 		serviceMap.put("maxConnectNum", request.getParameter("maxConnectNum"));
 		
+		serviceMap.put("whiteList", request.getParameter("whiteList"));	
+		serviceMap.put("cpuInfo", request.getParameter("cpuInfo"));
+		serviceMap.put("netBandwidth", request.getParameter("netBandwidth"));
+		serviceMap.put("sqlAudit", request.getParameter("sqlAudit"));
+		serviceMap.put("syncStrategy", request.getParameter("syncStrategy"));
+		serviceMap.put("createSlaverNum", request.getParameter("createSlaverNum"));
+		serviceMap.put("intStorage", request.getParameter("intStorage"));
+		
 		orderDetailRequest.setProdParam(prodParam.toJson(serviceMap)); // 配置中心参数为空
 		orderDetailRequest.setUserServIpaasPwd(request.getParameter("servicePassword"));// 服务密码
 
