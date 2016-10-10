@@ -34,7 +34,7 @@
      	<div class="Open_cache">  
 	        <div class="Open_cache_list" style="margin:0"> 
 	          	<div class="Open_cache_list_tow" style="vertical-align:middle;line-height:30px">  
-				<div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 20px">
+				<div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 40px">
 	          		 <ul>
 			          <li class="font-title" style="margin-left:27px;">总容量：</li>				          
 			          <li >			          
