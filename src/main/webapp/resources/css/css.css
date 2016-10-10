@@ -196,7 +196,7 @@ html, body { height: 100%; }
 .Open_cache_list_tow ul{width:860px;  float:left; margin-left:10px; margin-top:20px;}
 .Open_cache_list_tow ul li{ float:left; margin-right:10px;font-size:14px; line-height:24px; color:#666;}
 .Open_cache_list_tow ul .lef_zi{ width:135px; text-align:right; font-size:14px; color:#666;}
-.ch_select{ width:94px; height:24px; background:#eef9f1; border:1px solid #acd9b9;}
+.ch_select{ width:100px; height:24px; background:#eef9f1; border:1px solid #acd9b9;}
 .pei_input{ width:200px; height:24px; float:left; border:1px solid #e9e9e9; background:#fbfbfb;}
 .pei_input_g{ width:200px; height:84px; float:left; border:1px solid #e9e9e9; background:#fbfbfb;}
 .pei_select{ width:200px; height:26px; float:left; border:1px solid #e9e9e9; background:#fbfbfb;}
