@@ -433,10 +433,10 @@ public class UserDssConsoleController {
 	
 	@RequestMapping(value="/modifyDetailById")
 	public String modifyDetailById(HttpServletRequest req,HttpServletResponse resp){
+		String capacity_10240 = SystemConfigHandler.configMap.get("DSS.capacity.10240");
+		String capacity_51200 = SystemConfigHandler.configMap.get("DSS.capacity.51200");
+		String capacity_102400 = SystemConfigHandler.configMap.get("DSS.capacity.102400");
 		String capacity_1024 = SystemConfigHandler.configMap.get("DSS.capacity.1024");
-		String capacity_1536 = SystemConfigHandler.configMap.get("DSS.capacity.10240");
-		String capacity_2048 = SystemConfigHandler.configMap.get("DSS.capacity.51200");
-		String capacity_512 = SystemConfigHandler.configMap.get("DSS.capacity.102400");
 		String singleFile_1 = SystemConfigHandler.configMap.get("DSS.singleFileSize.1");
 		String singleFile_5 = SystemConfigHandler.configMap.get("DSS.singleFileSize.5");
 		String singleFile_10 = SystemConfigHandler.configMap.get("DSS.singleFileSize.10");
@@ -444,10 +444,10 @@ public class UserDssConsoleController {
 		SelectWithNoPageResponse<UserProdInstVo> response = null;
 		String userServId = req.getParameter("userServId"); 
 		List<String> clist = new ArrayList<String>();
-		clist.add(capacity_512);
 		clist.add(capacity_1024);
-		clist.add(capacity_1536);
-		clist.add(capacity_2048);
+		clist.add(capacity_10240);
+		clist.add(capacity_51200);
+		clist.add(capacity_102400);
 		List<String> slist=new ArrayList<String>();
 		slist.add(singleFile_1);
 		slist.add(singleFile_5);
