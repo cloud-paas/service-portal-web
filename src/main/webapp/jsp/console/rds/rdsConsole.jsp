@@ -279,8 +279,8 @@
 	}
 	
 	function manageRds(ip, port){
-		 //alert(rdsManageUrl);
-		 window.open(rdsManageUrl+"?pma_servername="+ip+":"+port);
+		 alert(rdsManageUrl);
+		 //window.open(rdsManageUrl+"?pma_servername="+ip+":"+port);
 		 //window.open("http://10.1.245.226:12345?pma_servername="+ip+":"+port);
 		 
 		/*  $.post("http://10.1.245.224:12345/phpmyadmin/index.php",
