@@ -174,7 +174,7 @@
 								+'<a onclick="starRdsContainer('+item.userServBackParamMap.incSimList[0].id+');" style="cursor: pointer;">'+"启用"+'</a>'
 								+'<a onclick="destroyRdsContainer('+item.userServBackParamMap.incSimList[0].id+','+item.userServId+');" style="cursor: pointer;">'+"注销"+'</a>'
 								+'<a  href="queryRdsListById?userServId='+item.userServId+'" style="cursor: pointer;">'+"查看"+'</a>'
-								+'<a onclick="manageRds('+ item.userServBackParamMap.incSimList[0].incIp +','+item.userServBackParamMap.incSimList[0].incPort+');" style="cursor: pointer;">'+"管理"+'</a>'
+								+'<a onclick="manageRds('+item.userServBackParamMap.incSimList[0].incIp+','+item.userServBackParamMap.incSimList[0].incPort+');" style="cursor: pointer;">'+"管理"+'</a>'
 								+ '</td>';
 							html += '</tr>';
 							
@@ -279,8 +279,9 @@
 	}
 	
 	function manageRds(ip, port){
-		 alert(rdsManageUrl);
-		 window.open("http://10.1.245.226:12345?pma_servername="+ip+":"+port);
+		 //alert(rdsManageUrl);
+		 window.open(rdsManageUrl+"?pma_servername="+ip+":"+port);
+		 //window.open("http://10.1.245.226:12345?pma_servername="+ip+":"+port);
 		 
 		/*  $.post("http://10.1.245.224:12345/phpmyadmin/index.php",
 		  {pma_servername:"10.1.228.202:31316",
