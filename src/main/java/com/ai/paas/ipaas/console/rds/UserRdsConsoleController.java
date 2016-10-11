@@ -1,6 +1,7 @@
 package com.ai.paas.ipaas.console.rds;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ai.paas.ipaas.PaasException;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IProdProductDubboSv;
@@ -57,9 +59,11 @@ public class UserRdsConsoleController {
 		String indexFlag = req.getParameter("indexFlag");
 		req.setAttribute("indexFlag", indexFlag);
 		
-		SysParmRequest rdsReq = new SysParmRequest();
-		rdsReq.setTypeCode(Constants.serviceName.RDS);
-		rdsReq.setParamCode(Constants.paramCode.OPTIONS);
+		SysParmRequest sysParmRequest = new SysParmRequest();
+		sysParmRequest.setTypeCode(Constants.serviceName.RDS);
+		sysParmRequest.setParamCode(Constants.paramCode.OPTIONS);
+		SysParamVo rdsManageUrl;
+
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			SelectWithNoPageResponse<ProdProductVo> prodProductVoresponse = null;
@@ -73,8 +77,9 @@ public class UserRdsConsoleController {
 			prodProductVo = prodProductVoresponse.getResultList().get(0);
 			req.setAttribute("prodName", prodProductVo.getProdName());
 			
-			SysParamVo rdsManageUrl = iSysParam.getSysParamsVo(rdsReq);
-			req.setAttribute("rdsManageUrl", rdsManageUrl);
+			rdsManageUrl = iSysParam.getSysParamsVo(sysParmRequest);		
+			req.setAttribute("rdsManageUrl", rdsManageUrl.getServiceOption());
+			System.out.println("rdsManageUrl: "+rdsManageUrl.getServiceOption());
 		} catch (Exception e) {
 			logger.error(e);
 			result.put("resultCode", Constants.OPERATE_CODE_FAIL);

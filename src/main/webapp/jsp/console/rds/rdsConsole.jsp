@@ -174,7 +174,7 @@
 								+'<a onclick="starRdsContainer('+item.userServBackParamMap.incSimList[0].id+');" style="cursor: pointer;">'+"启用"+'</a>'
 								+'<a onclick="destroyRdsContainer('+item.userServBackParamMap.incSimList[0].id+','+item.userServId+');" style="cursor: pointer;">'+"注销"+'</a>'
 								+'<a  href="queryRdsListById?userServId='+item.userServId+'" style="cursor: pointer;">'+"查看"+'</a>'
-								+'<a onclick="manageRds('+item.userServBackParamMap.incSimList[0].incIp+','+item.userServBackParamMap.incSimList[0].incPort+');" style="cursor: pointer;">'+"管理"+'</a>'
+								+'<a onclick="manageRds(\''+item.userServBackParamMap.incSimList[0].incIp+'\','+item.userServBackParamMap.incSimList[0].incPort+');" style="cursor: pointer;">'+"管理"+'</a>'
 								+ '</td>';
 							html += '</tr>';
 							
@@ -278,8 +278,12 @@
 		 }
 	}
 	
-	function manageRds(ip, port){
-		 alert(rdsManageUrl);
+	function manageRds(ip,port){
+		url=${rdsManageUrl};
+		alert("rdsManageUrl is"+url);
+		host=ip+":"+port
+		//window.location.href="http://10.1.245.224:12345/phpmyadmin/index.php?pma_servername="+host;
+		 //alert("rdsManageUrl is:"+rdsManageUrl);
 		 //window.open(rdsManageUrl+"?pma_servername="+ip+":"+port);
 		 //window.open("http://10.1.245.226:12345?pma_servername="+ip+":"+port);
 		 
@@ -304,21 +308,21 @@
 	    	     }
 	    	 }); */
 		 
-		  /* $.ajax({
+	    	 /*$.ajax({
 		            type:"POST",
 		            url:"http://10.1.245.224:12345/phpmyadmin/index.php",
 		            data:{
-		            	pma_servername:"10.1.228.202:31316",
-		            	pma_username:"devrdbusr21",
-		            	pma_password:"devrdbusr21",
+		            	pma_servername:ip+":"+port,
+		            	//pma_username:"devrdbusr21",
+		            	//pma_password:"devrdbusr21",
 		            	server:"1",
 		            	target:"index.php",
 		            	token:""},
 		            datatype: "html",//"xml", "html", "script", "json", "jsonp", "text".
 		            success:function(data){
 		            	alert(data);
-		               // $("#msg").html(decodeURI(data));          
-		            	//window.open("http://10.1.245.224:12345/phpmyadmin/index.php");
+		                $("#msg").html(decodeURI(data));          
+		            	window.open("http://10.1.245.224:12345/phpmyadmin/index.php");
 		             }      
 		         });   */
 		  /* 
