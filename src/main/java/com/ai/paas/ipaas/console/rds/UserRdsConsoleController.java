@@ -62,7 +62,7 @@ public class UserRdsConsoleController {
 		SysParmRequest sysParmRequest = new SysParmRequest();
 		sysParmRequest.setTypeCode(Constants.serviceName.RDS);
 		sysParmRequest.setParamCode(Constants.paramCode.OPTIONS);
-		SysParamVo rdsManageUrl;
+		List<SysParamVo> rdsManageUrl;
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
@@ -77,9 +77,12 @@ public class UserRdsConsoleController {
 			prodProductVo = prodProductVoresponse.getResultList().get(0);
 			req.setAttribute("prodName", prodProductVo.getProdName());
 			
-			rdsManageUrl = iSysParam.getSysParamsVo(sysParmRequest);		
-			req.setAttribute("rdsManageUrl", rdsManageUrl.getServiceOption());
-			System.out.println("rdsManageUrl: "+rdsManageUrl.getServiceOption());
+			 rdsManageUrl = iSysParam.getSysParams(sysParmRequest);
+			 if (rdsManageUrl!=null && rdsManageUrl.size()>0) {
+				 req.setAttribute("rdsManageUrl", rdsManageUrl.get(0).getServiceOption());
+				System.out.println("rdsManageUrl: "+rdsManageUrl.get(0).getServiceOption());
+			 }
+			
 		} catch (Exception e) {
 			logger.error(e);
 			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
