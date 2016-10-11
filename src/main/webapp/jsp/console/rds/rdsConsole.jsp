@@ -280,7 +280,7 @@
 	
 	function manageRds(String ip, String port){
 		 alert(rdsManageUrl);
-		 window.open("http://10.1.245.226:12345?pma_servername="+ip+':'+port);
+		 window.open("http://10.1.245.226:12345?pma_servername="+ip+":"+port);
 		 
 		/*  $.post("http://10.1.245.224:12345/phpmyadmin/index.php",
 		  {pma_servername:"10.1.228.202:31316",
