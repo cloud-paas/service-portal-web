@@ -278,7 +278,7 @@
 		 }
 	}
 	
-	function manageRds(String ip, String port){
+	function manageRds(ip, port){
 		 alert(rdsManageUrl);
 		 window.open("http://10.1.245.226:12345?pma_servername="+ip+":"+port);
 		 
