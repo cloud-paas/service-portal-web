@@ -279,7 +279,7 @@
 	}
 	
 	function manageRds(ip,port){
-		url=${rdsManageUrl};
+		url="${rdsManageUrl}";
 		alert("rdsManageUrl is"+url);
 		host=ip+":"+port
 		//window.location.href="http://10.1.245.224:12345/phpmyadmin/index.php?pma_servername="+host;
