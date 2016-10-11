@@ -1,6 +1,7 @@
 package com.ai.paas.ipaas.console.rds;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,8 @@ import com.ai.paas.ipaas.user.dubbo.vo.ProdProductVo;
 import com.ai.paas.ipaas.user.dubbo.vo.ResponseHeader;
 import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
+import com.ai.paas.ipaas.user.dubbo.vo.SysParamVo;
+import com.ai.paas.ipaas.user.dubbo.vo.SysParmRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -55,6 +58,10 @@ public class UserRdsConsoleController {
 		String indexFlag = req.getParameter("indexFlag");
 		req.setAttribute("indexFlag", indexFlag);
 		Map<String, Object> result = new HashMap<String, Object>();
+		SysParmRequest sysParmRequest = new SysParmRequest();
+		sysParmRequest.setTypeCode(Constants.serviceName.RDS);
+		sysParmRequest.setParamCode(Constants.paramCode.OPTIONS);
+		List<SysParamVo> rdsManageUrl;
 		try {
 			SelectWithNoPageResponse<ProdProductVo> prodProductVoresponse = null;
 			SelectWithNoPageRequest<ProdProductVo> prodProductVoRequest = new SelectWithNoPageRequest<ProdProductVo>();
@@ -66,6 +73,11 @@ public class UserRdsConsoleController {
 					.selectProduct(prodProductVoRequest);
 			prodProductVo = prodProductVoresponse.getResultList().get(0);
 			req.setAttribute("prodName", prodProductVo.getProdName());
+			rdsManageUrl = iSysParam.getSysParams(sysParmRequest);
+			if (rdsManageUrl!=null && rdsManageUrl.size()>0) {
+				 req.setAttribute("rdsManageUrl", rdsManageUrl.get(0).getServiceOption());
+				System.out.println("rdsManageUrl: "+rdsManageUrl.get(0).getServiceOption());
+			 } 
 		} catch (Exception e) {
 			logger.error(e);
 			result.put("resultCode", Constants.OPERATE_CODE_FAIL);

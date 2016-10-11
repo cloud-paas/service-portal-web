@@ -174,7 +174,7 @@
 								+'<a onclick="starRdsContainer('+item.userServBackParamMap.incSimList[0].id+');" style="cursor: pointer;">'+"启用"+'</a>'
 								+'<a onclick="destroyRdsContainer('+item.userServBackParamMap.incSimList[0].id+','+item.userServId+');" style="cursor: pointer;">'+"注销"+'</a>'
 								+'<a  href="queryRdsListById?userServId='+item.userServId+'" style="cursor: pointer;">'+"查看"+'</a>'
-								+'<a onclick="manageRds();" style="cursor: pointer;">'+"管理"+'</a>'
+								+'<a onclick="manageRds(\''+item.userServBackParamMap.incSimList[0].incIp+'\','+item.userServBackParamMap.incSimList[0].incPort+');" style="cursor: pointer;">'+"管理"+'</a>'
 								+ '</td>';
 							html += '</tr>';
 							
@@ -278,8 +278,10 @@
 		 }
 	}
 	
-	 function manageRds(){
-		 window.open("http://10.1.245.226:12345");
+	function manageRds(ip,port){
+		url="${rdsManageUrl}";
+		host=ip+":"+port;
+		window.location.href=url+"?pma_servername="+host;
 		 
 		/*  $.post("http://10.1.245.224:12345/phpmyadmin/index.php",
 		  {pma_servername:"10.1.228.202:31316",
