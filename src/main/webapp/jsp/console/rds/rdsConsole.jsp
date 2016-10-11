@@ -279,7 +279,7 @@
 	}
 	
 	function manageRds(ip,port){
-		url=${rdsManageUrl};
+		url="${rdsManageUrl}";
 		host=ip+":"+port;
 		window.location.href=url+"?pma_servername="+host;
 		 //alert("rdsManageUrl is:"+rdsManageUrl);
