@@ -21,6 +21,8 @@ import com.ai.paas.ipaas.user.dubbo.vo.ProdProductVo;
 import com.ai.paas.ipaas.user.dubbo.vo.ResponseHeader;
 import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
+import com.ai.paas.ipaas.user.dubbo.vo.SysParamVo;
+import com.ai.paas.ipaas.user.dubbo.vo.SysParmRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -54,6 +56,10 @@ public class UserRdsConsoleController {
 			HttpServletResponse resp) {
 		String indexFlag = req.getParameter("indexFlag");
 		req.setAttribute("indexFlag", indexFlag);
+		
+		SysParmRequest rdsReq = new SysParmRequest();
+		rdsReq.setTypeCode(Constants.serviceName.RDS);
+		rdsReq.setParamCode(Constants.paramCode.OPTIONS);
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			SelectWithNoPageResponse<ProdProductVo> prodProductVoresponse = null;
@@ -66,6 +72,9 @@ public class UserRdsConsoleController {
 					.selectProduct(prodProductVoRequest);
 			prodProductVo = prodProductVoresponse.getResultList().get(0);
 			req.setAttribute("prodName", prodProductVo.getProdName());
+			
+			SysParamVo rdsManageUrl = iSysParam.getSysParamsVo(rdsReq);
+			req.setAttribute("rdsManageUrl", rdsManageUrl);
 		} catch (Exception e) {
 			logger.error(e);
 			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
