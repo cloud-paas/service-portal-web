@@ -174,7 +174,8 @@
 								+'<a onclick="starRdsContainer('+item.userServBackParamMap.incSimList[0].id+');" style="cursor: pointer;">'+"启用"+'</a>'
 								+'<a onclick="destroyRdsContainer('+item.userServBackParamMap.incSimList[0].id+','+item.userServId+');" style="cursor: pointer;">'+"注销"+'</a>'
 								+'<a  href="queryRdsListById?userServId='+item.userServId+'" style="cursor: pointer;">'+"查看"+'</a>'
-								+'<a onclick="manageRds(\''+item.userServBackParamMap.incSimList[0].incIp+'\','+item.userServBackParamMap.incSimList[0].incPort+');" style="cursor: pointer;">'+"管理"+'</a>'
+								+'<a onclick="manageRds(\''+item.userServBackParamMap.incSimList[0].incIp+'\','+item.userServBackParamMap.incSimList[0].incPort
+										+',\''+item.userServBackParamMap.incSimList[0].rootName+'\',\''+item.userServBackParamMap.incSimList[0].rootPassword+'\');" style="cursor: pointer;">'+"管理"+'</a>'
 								+ '</td>';
 							html += '</tr>';
 							
@@ -278,10 +279,17 @@
 		 }
 	}
 	
-	function manageRds(ip,port){
+	function manageRds(ip,port,name,passwd){
 		url="${rdsManageUrl}";
 		host=ip+":"+port;
-		window.location.href=url+"?pma_servername="+host;
+		var parames = new Array();
+        parames.push({ name: "pma_servername", value: host});
+        parames.push({ name: "pma_username", value: name});
+        parames.push({ name: "pma_password", value: passwd});
+
+        Post(url, parames);
+
+        return false;
 		 
 		/*  $.post("http://10.1.245.224:12345/phpmyadmin/index.php",
 		  {pma_servername:"10.1.228.202:31316",
@@ -333,6 +341,32 @@
 			}); 
  */
 		  }
+	
+	/*
+     *功能： 模拟form表单的提交
+     *参数： URL 跳转地址 PARAMTERS 参数
+     *创建时间：20161012
+     *创建人： sunhz
+     */
+     function Post(URL, PARAMTERS) {
+         //创建form表单
+         var temp_form = document.createElement("form");
+         temp_form.action = URL;
+         //如需打开新窗口，form的target属性要设置为'_blank'
+         temp_form.target = "_blank";
+         temp_form.method = "post";
+         temp_form.style.display = "none";
+         //添加参数
+         for (var item in PARAMTERS) {
+             var opt = document.createElement("textarea");
+             opt.name = PARAMTERS[item].name;
+             opt.value = PARAMTERS[item].value;
+             temp_form.appendChild(opt);
+         }
+         document.body.appendChild(temp_form);
+         //提交数据
+         temp_form.submit();
+     }
 	 
 	
 	//获得开通idps发返回值
