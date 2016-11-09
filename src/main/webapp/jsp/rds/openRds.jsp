@@ -42,7 +42,7 @@
     		},"申请的CPU数量不能为0或者为非数字");
             
             jQuery.validator.addMethod("createSlaverNumReg", function(val) {
-    			return new RegExp("^([1-9][0-9]*)$").test(val);
+    			return new RegExp("^([0-9][0-9]*)$").test(val);
     		},"申请的从库数量不能为0或者为非数字");
             
             jQuery.validator.addMethod("intStorageReg", function(val) {
