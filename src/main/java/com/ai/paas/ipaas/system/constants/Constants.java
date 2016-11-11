@@ -1,5 +1,7 @@
 package com.ai.paas.ipaas.system.constants;
 
+import org.antlr.v4.parse.ANTLRParser.finallyClause_return;
+
 public class Constants {
 
 	/**
@@ -77,6 +79,9 @@ public class Constants {
 	public static class RType {
 		public static final String SUCCESS = "0";
 		public static final String FAILED = "1";
+		
+		public static final Integer STATUS_VALID = 1;    //有效状态
+		public static final Integer STATUS_INVALID = 0;  //无效状态
 	}
 
 	/**
