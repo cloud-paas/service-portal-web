@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import bsh.Interpreter;
 
 import com.ai.paas.ipaas.PaasException;
@@ -51,8 +52,10 @@ import com.ai.paas.ipaas.system.constants.ConstantsForSession;
 import com.ai.paas.ipaas.system.util.HttpClientUtil;
 import com.ai.paas.ipaas.system.util.HttpRequestUtil;
 import com.ai.paas.ipaas.system.util.UserUtil;
+import com.ai.paas.ipaas.user.dubbo.interfaces.IOrgnizeUserInfoSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IUser;
+import com.ai.paas.ipaas.user.dubbo.vo.OrgnizeUserInfoVo;
 import com.ai.paas.ipaas.user.dubbo.vo.RegisterResult;
 import com.ai.paas.ipaas.user.dubbo.vo.UserVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
@@ -79,6 +82,9 @@ public class UserController {
 	static Class config_class = UserController.class;
 	@Reference
 	private IUser iUser;
+	
+	@Reference
+	private IOrgnizeUserInfoSv iOrgUser;
 
 	@Reference
 	private ISysParamDubbo iSysParam;
@@ -518,7 +524,7 @@ public class UserController {
 
 	@RequestMapping(value = "/doRegister", produces = "text/html;charset=UTF-8")
 	public @ResponseBody String register(@RequestParam String email,
-			String password, String userOrgName, String mobileNumber,
+			String password, String userOrgName, String mobileNumber,Integer orgId,
 			HttpServletRequest request) {
 		String res = null;
 		try {
@@ -533,8 +539,15 @@ public class UserController {
 			uv.setUserRegisterTime(new Timestamp(new Date().getTime()));
 			uv.setUserId(UUIDTool.genId32());
 			uv.setPid(UUIDTool.genId32());
+			uv.setOrgId(orgId);
 
 			RegisterResult rr = iUser.registerUser(uv);
+			
+			//保存用户及组织关系
+			OrgnizeUserInfoVo ov= new OrgnizeUserInfoVo();
+			ov.setOrgId(orgId);
+			ov.setUserId(uv.getUserId());
+			iOrgUser.saveOrgnizeUserInfo(ov);
 
 			/** 通过portal发送邮件 **/
 			if (rr.isNeedSend() && rr.getEmail() != null) {

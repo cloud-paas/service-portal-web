@@ -6,7 +6,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <%@ include file="/jsp/common/common.jsp"%>
 <title>用户中心</title>
+<script type="text/javascript">
+	$(document).ready(function() {
+		// 页面初始化
+		loaddata();	
+
+	});	
+	function loaddata() {
+		$.ajax({
+					type : "GET",
+					url : "${_base}/orgnize/getOrgnize",
+					dataType : "json",
+					modal : true,
+					data : {
+					}
+		        })
+	}
+</script>
 </head>
+
 <body>
 	<div class="big_k">
 	<jsp:include page="/jsp/common/header.jsp"></jsp:include>
@@ -66,6 +84,18 @@
 				</li>
 				<label for="user_name"></label>
 			</ul>
+			
+			<ul>
+	          	<li class="orgnize">组织：</li>
+	          	<li>
+	          	    <select id="orgnize"  name="orgnize" class="ch_select">
+	          		  <c:forEach items="${orgInfoList}" var="my_orgnize">
+	          			<option value="${my_orgnize.orgId}">${my_orgnize.orgName}</option>
+	          		  </c:forEach>
+	          		</select>
+	            </li>
+	          	<li>组织与资源相对应</li>		
+	         </ul>			
 			
 			<ul>
 				<li class="you_zi">电话：</li>
@@ -152,6 +182,7 @@
 					var user_password_rep = $.trim($("#user_password_rep").val());
 					var phone = $.trim($("#phone").val());
 					var dept = "xxx";
+					var orgid = $("#orgnize").val()
 					if (registerF.valid() && phone.match(/^((1)+\d{10})$/)) {
 						$("#register").unbind();
 						var url = "${_base}/audit/doRegister";
@@ -163,6 +194,7 @@
 								"mobileNumber" : phone,
 								"userOrgName" : dept,
 								"password" : user_password
+								"orgId" : orgid
 							},
 							success : function(data) {
 								//alert(11);
