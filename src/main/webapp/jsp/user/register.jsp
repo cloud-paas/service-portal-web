@@ -7,21 +7,35 @@
 <%@ include file="/jsp/common/common.jsp"%>
 <title>用户中心</title>
 <script type="text/javascript">
-	$(document).ready(function() {
-		// 页面初始化
-		loaddata();	
-
-	});	
-	function loaddata() {
-		$.ajax({
-					type : "GET",
-					url : "${_base}/orgnize/getOrgnize",
-					dataType : "json",
-					modal : true,
-					data : {
+var orgInfoList;
+$(document).ready(function () {	
+	$.ajax({
+		        async : true,
+		        type : "post",
+				url : url: '${_base}/org/getOrgnize',
+				dataType : 'json',
+				data : {
+				},
+				success : function(msg) {
+					if (msg.resultCode == '000000') {
+						if (msg.resultList.length == 0) {
+						   alert("无组织信息");								
+							return;
+						}		
+						else{
+							orgInfoList = msg.resultList;
+							alert(orgInfoList.size);
+							$('#infomatin').show();
+						}
+						
+					} else {
+						alert("获取组织信息失败");								
+						return;
 					}
-		        })
-	}
+				}
+			});
+});
+
 </script>
 </head>
 
@@ -86,7 +100,7 @@
 			</ul>
 			
 			<ul>
-	          	<li class="orgnize">组织：</li>
+	          	<li class="you_zi">组织：</li>
 	          	<li>
 	          	    <select id="orgnize"  name="orgnize" class="ch_select">
 	          		  <c:forEach items="${orgInfoList}" var="my_orgnize">
@@ -94,7 +108,7 @@
 	          		  </c:forEach>
 	          		</select>
 	            </li>
-	          	<li>组织与资源相对应</li>		
+	            <label for="orgnize">组织与资源相对应</label>	
 	         </ul>			
 			
 			<ul>
@@ -193,7 +207,7 @@
 								"email" : user_name,
 								"mobileNumber" : phone,
 								"userOrgName" : dept,
-								"password" : user_password
+								"password" : user_password,
 								"orgId" : orgid
 							},
 							success : function(data) {
