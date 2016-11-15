@@ -7,10 +7,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.PaasException;
 import com.ai.paas.ipaas.system.constants.Constants;
@@ -25,25 +28,33 @@ public class OrgnizeController {
 
 	private static final Logger logger = LogManager
 			.getLogger(OrgnizeController.class.getName());
+	
+	@SuppressWarnings("rawtypes")
+	static Class config_class = OrgnizeController.class;
+	
 	@Reference
 	private IOrgnizeCenterSv iorg;
 	
-	@RequestMapping(value = "/getOrgnize")
-	public Map<String, Object> getOrgnize(HttpServletRequest request,
+	/** 方法改放到UserContoller中的toRegister中
+	 * 
+	@RequestMapping(value = "/toGetOrgnize")
+	public String getOrgnize(HttpServletRequest request,
 			HttpServletResponse response) {
-		System.out.println("进入获取组织方法");
 		List<OrgnizeCenterVo> orgInfos = new ArrayList<OrgnizeCenterVo>();
-		Map<String, Object> result = new HashMap<String, Object>();
+		//Map<String, Object> result = new HashMap<String, Object>();
 		try {
 			orgInfos = iorg.getOrgnizeCenterByStatus(RType.STATUS_VALID);
-			result.put("resultCode", Constants.OPERATE_CODE_SUCCESS);
-			result.put("resultList", orgInfos);			
+			//result.put("resultCode", Constants.OPERATE_CODE_SUCCESS);
+			//result.put("resultList", orgInfos);
+			request.setAttribute("orgList", orgInfos);		
+			//System.out.println("进入获取组织方法："+ orgInfos.size());
 		} catch (PaasException e) {
 			// TODO Auto-generated catch block
-			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
-			result.put("resultMessage", "查询出现异常！");
+			//result.put("resultCode", Constants.OPERATE_CODE_FAIL);
+			//result.put("resultMessage", "查询出现异常！");
 			logger.error(e);
 		}
-		return result;
+		return "user/register";
 	}
+	*/
 }

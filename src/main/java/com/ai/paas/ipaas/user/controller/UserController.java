@@ -15,6 +15,7 @@ import java.io.OutputStreamWriter;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,12 +50,15 @@ import com.ai.paas.ipaas.email.EmailServiceImpl;
 import com.ai.paas.ipaas.storm.sys.utils.StringUtils;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.constants.ConstantsForSession;
+import com.ai.paas.ipaas.system.constants.Constants.RType;
 import com.ai.paas.ipaas.system.util.HttpClientUtil;
 import com.ai.paas.ipaas.system.util.HttpRequestUtil;
 import com.ai.paas.ipaas.system.util.UserUtil;
+import com.ai.paas.ipaas.user.dubbo.interfaces.IOrgnizeCenterSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IOrgnizeUserInfoSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IUser;
+import com.ai.paas.ipaas.user.dubbo.vo.OrgnizeCenterVo;
 import com.ai.paas.ipaas.user.dubbo.vo.OrgnizeUserInfoVo;
 import com.ai.paas.ipaas.user.dubbo.vo.RegisterResult;
 import com.ai.paas.ipaas.user.dubbo.vo.UserVo;
@@ -86,6 +90,9 @@ public class UserController {
 	@Reference
 	private IOrgnizeUserInfoSv iOrgUser;
 
+	@Reference
+	private IOrgnizeCenterSv iorg;
+	
 	@Reference
 	private ISysParamDubbo iSysParam;
 
@@ -130,6 +137,16 @@ public class UserController {
 	@RequestMapping(value = "/toRegister")
 	public String register(HttpServletRequest request,
 			HttpServletResponse response) {
+		
+		//注册之前先查询组织信息
+		List<OrgnizeCenterVo> orgList = new ArrayList<OrgnizeCenterVo>();
+		try {
+			orgList = iorg.getOrgnizeCenterByStatus(RType.STATUS_VALID);
+			request.setAttribute("orgList", orgList);
+		} catch (PaasException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}				
 		return "user/register";
 	}
 

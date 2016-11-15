@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -6,44 +6,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <%@ include file="/jsp/common/common.jsp"%>
 <title>用户中心</title>
-<script type="text/javascript">
-var orgInfoList;
-$(document).ready(function () {	
-	$.ajax({
-		        async : true,
-		        type : "post",
-				url : url: '${_base}/org/getOrgnize',
-				dataType : 'json',
-				data : {
-				},
-				success : function(msg) {
-					if (msg.resultCode == '000000') {
-						if (msg.resultList.length == 0) {
-						   alert("无组织信息");								
-							return;
-						}		
-						else{
-							orgInfoList = msg.resultList;
-							alert(orgInfoList.size);
-							$('#infomatin').show();
-						}
-						
-					} else {
-						alert("获取组织信息失败");								
-						return;
-					}
-				}
-			});
-});
-
-</script>
 </head>
 
 <body>
 	<div class="big_k">
 	<jsp:include page="/jsp/common/header.jsp"></jsp:include>
 	<div class="row help shenq">
-
 
 		<div class="steps">
 
@@ -103,7 +71,7 @@ $(document).ready(function () {
 	          	<li class="you_zi">组织：</li>
 	          	<li>
 	          	    <select id="orgnize"  name="orgnize" class="ch_select">
-	          		  <c:forEach items="${orgInfoList}" var="my_orgnize">
+	          		  <c:forEach items="${orgList}" var="my_orgnize">
 	          			<option value="${my_orgnize.orgId}">${my_orgnize.orgName}</option>
 	          		  </c:forEach>
 	          		</select>
