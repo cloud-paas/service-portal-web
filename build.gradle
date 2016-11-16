@@ -40,7 +40,7 @@ ext {
 group = 'com.ai'
 
 dependencies{
-	compile 'com.ai:ipaas-user:0.3-SNAPSHOT'
+	compile 'com.ai:ipaas-user:0.291-SNAPSHOT'
 	compile 'com.ai:asiainfocasclient:1.0.4'
 	compile 'com.ai:ipaas-agent-client:0.1-SNAPSHOT'
 	compile 'com.ai:ipaas-rcs:0.2-SNAPSHOT'

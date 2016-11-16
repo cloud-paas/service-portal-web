@@ -80,7 +80,7 @@ public class IdpsController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/openIdps", method = RequestMethod.POST) 
-	public Map<String, Object> applyDBSService(HttpServletRequest request,
+	public Map<String, Object> applyIdpsService(HttpServletRequest request,
 			HttpServletResponse response) {
 		UserInfoVo userVo = UserUtil.getUserSession(request.getSession());
 		String cpuNum = request.getParameter("cpuNum");
@@ -103,6 +103,7 @@ public class IdpsController {
 		OrderDetailRequest orderDetailRequest = new OrderDetailRequest();
 		orderDetailRequest.setOperateType(Constants.OperateType.APPLY);// 操作类型
 		orderDetailRequest.setUserId(userVo.getUserId()); // 用户Id
+		orderDetailRequest.setOrgId(userVo.getOrgId()); // 组织Id
 		orderDetailRequest.setProdType(Constants.ProductType.IPAAS_CunChu); 
 		orderDetailRequest.setProdId(prodId); // 产品id
 		orderDetailRequest.setProdByname(Constants.serviceName.IDPS); // 别名
@@ -116,6 +117,8 @@ public class IdpsController {
 		serviceMap.put("dssServicePwd", dssServicePwd);
 		serviceMap.put("dssServiceId", dssServiceId);
 		serviceMap.put("serviceName", serviceName);
+		serviceMap.put("orgId", userVo.getOrgId());
+		
 
 		/** 配置中心参数 **/
 		Gson prodParam = new Gson();
