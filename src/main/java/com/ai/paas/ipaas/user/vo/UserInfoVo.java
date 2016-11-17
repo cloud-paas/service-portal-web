@@ -38,7 +38,7 @@ public class UserInfoVo implements Serializable {
 	
 	private String partnerAccount;
 	private String userEmailTmp;
-	private Integer orgId;
+	private String tenantId;
 
 	public String getUserEmailTmp() {
 		return userEmailTmp;
@@ -152,12 +152,12 @@ public class UserInfoVo implements Serializable {
 		this.partnerAccount = partnerAccount;
 	}
 
-	public Integer getOrgId() {
-		return orgId;
+	public String getTenantId() {
+		return tenantId;
 	}
 
-	public void setOrgId(Integer orgId) {
-		this.orgId = orgId;
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 
 }
