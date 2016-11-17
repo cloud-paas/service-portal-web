@@ -103,7 +103,7 @@ public class IdpsController {
 		OrderDetailRequest orderDetailRequest = new OrderDetailRequest();
 		orderDetailRequest.setOperateType(Constants.OperateType.APPLY);// 操作类型
 		orderDetailRequest.setUserId(userVo.getUserId()); // 用户Id
-		orderDetailRequest.setTenantId(userVo.getTenantId()); // 组织Id
+		//orderDetailRequest.setTenantId(userVo.getTenantId()); // 组织Id
 		orderDetailRequest.setProdType(Constants.ProductType.IPAAS_CunChu); 
 		orderDetailRequest.setProdId(prodId); // 产品id
 		orderDetailRequest.setProdByname(Constants.serviceName.IDPS); // 别名
