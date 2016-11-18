@@ -86,6 +86,7 @@
 	}
 	
 	function loadData(obj) {
+		alert("obj.length: "+ obj.length);
 		if (!!obj && obj.length == 0) {
 			$("#table_detail tbody").empty();
 			var html = '';
@@ -119,23 +120,32 @@
 				.each(
 						obj,
 						function(n, item) {
+							var incIp1 = '';
 							var incIp2 = '';
 							var incIp3 = '';
+							var incPort1= '';
 							var incPort2= '';
 							var incPort3='';
+							alert("incSimList.length: "+item.userServBackParamMap.incSimList.length);
 							if(item.userServBackParamMap !=undefined){
-							if(item.userServBackParamMap.incSimList[2] !=undefined){
-								incIp2 =item.userServBackParamMap.incSimList[2].incIp 
-							}
-							if(item.userServBackParamMap.incSimList[3] !=undefined){
-								incIp3 =item.userServBackParamMap.incSimList[3].incIp 
-							}
-							if(item.userServBackParamMap.incSimList[2] !=undefined){
-								incPort2 =item.userServBackParamMap.incSimList[2].incPort 
-							}
-							if(item.userServBackParamMap.incSimList[3] !=undefined){
-								incPort3 =item.userServBackParamMap.incSimList[3].incPort 
-							}
+								if(item.userServBackParamMap.incSimList[1] !=undefined){
+									incIp1 =item.userServBackParamMap.incSimList[1].incIp 
+								}
+								if(item.userServBackParamMap.incSimList[2] !=undefined){
+									incIp2 =item.userServBackParamMap.incSimList[2].incIp 
+								}
+								if(item.userServBackParamMap.incSimList[3] !=undefined){
+									incIp3 =item.userServBackParamMap.incSimList[3].incIp 
+								}
+								if(item.userServBackParamMap.incSimList[1] !=undefined){
+									incPort1 =item.userServBackParamMap.incSimList[1].incPort 
+								}
+								if(item.userServBackParamMap.incSimList[2] !=undefined){
+									incPort2 =item.userServBackParamMap.incSimList[2].incPort 
+								}
+								if(item.userServBackParamMap.incSimList[3] !=undefined){
+									incPort3 =item.userServBackParamMap.incSimList[3].incPort 
+								}
 							}
 							html += '<tr >';
 							// 产品名称
@@ -149,7 +159,7 @@
 							html += '<td> 主：' 
 							+ item.userServBackParamMap.incSimList[0].incIp +
 							'<br/>从：'
-							+item.userServBackParamMap.incSimList[1].incIp 
+							+incIp1 
 							+'&nbsp;&nbsp;'
 							+incIp2
 							+'&nbsp;&nbsp;'
@@ -161,7 +171,7 @@
 							html += '<td> 主：' 
 							+ item.userServBackParamMap.incSimList[0].incPort 
 							+'<br/>从：'
-							+item.userServBackParamMap.incSimList[1].incPort 
+							+incPort1 
 							+'&nbsp;&nbsp;'
 							+incPort2
 							+'&nbsp;&nbsp;'
