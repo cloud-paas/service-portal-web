@@ -541,7 +541,7 @@ public class UserController {
 
 	@RequestMapping(value = "/doRegister", produces = "text/html;charset=UTF-8")
 	public @ResponseBody String register(@RequestParam String email,
-			String password, String userOrgName, String mobileNumber,String tenantId,
+			String password, String userOrgName, String mobileNumber,String orgId,
 			HttpServletRequest request) {
 		String res = null;
 		try {
@@ -556,13 +556,13 @@ public class UserController {
 			uv.setUserRegisterTime(new Timestamp(new Date().getTime()));
 			uv.setUserId(UUIDTool.genId32());
 			uv.setPid(UUIDTool.genId32());
-			uv.setTenantId(tenantId);
+			uv.setTenantId(orgId);
 
 			RegisterResult rr = iUser.registerUser(uv);
 			
 			//保存用户及组织关系
 			OrgnizeUserInfoVo ov= new OrgnizeUserInfoVo();
-			ov.setOrgId(Integer.valueOf(tenantId));
+			ov.setOrgId(Integer.valueOf(orgId));
 			ov.setUserId(uv.getUserId());
 			iOrgUser.saveOrgnizeUserInfo(ov);
 
