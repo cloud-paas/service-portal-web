@@ -86,7 +86,6 @@
 	}
 	
 	function loadData(obj) {
-		alert("obj.length: "+ obj.length);
 		if (!!obj && obj.length == 0) {
 			$("#table_detail tbody").empty();
 			var html = '';
@@ -126,7 +125,6 @@
 							var incPort1= '';
 							var incPort2= '';
 							var incPort3='';
-							alert("incSimList.length: "+item.userServBackParamMap.incSimList.length);
 							if(item.userServBackParamMap !=undefined){
 								if(item.userServBackParamMap.incSimList[1] !=undefined){
 									incIp1 =item.userServBackParamMap.incSimList[1].incIp 
@@ -157,27 +155,33 @@
 							
 							// IP地址
 							html += '<td> 主：' 
-							+ item.userServBackParamMap.incSimList[0].incIp +
-							'<br/>从：'
-							+incIp1 
-							+'&nbsp;&nbsp;'
-							+incIp2
-							+'&nbsp;&nbsp;'
-							+incIp3
-							+'&nbsp;&nbsp;'
-							+ '</td>';
+							+ item.userServBackParamMap.incSimList[0].incIp ;
+							if(item.userServBackParamMap.incSimList[1] !=undefined){
+								html += '<br/>从：'
+								+incIp1 
+								+'&nbsp;&nbsp;'
+								+incIp2
+								+'&nbsp;&nbsp;'
+								+incIp3
+								+'&nbsp;&nbsp;';
+							}
+							
+							html += '</td>';
 							
 							// 端口
 							html += '<td> 主：' 
-							+ item.userServBackParamMap.incSimList[0].incPort 
-							+'<br/>从：'
-							+incPort1 
-							+'&nbsp;&nbsp;'
-							+incPort2
-							+'&nbsp;&nbsp;'
-							+incPort3
-							+'&nbsp;&nbsp;'
-							+ '</td>';
+							+ item.userServBackParamMap.incSimList[0].incPort ;
+							if(item.userServBackParamMap.incSimList[1] !=undefined){
+								html += '<br/>从：'
+								+incPort1 
+								+'&nbsp;&nbsp;'
+								+incPort2
+								+'&nbsp;&nbsp;'
+								+incPort3
+								+'&nbsp;&nbsp;';
+							}						
+							html += '</td>';
+							
 							//操作
 							html += '<td style="font-size:14px" align="left">' 
 								+'<a onclick="stopRdsContainer('+item.userServBackParamMap.incSimList[0].id+');" style="cursor: pointer;">'+"停用"+'</a>'
