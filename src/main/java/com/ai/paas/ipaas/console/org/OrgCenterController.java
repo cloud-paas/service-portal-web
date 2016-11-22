@@ -21,7 +21,6 @@ import com.ai.paas.ipaas.system.constants.Constants.RType;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IOrgnizeCenterSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.dubbo.vo.OrgnizeCenterVo;
-import com.ai.paas.ipaas.user.dubbo.vo.ResponseHeader;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 /**
@@ -101,6 +100,29 @@ public class OrgCenterController {
 		return "console/org/orgModify";
 	}
 	
+	@RequestMapping("/addOrgnize")
+	@ResponseBody
+	public String addOrgnize(HttpServletRequest request,HttpServletResponse response){
+		JSONObject result=new JSONObject();
+		OrgnizeCenterVo vo = new OrgnizeCenterVo();
+		vo.setOrgCode(request.getParameter("orgCode"));
+		vo.setOrgName(request.getParameter("orgName"));
+		vo.setOrgStatus(Integer.valueOf(request.getParameter("orgStatus")));
+		int addResult = 0;
+		try {
+			addResult = OrgcenterSvImpl.insertOrgnizeCenter(vo);
+		} catch (PaasException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (addResult > 0) {
+			result.put("resultCode", Constants.OPERATE_CODE_SUCCESS);
+		} else {
+			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
+		}
+		return result.toString();	
+	}
+	
 	@RequestMapping("/deleteOrgnize")
 	@ResponseBody
 	public String deleteOrgnize(HttpServletRequest request,HttpServletResponse response){
@@ -114,9 +136,9 @@ public class OrgCenterController {
 			e.printStackTrace();
 		}
 		if (delResult > 0) {
-			result.put("resultCode", "000000");
+			result.put("resultCode", Constants.OPERATE_CODE_SUCCESS);
 		} else {
-			result.put("resultCode", "999999");
+			result.put("resultCode", Constants.OPERATE_CODE_FAIL);
 		}
 		return result.toString();	
 	}

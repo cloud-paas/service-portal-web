@@ -116,7 +116,7 @@ var html;
 					//操作
 					html += '<td>' 
 							+'<a href="#" onclick=modifyOrg("'+ item.orgId +'"); >修改组织</a>'
-							+'|<a href="#" onclick=deleteOrg("'+ item.orgId + ','+item.orgName+'"); >刪除组织</a>'
+							+'|<a href="#" onclick=deleteOrg("'+ item.orgId + '","'+item.orgName+'"); >刪除组织</a>'
 							+ '</td>';	
 					html += '</tr>';
 				});		
@@ -139,7 +139,7 @@ var html;
 	}
   
     function deleteOrg(orgId,orgName) {
-    	var remainMsg='确定要对組織【'+orgName+'】做刪除操作吗？';
+    	var remainMsg='确定要对组织【'+orgName+'】做刪除操作吗？';
     	Modal.confirm({msg:remainMsg}).on(function(e){
     		if(e){
     			$.ajax({
@@ -153,12 +153,12 @@ var html;
         			success:function(msg){
         				if(msg.resultCode=='000000'){
         					Modal.alert({
-        						msg:'組織【'+orgName+'】刪除成功!'
+        						msg:'组织【'+orgName+'】刪除成功!'
         					}).on(queryOrgList());
         					
         				}else if(msg.resultCode=='999999'){
         					Modal.alert({
-        						msg:'組織【'+orgName+'】刪除失败!'
+        						msg:'组织【'+orgName+'】刪除失败!'
         					})
         				}
         			}
@@ -240,7 +240,7 @@ var html;
       <ul>
      
       <li class="xil" style=" float:right;">
-      	<A href="#"  id="org_add"  style="padding:5px 25px 5px 25px; float:left; background:#78bd5a; border-radius:20px; margin-left:20px; text-align:center; color:#fff; font-size:14px;border:1px solid #78bd5a;">&nbsp;&nbsp;组织新增&nbsp;&nbsp;</A>
+      	<A href="${_base }/jsp/console/org/orgAdd.jsp"  id="org_add"  style="padding:5px 25px 5px 25px; float:left; background:#78bd5a; border-radius:20px; margin-left:20px; text-align:center; color:#fff; font-size:14px;border:1px solid #78bd5a;">&nbsp;&nbsp;组织新增&nbsp;&nbsp;</A>
       </li>
       </ul>
       </div>        
