@@ -92,9 +92,9 @@ public class OrgCenterController {
 		String parentUrl = req.getParameter("parentUrl"); 
 		req.setAttribute("parentUrl",parentUrl);;
 		try {
-			OrgnizeCenterVo vo = new OrgnizeCenterVo();
-			vo = OrgcenterSvImpl.getOrgnizeCenterById(Integer.valueOf(orgId));		
-			req.setAttribute("orgnizeInfo", String.valueOf(vo));
+			OrgnizeCenterVo orgnizeCenterVo = new OrgnizeCenterVo();
+			orgnizeCenterVo = OrgcenterSvImpl.getOrgnizeCenterById(Integer.valueOf(orgId));		
+			req.setAttribute("orgnizeCenterVo", orgnizeCenterVo);
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 		}

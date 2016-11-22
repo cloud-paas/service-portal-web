@@ -36,7 +36,7 @@
          <ul>
          <li><img src="${_base }/resources/images/xgcg.png"></li>
          <li>修改組織信息成功</li>
-         <li><A href="${parentUrl}" style="">返回</A></li>
+         <li><A href="${_base}/orgConsole/toOrgConsole" style="">返回</A></li>
          </ul>
          </div>                
      </div>  

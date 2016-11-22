@@ -4,13 +4,12 @@
 <%@ include file="/jsp/common/common.jsp"%>
 
 <script type="text/javascript">
-var timeStamp = "${timeStamp}";
-var dssController;
+var orgId = ${orgnizeCenterVo.orgId};
+var orgStatus;
+var orgCenterController;
 $(document).ready(function(){
 	orgCenterController = new $.orgCenterController();
 });
-
-var orgId = "${orgnizeInfo.orgId}";
 
 /*定义页面管理类*/
 (function(){
@@ -38,7 +37,12 @@ var orgId = "${orgnizeInfo.orgId}";
 					if ($("#myForm").valid()){	
 						var orgCode = $("#orgCode").val();	
 						var orgName = $("#orgName").val();
-						var orgStatus = $("#orgStatus").val();
+						if (document.getElementsByName("orgStatus")[0].checked) {
+							orgStatus = 1;
+						} else {
+							orgStatus = 0;
+						}
+
 						$.ajax({
 							async : false,
 							type : "POST",
@@ -54,7 +58,7 @@ var orgId = "${orgnizeInfo.orgId}";
 							success: function(data){
 								var json=data
 								if(json&&json.resultCode=="000000"){
-									location.href="${_base}/orgConsole/modifyOrgSuccess?orgId="+orgId+"&parentUrl="+parentUrl+"&orgCode="+orgCode;
+									location.href="${_base}/orgConsole/modifyOrgSuccess?orgId="+orgId+"&orgCode="+orgCode;
 								}else{									
 									$("#modify_error").text(json.resultMessage);
 								}
@@ -88,13 +92,13 @@ var orgId = "${orgnizeInfo.orgId}";
 	                },
 	                messages:{
 	                	orgCode:{
-	                		required:"組織編碼不能为空",
-	                		rangelength:"请输入1~20位組織編碼"
+	                		required:"组织编码不能为空",
+	                		rangelength:"请输入1~20位组织编码"
 	                	},
 	                	orgName:{
-	                		required:"組織名稱不能为空",
-	                		rangelength:"请输入1~200位組織名稱"
-	                	}，	                	
+	                		required:"组织名称不能为空",
+	                		rangelength:"请输入1~200位组织名称"
+	                	}	                	
 	                },
 	                success: function (label, element) {
 	                },
@@ -110,31 +114,74 @@ var orgId = "${orgnizeInfo.orgId}";
 		}
 	});
 })(jQuery);
-
-	
 </script>
   
 </head> 
 <body>     
-  <div class="big_k"><!--包含头部 主体-->   
+   <div class="big_k"><!--包含头部 主体-->   
    <!--导航-->
-   <%@ include file="/jsp/common/header_console.jsp"%>
-      
+   <div class="navigation" style="background:rgb(22,154,219); height:70px">
+  <div class="head">
+				<div style="width: 100%; height: auto">
+					<div style="float: left; width: 13%; position: relative; left: 3%">
+						<img src="${_base }/resources/images/logo-white2.png"
+							style="position: relative; margin: 20px 20px 0px 0px;height:35px">
+					</div>
+					<div class="mune_lan"  style="padding-top:1.5%;">
+						<ul>
+                        <li  class="yon_wnz" style="margin-left:20px;font-size:20px;margin-top:0px;" ><a href="#" onclick="changeHref()" title="返回首页"><img style="height:30px;padding-bottom:5px"  src="${_base }/resources/images/return.png"/></a></li> 
+						<li class="yon_wnz"   style="padding-bottom:5px;margin-left:40px;font-size:20px;">服务申请审核</li> 
+						</ul>
+						<ul style="float:right">
+							<li id="loginName" class="yonhz"></li>   
+						</ul>
+					</div> 
+				</div>
+			</div>
+   </div>    
    <div class="container chanp">
-   <%@ include file="/jsp/common/leftMenu_console.jsp"%>
   <div class="row chnap_row">
+  
+  <div class="col-md-6 left_list" >
+      <div class="list_groups">
+          <div class="list_groups_none">
+             
+            <ul>
+              <li class="biaot" style="background:rgb(22,154,219)"  onClick="turnit(6,2,this);">
+               <a href="#" style="color:#fff">
+                <p  id="img2">服务申请审核</p>
+               </a>
+              </li>
+              <li class="list_xinx"  id="content2" >
+                <p class="xuanz"><A href="${_base }/apply/applyAudit"><span style="margin-top:2px;">服务申请审核</span></A></p>        
+              </li>
+            </ul>             
+            <ul>
+             <li class="biaot" style="background:rgb(22,154,219)"  onClick="turnit(6,3,this);">
+               <a href="#" style="color:#fff">
+                 <p  id="img2">组织管理</p>
+               </a>
+             </li>
+             <li class="list_xinx"  id="content3" >
+                <p class="xuanz"><A href="${_base }/orgConsole/toOrgConsole"><span style="margin-top:2px;">组织管理</span></A></p>
+             </li>
+            </ul>
+          </div> 
+    </div>
+  
+  </div>
   
   <div class="col-md-6 right_list">
      <form id="myForm">
      <div class="Open_cache">
         <div class="Open_cache_table">
 			<ul>
-			<li><a href="#">修改組織</a></li> 
+			<li><a href="#">修改组织</a></li> 
 			</ul>  
         </div> 
 		<div class="Open_cache_table" style="background:rgb(245,245,245);height:30px;vertical-align:middle ;line-height:30px;padding-left:1%">
-			 <span>組織ID：</span>
-			 <span style="color:rgb(22,154,219)">${orgnizeInfo.orgId}</span>
+			 <span>组织ID：</span>
+			 <span style="color:rgb(22,154,219)">${orgnizeCenterVo.orgId}</span>
 		</div>
 		
      	<div class="Open_cache">  
@@ -142,32 +189,37 @@ var orgId = "${orgnizeInfo.orgId}";
 				<div class="Open_cache_list_tow" style="vertical-align:middle; padding:0px 0px 0px 20px">
 	          		 <table style="vertical-align:middle">
 						<tr>
-							<td class='font_title_edit'>組織編碼&nbsp;&nbsp;：</td>
+							<td class='font_title_edit'>组织编码&nbsp;&nbsp;：</td>
 							<td> 
 								<div class="form-group" style="padding-top:5%">  
-									 <input type="text" class="form-control" id="orgCode" name="orgCode" value=${orgnizeInfo.orgCode} style="width:300px">
+									 <input type="text" class="form-control" id="orgCode" name="orgCode" value=${orgnizeCenterVo.orgCode} style="width:300px">
 								</div>
 							</td>
 							<td><label style="color:red; margin-left:20px" id="orgCode"/></td>
 						</tr>
 						<tr>
-							<td class='font_title_edit'>組織名稱&nbsp;&nbsp;：</td>
+							<td class='font_title_edit'>组织名称&nbsp;&nbsp;：</td>
 							<td>
 								<div class="form-group" style="padding-top:5%">  
-									 <input type="text" class="form-control" id="orgName" name="orgName" value=${orgnizeInfo.orgName}  style="width:300px">
+									 <input type="text" class="form-control" id="orgName" name="orgName" value=${orgnizeCenterVo.orgName}  style="width:300px">
 								 </div>
 							</td>
 							<td><label style="color:red; margin-left:20px" id="orgName"/></td>
 						</tr>
 						<tr>
-							<td class='font_title_edit'>組織狀態&nbsp;&nbsp;：</td>
+							<td class='font_title_edit'>组织状态&nbsp;&nbsp;：</td>
 							<td>
-								<div class="form-group" style="padding-top:5%">  
+								<div class="form-group" style="padding-top:10%">  
 									 <input type="radio" class="form-control" id="orgStatus" name="orgStatus" value="1"/>有效
-									 <input type="radio" class="form-control" id="orgStatus" name="orgStatus" value="2"/>無效
+									 <input type="radio" class="form-control" id="orgStatus" name="orgStatus" value="0"/>无效
 								 </div>
-								 <script>if (${orgnizeInfo.orgStatus}==1) {document.getElementsByName("orgStatus")[1].checked="checked";}
-								 else {document.getElementsByName("orgStatus")[2].checked="checked";}
+								 <script>
+								 if (${orgnizeCenterVo.orgStatus}==1) {
+									 document.getElementsByName("orgStatus")[0].checked="checked";
+								 }
+								 else {
+									 document.getElementsByName("orgStatus")[1].checked="checked";
+								 }								 
 								 </script>
 							</td>
 							<td><label style="color:red;margin-left:20px" id="orgStatus"/></td>
