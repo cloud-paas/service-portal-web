@@ -216,7 +216,7 @@ var html;
               </li>
             </ul>             
             <ul>
-             <li class="biaot" style="background:rgb(22,154,219)"  onClick="turnit(6,1,this);">
+             <li class="biaot" style="background:rgb(22,154,219)"  onClick="turnit(6,3,this);">
                <a href="#" style="color:#fff">
                  <p  id="img2">组织管理</p>
                </a>
