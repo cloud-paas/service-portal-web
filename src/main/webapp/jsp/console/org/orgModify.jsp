@@ -209,10 +209,11 @@ $(document).ready(function(){
 						<tr>
 							<td class='font_title_edit'>组织状态&nbsp;&nbsp;：</td>
 							<td>
-								<div class="form-group" style="padding-top:10%">  
-									 <input type="radio" class="form-control" id="orgStatus" name="orgStatus" value="1"/>有效
-									 <input type="radio" class="form-control" id="orgStatus" name="orgStatus" value="0"/>无效
-								 </div>
+								<div class="form-group" style="padding-top:5%">  
+									<input type="radio"  id="orgStatus" name="orgStatus" value="1" style="width:10px"/>&nbsp;有效
+									&nbsp;&nbsp;&nbsp;
+									<input type="radio"  id="orgStatus" name="orgStatus" value="0" style="width:10px"/>&nbsp;无效									 
+								</div>
 								 <script>
 								 if (${orgnizeCenterVo.orgStatus}==1) {
 									 document.getElementsByName("orgStatus")[0].checked="checked";
