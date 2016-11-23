@@ -159,7 +159,7 @@ $(document).ready(function(){
             <ul>
              <li class="biaot" style="background:rgb(22,154,219)"  onClick="turnit(6,3,this);">
                <a href="#" style="color:#fff">
-                 <p  id="img2">组织管理</p>
+                 <p  id="img3">组织管理</p>
                </a>
              </li>
              <li class="list_xinx"  id="content3" >
