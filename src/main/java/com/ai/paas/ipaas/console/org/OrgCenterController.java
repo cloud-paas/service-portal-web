@@ -154,7 +154,7 @@ public class OrgCenterController {
 		String orgStatus = req.getParameter("orgStatus"); 
 		try {
 			OrgnizeCenterVo orgnizeCenterVo = new OrgnizeCenterVo();
-			orgnizeCenterVo.setOrgId(Integer.valueOf(orgId)); // 組織Id
+			orgnizeCenterVo.setOrgId(Integer.valueOf(orgId)); //组织Id
 			orgnizeCenterVo.setOrgCode(orgCode);;
 			orgnizeCenterVo.setOrgName(orgName);
 			orgnizeCenterVo.setOrgStatus(Integer.valueOf(orgStatus));

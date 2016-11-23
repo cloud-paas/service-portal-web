@@ -103,7 +103,7 @@ public class IdpsController {
 		OrderDetailRequest orderDetailRequest = new OrderDetailRequest();
 		orderDetailRequest.setOperateType(Constants.OperateType.APPLY);// 操作类型
 		orderDetailRequest.setUserId(userVo.getUserId()); // 用户Id
-		//orderDetailRequest.setTenantId(userVo.getTenantId()); // 组织Id
+		orderDetailRequest.setOrgCode(userVo.getOrgCode()); // 组织编码
 		orderDetailRequest.setProdType(Constants.ProductType.IPAAS_CunChu); 
 		orderDetailRequest.setProdId(prodId); // 产品id
 		orderDetailRequest.setProdByname(Constants.serviceName.IDPS); // 别名
@@ -117,7 +117,7 @@ public class IdpsController {
 		serviceMap.put("dssServicePwd", dssServicePwd);
 		serviceMap.put("dssServiceId", dssServiceId);
 		serviceMap.put("serviceName", serviceName);
-		serviceMap.put("tenantId", userVo.getTenantId());
+		serviceMap.put("orgCode", userVo.getOrgCode());
 		
 
 		/** 配置中心参数 **/

@@ -142,6 +142,7 @@ public class SesController {
 																			// 数据库服务
 		UserInfoVo userInfoVo = UserUtil.getUserSession(request.getSession());
 		orderDetailRequest.setUserId(userInfoVo.getUserId());
+		orderDetailRequest.setOrgCode(userInfoVo.getOrgCode());
 		JSONObject prodparms = new JSONObject();
 		prodparms.put("serviceName", request.getParameter("serviceName"));
 		prodparms.put("clusterNum", request.getParameter("clusterNum"));

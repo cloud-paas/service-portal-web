@@ -56,6 +56,7 @@ public class DesController {
 		orderDetailRequest.setOperateType(Constants.OperateType.APPLY);
 		UserInfoVo userInfoVo = UserUtil.getUserSession(request.getSession());
 		orderDetailRequest.setUserId(userInfoVo.getUserId());
+		orderDetailRequest.setOrgCode(userInfoVo.getOrgCode());
 		JSONObject prodparms = new JSONObject();
 		prodparms.put("serviceName", request.getParameter("serviceName"));
 

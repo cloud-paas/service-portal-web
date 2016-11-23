@@ -330,6 +330,11 @@ public class UserController {
 			vo.setUserName(vo.getUserEmail());
 			BeanUtils.copyProperties(vo, userInfoVo);
 			userInfoVo.setUserPhoneNum(vo.getUserPhoneNum());
+						
+			//根据用户ID查询用户组织编码存入session
+			OrgnizeUserInfoVo orgUserInfo = iOrgUser.getOrgnizeUserInfo(userId);
+			OrgnizeCenterVo orgInfo = iorg.getOrgnizeCenterById(orgUserInfo.getOrgId());
+			userInfoVo.setOrgCode(orgInfo.getOrgCode());
 
 			// partnerType; partnerAccount;
 			if (userInfoVo.getPartnerAccount() == null
@@ -556,7 +561,6 @@ public class UserController {
 			uv.setUserRegisterTime(new Timestamp(new Date().getTime()));
 			uv.setUserId(UUIDTool.genId32());
 			uv.setPid(UUIDTool.genId32());
-			uv.setTenantId(orgId);
 
 			RegisterResult rr = iUser.registerUser(uv);
 			
