@@ -76,6 +76,7 @@ public class ConfigController {
 		OrderDetailRequest orderDetail = new OrderDetailRequest();
 		orderDetail.setOperateType(Constants.OperateType.APPLY);
 		orderDetail.setUserId(userVo.getUserId());
+		orderDetail.setOrgCode(userVo.getOrgCode());
 		orderDetail.setProdType(Constants.ProductType.IPAAS_CunChu); 
 		orderDetail.setProdId(prodId);
 		orderDetail.setProdByname(Constants.serviceName.CCS); // 别名
