@@ -107,6 +107,7 @@ public class DocumentStorageController {
 		serviceMap.put("capacity", capacity);
 		serviceMap.put("singleFileSize", singleFileSize);
 		serviceMap.put("serviceName", serviceName);
+		serviceMap.put("orgCode", userVo.getOrgCode());
 
 		/** 配置中心参数 **/
 		Gson prodParam = new Gson();

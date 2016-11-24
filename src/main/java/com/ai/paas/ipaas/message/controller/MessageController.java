@@ -114,6 +114,7 @@ public class MessageController {
 		prodParamJson.addProperty("topicName", messageName);
 		prodParamJson.addProperty("topicPartitions", partitions);
 		prodParamJson.addProperty("msgReplica", "2");
+		prodParamJson.addProperty("orgCode", userVo.getOrgCode());
 		logger.info("产品参数："+prodParamJson.toString());
 		orderDetailRequest.setProdParam(prodParamJson.toString());
 		

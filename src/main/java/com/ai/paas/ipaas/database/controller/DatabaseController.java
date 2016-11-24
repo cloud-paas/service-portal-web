@@ -85,6 +85,7 @@ public class DatabaseController {
 		Gson prodParam = new Gson();
 		Map<String, Object> serviceMap = new HashMap<String, Object>();
 		serviceMap.put("serviceName", my_name);
+		serviceMap.put("orgCode", userVo.getOrgCode());
 		serviceMap.put("masterNum", masterNum);
 		serviceMap.put("isNeedDistributeTrans", needDistributeTrans);
 		serviceMap.put("isMysqlProxy", isMysqlProxy);

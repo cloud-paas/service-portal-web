@@ -23,6 +23,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailRequest;
 import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.SysParamVo;
 import com.ai.paas.ipaas.user.dubbo.vo.SysParmRequest;
+import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.JsonObject;
 
@@ -61,9 +62,9 @@ public class StormOrderController extends BaseController {
 			HttpServletResponse response) {
 		String prodCluster=request.getParameter("rcsSelect");
 		String userServIpaasPwd=request.getParameter("userServIpaasPwd");
-		String userId=UserUtil.getUserSession(request.getSession()).getUserId();
+		UserInfoVo userVo = UserUtil.getUserSession(request.getSession());
 		OrderDetailRequest orderDetailRequest=new OrderDetailRequest();
-		orderDetailRequest.setUserId(userId);								//用户ID
+		orderDetailRequest.setUserId(userVo.getUserId());								//用户ID
 		orderDetailRequest.setOperateType(Constants.OperateType.APPLY);		//操作类型
 		orderDetailRequest.setProdId("4");									//产品ID
 		orderDetailRequest.setProdType(Constants.ProductType.IPAAS_JiSuan);	//PROD_IAAS	//产品类型  // 1存储  2计算   3 数据库服务
@@ -72,6 +73,7 @@ public class StormOrderController extends BaseController {
 				
 		JsonObject prodClusterJson = new JsonObject();
 		prodClusterJson.addProperty("prodCluster", prodCluster);
+		prodClusterJson.addProperty("orgCode", userVo.getOrgCode());
 		log.info("产品参数："+prodClusterJson.toString());
 		orderDetailRequest.setProdParam(prodClusterJson.toString());			//产品参数
 		

@@ -99,6 +99,7 @@ public class RdsController {
 		serviceMap.put("syncStrategy", request.getParameter("syncStrategy"));
 		serviceMap.put("createSlaverNum", request.getParameter("createSlaverNum"));
 		serviceMap.put("intStorage", request.getParameter("intStorage"));
+		serviceMap.put("orgCode", userVo.getOrgCode());
 		
 		orderDetailRequest.setProdParam(prodParam.toJson(serviceMap)); // 配置中心参数为空
 		orderDetailRequest.setUserServIpaasPwd(request.getParameter("servicePassword"));// 服务密码

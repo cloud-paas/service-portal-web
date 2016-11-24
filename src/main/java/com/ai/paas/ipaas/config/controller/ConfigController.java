@@ -76,7 +76,7 @@ public class ConfigController {
 		OrderDetailRequest orderDetail = new OrderDetailRequest();
 		orderDetail.setOperateType(Constants.OperateType.APPLY);
 		orderDetail.setUserId(userVo.getUserId());
-		orderDetail.setOrgCode(userVo.getOrgCode());
+		//orderDetail.setOrgCode(userVo.getOrgCode());
 		orderDetail.setProdType(Constants.ProductType.IPAAS_CunChu); 
 		orderDetail.setProdId(prodId);
 		orderDetail.setProdByname(Constants.serviceName.CCS); // 别名
@@ -85,6 +85,7 @@ public class ConfigController {
 		Gson prodParam = new Gson();
 		Map<String, Object> serviceMap = new HashMap<String, Object>();
 		serviceMap.put("serviceName", serviceName);
+		serviceMap.put("orgCode", userVo.getOrgCode());
 		orderDetail.setProdParam(prodParam.toJson(serviceMap)); // 配置中心参数为空
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
