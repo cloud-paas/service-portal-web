@@ -568,18 +568,18 @@ public class UserController {
 			uv.setPid(UUIDTool.genId32());
 
 			RegisterResult rr = iUser.registerUser(uv);
-			
-			//保存用户及组织关系
-			OrgnizeUserInfoVo ov= new OrgnizeUserInfoVo();
-			ov.setOrgId(Integer.valueOf(orgId));
-			ov.setUserId(uv.getUserId());
-			iOrgUser.saveOrgnizeUserInfo(ov);
 
-			/** 通过portal发送邮件 **/
+			/** 通过portal发送邮件 **/		
 			if (rr.isNeedSend() && rr.getEmail() != null) {
 				emailSrv.sendEmail(rr.getEmail());
 			}
 
+			//保存用户及组织关系	
+			OrgnizeUserInfoVo ov= new OrgnizeUserInfoVo();
+			ov.setOrgId(Integer.valueOf(orgId));
+			ov.setUserId(uv.getUserId());
+			iOrgUser.saveOrgnizeUserInfo(ov);
+			
 			HttpSession session = request.getSession();
 			session.setAttribute("email", email);
 			session.setAttribute(email, System.currentTimeMillis());
