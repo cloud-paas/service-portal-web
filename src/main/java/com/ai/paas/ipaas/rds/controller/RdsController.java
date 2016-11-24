@@ -33,8 +33,10 @@ public class RdsController {
 
 	@Reference
 	private IOrder iOrder;
+	
 	@Reference
 	private ISysParamDubbo iSysParam;
+	
 	@Autowired
 	private EmailServiceImpl emailSrv;
 

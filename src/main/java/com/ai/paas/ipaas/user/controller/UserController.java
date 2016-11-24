@@ -333,6 +333,11 @@ public class UserController {
 						
 			//根据用户ID查询用户组织编码存入session
 			OrgnizeUserInfoVo orgUserInfo = iOrgUser.getOrgnizeUserInfo(userId);
+			if (orgUserInfo == null) {
+				modelMap.put("returnFlag", "false_2");
+				modelMap.put("returnMessage", "该用户无组织，请先添加组织");
+				return modelMap;
+			}
 			OrgnizeCenterVo orgInfo = iorg.getOrgnizeCenterById(orgUserInfo.getOrgId());
 			userInfoVo.setOrgCode(orgInfo.getOrgCode());
 

@@ -169,6 +169,13 @@ $(document).ready(function(){
 							$("#loginInvlid").removeClass("hidden").show();
 							$("#kaptchaImage").hide().attr('src', '${_base}/clinicCountManager/captcha-image?' + Math.floor(Math.random()*100) ).fadeIn();
 						}
+						
+						if(data.returnFlag=="false_2"){
+							$("#image").val("");
+							$("#loginInvlid").text("用户未加入到组织").addClass("error");
+							$("#loginInvlid").removeClass("hidden").show();
+							$("#kaptchaImage").hide().attr('src', '${_base}/clinicCountManager/captcha-image?' + Math.floor(Math.random()*100) ).fadeIn();
+						}
 					}
 				}
 			});
