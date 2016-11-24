@@ -331,14 +331,15 @@ public class UserController {
 			BeanUtils.copyProperties(vo, userInfoVo);
 			userInfoVo.setUserPhoneNum(vo.getUserPhoneNum());
 						
-			//根据用户ID查询用户组织编码存入session			
-			String orgCode =  iOrgUser.getOrgCodeByUserId(userId);
-			if (orgCode == null) {
+			//根据用户ID查询用户组织编码存入session
+			OrgnizeUserInfoVo orgUserInfo = iOrgUser.getOrgnizeUserInfo(userId);
+			if (orgUserInfo == null) {
 				modelMap.put("returnFlag", "false_2");
 				modelMap.put("returnMessage", "该用户无组织，请先添加组织");
 				return modelMap;
 			}
-			userInfoVo.setOrgCode(orgCode);
+			OrgnizeCenterVo orgInfo = iorg.getOrgnizeCenterById(orgUserInfo.getOrgId());
+			userInfoVo.setOrgCode(orgInfo.getOrgCode());
 
 			// partnerType; partnerAccount;
 			if (userInfoVo.getPartnerAccount() == null
