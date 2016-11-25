@@ -81,6 +81,7 @@ public class RdsController {
 		Gson prodParam = new Gson();
 		Map<String, Object> serviceMap = new HashMap<String, Object>();
 		
+		serviceMap.put("orgCode", userVo.getOrgCode());
 		serviceMap.put("rootName", request.getParameter("rootName"));
 		serviceMap.put("rootPassword", request.getParameter("rootPassword"));
 		serviceMap.put("depId", request.getParameter("depId"));
@@ -98,8 +99,7 @@ public class RdsController {
 		serviceMap.put("sqlAudit", request.getParameter("sqlAudit"));
 		serviceMap.put("syncStrategy", request.getParameter("syncStrategy"));
 		serviceMap.put("createSlaverNum", request.getParameter("createSlaverNum"));
-		serviceMap.put("intStorage", request.getParameter("intStorage"));
-		serviceMap.put("orgCode", userVo.getOrgCode());
+		serviceMap.put("intStorage", request.getParameter("intStorage"));		
 		
 		orderDetailRequest.setProdParam(prodParam.toJson(serviceMap)); // 配置中心参数为空
 		orderDetailRequest.setUserServIpaasPwd(request.getParameter("servicePassword"));// 服务密码
