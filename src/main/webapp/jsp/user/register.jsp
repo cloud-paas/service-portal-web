@@ -72,7 +72,7 @@
 	          	<li>
 	          	    <select id="orgnize"  name="orgnize" class="ch_select">
 	          		  <c:forEach items="${orgList}" var="my_orgnize">
-	          			<option value="${my_orgnize.orgId}" class="yaxin-mail">${my_orgnize.orgCode}:${my_orgnize.orgName}</option>
+	          			<option value="${my_orgnize.orgId}" style="width:50px;font-size:16px;">${my_orgnize.orgCode}:${my_orgnize.orgName}</option>
 	          		  </c:forEach>
 	          		</select>
 	            </li>
