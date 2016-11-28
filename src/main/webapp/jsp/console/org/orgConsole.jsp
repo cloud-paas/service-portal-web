@@ -156,7 +156,11 @@ var html;
         						msg:'组织【'+orgName+'】刪除成功!'
         					}).on(queryOrgList());
         					
-        				}else if(msg.resultCode=='999999'){
+        				}else if(msg.resultCode=='111111'){
+        					Modal.alert({
+        						msg:'组织【'+orgName+'】下面有用户，无法删除!'
+        					})
+        				}else {
         					Modal.alert({
         						msg:'组织【'+orgName+'】刪除失败!'
         					})

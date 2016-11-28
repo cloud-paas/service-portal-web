@@ -136,6 +136,8 @@ public class Constants {
 	public static final String OPERATE_CODE_SUCCESS = "000000";// 操作成功
 
 	public static final String OPERATE_CODE_FAIL = "999999";// 操作失败
+	
+	public static final String OPERATE_CODE_INTERRUPT = "111111";// 操作中断
 
 	public static final String SECURITY_KEY = "7331c9b6b1a1d521363f7bca8acb095f";// md5
 }

@@ -19,6 +19,7 @@ import com.ai.paas.ipaas.PaasException;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.constants.Constants.RType;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IOrgnizeCenterSv;
+import com.ai.paas.ipaas.user.dubbo.interfaces.IOrgnizeUserInfoSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.dubbo.vo.OrgnizeCenterVo;
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -39,6 +40,9 @@ public class OrgCenterController {
 	
 	@Reference
 	private IOrgnizeCenterSv OrgcenterSvImpl;
+	
+	@Reference
+	private IOrgnizeUserInfoSv orgUserSv;
 	
 	@RequestMapping(value = "/toOrgConsole")
 	public String toOrgConsole(HttpServletRequest req,
@@ -127,10 +131,17 @@ public class OrgCenterController {
 	@ResponseBody
 	public String deleteOrgnize(HttpServletRequest request,HttpServletResponse response){
 		JSONObject result=new JSONObject();
-		String orgId=request.getParameter("orgId");
+		String orgIdStr=request.getParameter("orgId");
+		int orgId = Integer.valueOf(orgIdStr);
 		int delResult = 0;
 		try {
-			delResult = OrgcenterSvImpl.deleteOrgnize(Integer.valueOf(orgId));
+			if (orgUserSv.getOrgUsrInfoCntByOrgId(orgId) < 1) {
+				delResult = OrgcenterSvImpl.deleteOrgnize(orgId);
+			} else {
+				result.put("resultCode", Constants.OPERATE_CODE_INTERRUPT);
+				return result.toString();
+			}
+			
 		} catch (PaasException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
