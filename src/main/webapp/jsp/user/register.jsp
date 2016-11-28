@@ -71,8 +71,8 @@
 	          	<li class="you_zi">组织：</li>
 	          	<li>
 	          	    <select id="orgnize"  name="orgnize" class="ch_select">
-	          		  <c:forEach items="${orgList}" var="my_orgnize" class="you_input">
-	          			<option value="${my_orgnize.orgId}">${my_orgnize.orgCode}:${my_orgnize.orgName}</option>
+	          		  <c:forEach items="${orgList}" var="my_orgnize">
+	          			<option value="${my_orgnize.orgId}" class="you_input">${my_orgnize.orgCode}:${my_orgnize.orgName}</option>
 	          		  </c:forEach>
 	          		</select>
 	            </li>
