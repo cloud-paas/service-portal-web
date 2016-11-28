@@ -70,7 +70,7 @@
 			<ul>
 	          	<li class="you_zi">组织：</li>
 	          	<li>
-	          	    <select id="orgnize"  name="orgnize" class="ch_select">
+	          	    <select id="orgnize"  name="orgnize" class="pei_select">
 	          		  <c:forEach items="${orgList}" var="my_orgnize">
 	          			<option value="${my_orgnize.orgId}" style="width:50px;font-size:16px;">${my_orgnize.orgCode}:${my_orgnize.orgName}</option>
 	          		  </c:forEach>
