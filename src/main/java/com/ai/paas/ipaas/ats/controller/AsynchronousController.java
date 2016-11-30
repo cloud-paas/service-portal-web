@@ -81,6 +81,7 @@ public class AsynchronousController {
         log.info("get the param of servicePassword is : " + servicePassword);
         JSONObject prodParam = new JSONObject();
         prodParam.put("serviceName", my_name);
+        prodParam.put("orgCode", userVo.getOrgCode());
         request.setProdParam(prodParam.toString());
         request.setUserServIpaasPwd(servicePassword);
         log.info("========= begin to send request and the params are : "

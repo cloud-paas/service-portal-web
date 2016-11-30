@@ -68,6 +68,18 @@
 			</ul>
 			
 			<ul>
+	          	<li class="you_zi">组织：</li>
+	          	<li>
+	          	    <select id="orgnize"  name="orgnize" class="pei_select">
+	          		  <c:forEach items="${orgList}" var="my_orgnize">
+	          			<option value="${my_orgnize.orgId}" style="width:50px;font-size:16px;">${my_orgnize.orgCode}:${my_orgnize.orgName}</option>
+	          		  </c:forEach>
+	          		</select>
+	            </li>
+	            <label for="orgnize">组织与资源相对应</label>	
+	         </ul>			
+			
+			<ul>
 				<li class="you_zi">电话：</li>
 				<li><input id="phone" name="phone"  class="you_input" maxlength="11"></li>
 				<label for="phone"></label>
@@ -152,6 +164,7 @@
 					var user_password_rep = $.trim($("#user_password_rep").val());
 					var phone = $.trim($("#phone").val());
 					var dept = "xxx";
+					var orgid = $("#orgnize").val()
 					if (registerF.valid() && phone.match(/^((1)+\d{10})$/)) {
 						$("#register").unbind();
 						var url = "${_base}/audit/doRegister";
@@ -162,7 +175,8 @@
 								"email" : user_name,
 								"mobileNumber" : phone,
 								"userOrgName" : dept,
-								"password" : user_password
+								"password" : user_password,
+								"orgId" : orgid
 							},
 							success : function(data) {
 								//alert(11);

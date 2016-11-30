@@ -29,6 +29,7 @@ import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
 import com.ai.paas.ipaas.user.dubbo.vo.SysParamVo;
 import com.ai.paas.ipaas.user.dubbo.vo.SysParmRequest;
 import com.ai.paas.ipaas.user.utils.gson.GsonUtil;
+import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.JsonObject;
 
@@ -96,10 +97,10 @@ public class CacheController {
 		String serviceName=request.getParameter("my_name");
 		String userServIpaasPwd=request.getParameter("my_password");
 		String capacity=request.getParameter("my_capacity");
-		String userId=UserUtil.getUserSession(request.getSession()).getUserId();
+		UserInfoVo userVo = UserUtil.getUserSession(request.getSession());
 		//String userId="111";
 		OrderDetailRequest orderDetailRequest=new OrderDetailRequest();
-		orderDetailRequest.setUserId(userId);								//用户ID
+		orderDetailRequest.setUserId(userVo.getUserId());								//用户ID
 		orderDetailRequest.setOperateType(Constants.OperateType.APPLY);		//操作类型
 		orderDetailRequest.setProdId("2");									//产品ID
 		orderDetailRequest.setProdType(Constants.ProductType.IPAAS_CunChu);	 //PROD_IPAAS	//产品类型
@@ -110,6 +111,7 @@ public class CacheController {
 		prodParamJson.addProperty("capacity", capacity);
 		prodParamJson.addProperty("haMode", haMode);
 		prodParamJson.addProperty("serviceName", serviceName);
+		prodParamJson.addProperty("orgCode", userVo.getOrgCode());
 		logger.info("产品参数："+prodParamJson.toString());
 		orderDetailRequest.setProdParam(prodParamJson.toString());
 		
@@ -175,10 +177,10 @@ public class CacheController {
 		String capacity=request.getParameter("capacity");
 		String prodParam=request.getParameter("prodParam");
 		String userServId=request.getParameter("userServId");		
-		String userId=UserUtil.getUserSession(request.getSession()).getUserId();
+		UserInfoVo userVo = UserUtil.getUserSession(request.getSession());
 		
 		OrderDetailRequest orderDetailRequest = new OrderDetailRequest();
-		orderDetailRequest.setUserId(userId);								//用户ID
+		orderDetailRequest.setUserId(userVo.getUserId());								//用户ID
 		orderDetailRequest.setOperateType(Constants.OperateType.UPDATE);		//操作类型
 		orderDetailRequest.setProdId("2");									//产品ID
 		orderDetailRequest.setProdType(Constants.ProductType.IPAAS_CunChu);	 //PROD_IPAAS	//产品类型
@@ -190,6 +192,7 @@ public class CacheController {
 		map.put("serviceId", userServIpaasId);
 		map.put("userServId", userServId);		
 		map.put("capacity", capacity);
+		map.put("orgCode", userVo.getOrgCode());
 		logger.info("产品参数："+GsonUtil.toJSon(map));
 		orderDetailRequest.setProdParam(GsonUtil.toJSon(map));
 		

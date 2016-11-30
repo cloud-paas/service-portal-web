@@ -15,6 +15,7 @@ import java.io.OutputStreamWriter;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import bsh.Interpreter;
 
 import com.ai.paas.ipaas.PaasException;
@@ -48,11 +50,16 @@ import com.ai.paas.ipaas.email.EmailServiceImpl;
 import com.ai.paas.ipaas.storm.sys.utils.StringUtils;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.constants.ConstantsForSession;
+import com.ai.paas.ipaas.system.constants.Constants.RType;
 import com.ai.paas.ipaas.system.util.HttpClientUtil;
 import com.ai.paas.ipaas.system.util.HttpRequestUtil;
 import com.ai.paas.ipaas.system.util.UserUtil;
+import com.ai.paas.ipaas.user.dubbo.interfaces.IOrgnizeCenterSv;
+import com.ai.paas.ipaas.user.dubbo.interfaces.IOrgnizeUserInfoSv;
 import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.dubbo.interfaces.IUser;
+import com.ai.paas.ipaas.user.dubbo.vo.OrgnizeCenterVo;
+import com.ai.paas.ipaas.user.dubbo.vo.OrgnizeUserInfoVo;
 import com.ai.paas.ipaas.user.dubbo.vo.RegisterResult;
 import com.ai.paas.ipaas.user.dubbo.vo.UserVo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
@@ -79,7 +86,13 @@ public class UserController {
 	static Class config_class = UserController.class;
 	@Reference
 	private IUser iUser;
+	
+	@Reference
+	private IOrgnizeUserInfoSv iOrgUser;
 
+	@Reference
+	private IOrgnizeCenterSv iorg;
+	
 	@Reference
 	private ISysParamDubbo iSysParam;
 
@@ -124,6 +137,16 @@ public class UserController {
 	@RequestMapping(value = "/toRegister")
 	public String register(HttpServletRequest request,
 			HttpServletResponse response) {
+		
+		//注册之前先查询组织信息
+		List<OrgnizeCenterVo> orgList = new ArrayList<OrgnizeCenterVo>();
+		try {
+			orgList = iorg.getOrgnizeCenterByStatus(RType.STATUS_VALID);
+			request.setAttribute("orgList", orgList);
+		} catch (PaasException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}				
 		return "user/register";
 	}
 
@@ -307,6 +330,16 @@ public class UserController {
 			vo.setUserName(vo.getUserEmail());
 			BeanUtils.copyProperties(vo, userInfoVo);
 			userInfoVo.setUserPhoneNum(vo.getUserPhoneNum());
+						
+			//根据用户ID查询用户组织编码存入session
+			OrgnizeUserInfoVo orgUserInfo = iOrgUser.getOrgnizeUserInfo(userId);
+			if (orgUserInfo == null) {
+				modelMap.put("returnFlag", "false_2");
+				modelMap.put("returnMessage", "该用户无组织，请先添加组织");
+				return modelMap;
+			}
+			OrgnizeCenterVo orgInfo = iorg.getOrgnizeCenterById(orgUserInfo.getOrgId());
+			userInfoVo.setOrgCode(orgInfo.getOrgCode());
 
 			// partnerType; partnerAccount;
 			if (userInfoVo.getPartnerAccount() == null
@@ -518,7 +551,7 @@ public class UserController {
 
 	@RequestMapping(value = "/doRegister", produces = "text/html;charset=UTF-8")
 	public @ResponseBody String register(@RequestParam String email,
-			String password, String userOrgName, String mobileNumber,
+			String password, String userOrgName, String mobileNumber,String orgId,
 			HttpServletRequest request) {
 		String res = null;
 		try {
@@ -536,11 +569,17 @@ public class UserController {
 
 			RegisterResult rr = iUser.registerUser(uv);
 
-			/** 通过portal发送邮件 **/
+			/** 通过portal发送邮件 **/		
 			if (rr.isNeedSend() && rr.getEmail() != null) {
 				emailSrv.sendEmail(rr.getEmail());
 			}
 
+			//保存用户及组织关系	
+			OrgnizeUserInfoVo ov= new OrgnizeUserInfoVo();
+			ov.setOrgId(Integer.valueOf(orgId));
+			ov.setUserId(uv.getUserId());
+			iOrgUser.saveOrgnizeUserInfo(ov);
+			
 			HttpSession session = request.getSession();
 			session.setAttribute("email", email);
 			session.setAttribute(email, System.currentTimeMillis());
