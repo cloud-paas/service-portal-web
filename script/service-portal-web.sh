@@ -1,5 +1,5 @@
 #!/bin/sh
-userStr=""
+$userStr=""
 
 sed -i "s/default.dubbo.registry.address=.*/default.dubbo.registry.address=${DUBBO_REGISTRY_ADDR}/g" /opt/apache-tomcat-8.0.35/webapps/service-portal-web/WEB-INF/classes/common/dubbo.properties
 sed -i "s/default.dubbo.protocol.port=.*/default.dubbo.protocol.port=${DUBBO_PORT}/g" /opt/apache-tomcat-8.0.35/webapps/service-portal-web/WEB-INF/classes/common/dubbo.properties
@@ -19,9 +19,9 @@ if [ -n "$AccessUsers" ]; then
     
   for i in ${arr[@]}    
     do    
-      $userStr=${userStr}"{\"userEmail\":\"$i\"},"   
+      $userStr=${userStr}"\{\\\"userEmail\\\":\\\"$i\\\"\}\,"   
     done 
-  sed -i "s/userAccessList = .*/userAccessList = \"{\\"accessUsers\\":[${userStr}]}\"/g" /opt/apache-tomcat-8.0.35/webapps/service-portal-web/WEB-INF/classes/common/userAccess.properties
+  sed -i "s/userAccessList = .*/userAccessList = \"{\\\"accessUsers\\\":[${userStr}]}\\\"/g" /opt/apache-tomcat-8.0.35/webapps/service-portal-web/WEB-INF/classes/common/userAccess.properties
 fi
 
 nohup /opt/apache-tomcat-8.0.35/bin/catalina.sh run >> /service-portal-web.log
