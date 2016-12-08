@@ -128,7 +128,7 @@
 							dataType : "json", //接受数据格式   
 							data : { //要传递的数据
 								email : function() {
-									return $.trim( $("#user_name").val()+"@asiainfo.com" );
+									return $.trim( $("#user_name").val());
 								}
 							}
 						}
@@ -158,7 +158,7 @@
 			
 					var _this = this;
 					$(_this).addClass("disabled");
-					var user_name = $.trim($("#user_name").val()+"@asiainfo.com");
+					var user_name = $.trim($("#user_name").val());
 					//alert(00+user_name);
 					var user_password = $.trim($("#user_password").val());
 					var user_password_rep = $.trim($("#user_password_rep").val());
