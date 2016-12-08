@@ -31,7 +31,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 						<ul class="dia_input input-s">
 							<li><img src="${_base }/resources/images/login_a.png"></li>
-							<li>
+							<li style="position:relative">
 								<input id="userName" name="userName" type="text" class="yon_input" placeholder="请输入邮箱"/>
 								<!--<span style="font-size:15px;line-height:35px;margin-left:3px;">@asiainfo.com</span>  -->
 							</li>
