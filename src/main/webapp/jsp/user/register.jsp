@@ -62,7 +62,7 @@
 				<li class="you_zi">邮箱：</li>
 				<li style="position:relative;">
 					<input id="user_name" name="user_name" type="text" class="you_input input-s" style="display:inline-block">
-					<span  class="yaxin-mail">@asiainfo.com</span>
+					<!-- <span  class="yaxin-mail">@asiainfo.com</span> -->
 				</li>
 				<label for="user_name"></label>
 			</ul>
