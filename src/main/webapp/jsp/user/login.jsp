@@ -103,7 +103,7 @@ $(document).ready(function(){
 	});
 	function emailCheck(){
 		var userName =$.trim($("#userName").val());
-		if(userName != null || userName==""){
+		if(userName == null || userName==""){
 			//alert("indexOf")
 			$("#loginInvlid").text("邮箱不能为空").addClass("error");
 			$("#loginInvlid").removeClass("hidden");
