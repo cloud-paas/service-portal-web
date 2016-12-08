@@ -19,7 +19,7 @@ if [ -n "$AccessUsers" ]; then
     
   for i in ${arr[@]}    
     do    
-      userStr = userStr + {\\"userEmail\\":\\"$i\\"} + ","   
+      $userStr=${userStr}"{\"userEmail\":\"$i\"},"   
     done 
   sed -i "s/userAccessList = .*/userAccessList = \"{\\"accessUsers\\":[${userStr}]}\"/g" /opt/apache-tomcat-8.0.35/webapps/service-portal-web/WEB-INF/classes/common/userAccess.properties
 fi
