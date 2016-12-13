@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import com.ai.paas.ipaas.system.util.EmailTemplUtil;
-import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
+import com.ai.paas.ipaas.vo.user.EmailDetail;
 
 /**
  * 发送邮件

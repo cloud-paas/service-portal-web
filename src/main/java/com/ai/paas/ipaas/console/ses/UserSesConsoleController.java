@@ -18,18 +18,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ai.paas.ipaas.PaasException;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IAtsConsoleDubboSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IDssConsoleDubboSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IProdProductDubboSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.ISesConsoleDubboSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
-import com.ai.paas.ipaas.user.dubbo.vo.ProdProductVo;
-import com.ai.paas.ipaas.user.dubbo.vo.ResponseHeader;
-import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
-import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
-import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IDssConsoleDubboSv;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IProdProductDubboSv;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.ISesConsoleDubboSv;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.vo.user.ProdProductVo;
+import com.ai.paas.ipaas.vo.user.ResponseHeader;
+import com.ai.paas.ipaas.vo.user.SelectWithNoPageRequest;
+import com.ai.paas.ipaas.vo.user.SelectWithNoPageResponse;
+import com.ai.paas.ipaas.vo.user.UserProdInstVo;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 /**
@@ -45,9 +44,6 @@ public class UserSesConsoleController {
 	
 	@Reference
 	private IDssConsoleDubboSv dssConsoleDubboSv;
-	
-	@Reference
-	private IAtsConsoleDubboSv atsConsoleDubboSv;
 	
 	@Reference
 	private IProdProductDubboSv prodProductDubboSv;
@@ -99,7 +95,8 @@ public class UserSesConsoleController {
 			vo.setUserServiceId(prodId);
 			selectWithNoPageRequest.setSelectRequestVo(vo);
 			
-			response = atsConsoleDubboSv.selectUserProdInsts(selectWithNoPageRequest);
+			//TODO: 2016-12-13
+//			response = atsConsoleDubboSv.selectUserProdInsts(selectWithNoPageRequest);
 			
 			String resultCode = response.getResponseHeader().getResultCode();
 			List<UserProdInstVo> resultList = response.getResultList();
@@ -152,7 +149,10 @@ public class UserSesConsoleController {
 			vo.setUserId(userVo.getUserId()); // 用户Id
 			vo.setUserServId(Long.parseLong(userServId));
 			selectWithNoPageRequest.setSelectRequestVo(vo);
-			response = atsConsoleDubboSv.selectUserProdInstById(selectWithNoPageRequest);		
+			
+			//TODO: 2016-12-13
+//			response = atsConsoleDubboSv.selectUserProdInstById(selectWithNoPageRequest);	
+			
 			if(Constants.OPERATE_CODE_SUCCESS.equals(response.getResponseHeader().getResultCode())){
 				UserProdInstVo userProdInstVo = response.getResultList().get(0);
 				 Map<String,String> jsonMap = JSonUtil.fromJSon(userProdInstVo.getUserServParam(),Map.class);

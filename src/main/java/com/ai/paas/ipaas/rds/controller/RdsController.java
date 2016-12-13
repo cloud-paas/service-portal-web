@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ai.paas.ipaas.email.EmailServiceImpl;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IOrder;
-import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
-import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
-import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailRequest;
-import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IOrder;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
+import com.ai.paas.ipaas.vo.user.EmailDetail;
+import com.ai.paas.ipaas.vo.user.OrderDetailRequest;
+import com.ai.paas.ipaas.vo.user.OrderDetailResponse;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 

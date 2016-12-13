@@ -20,12 +20,9 @@ import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
 
 import com.ai.paas.ipaas.maintain.util.ConfigUtil;
-import com.ai.paas.ipaas.storm.sys.utils.StringUtils;
 import com.ai.paas.ipaas.system.constants.ConstantsForSession;
-import com.ai.paas.ipaas.system.util.UserUtil;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
-
-
+import com.alibaba.dubbo.common.utils.StringUtils;
 
 public class LoginFilter implements Filter{
 	private static final Logger log = LogManager.getLogger(LoginFilter.class.getName());
@@ -39,11 +36,11 @@ public class LoginFilter implements Filter{
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		String ignore_suffix = filterConfig.getInitParameter("ignore_suffix");
-		if (StringUtils.isNotBlank(ignore_suffix))
+		if (StringUtils.isNotEmpty(ignore_suffix))
 			IGNORE_SUFFIX = filterConfig.getInitParameter("ignore_suffix").split(",");
 		
 		String ignorePages = filterConfig.getInitParameter("ignore_pages");
-		if (StringUtils.isNotBlank(ignorePages)) {
+		if (StringUtils.isNotEmpty(ignorePages)) {
 			IGNORE_PAGES =ignorePages.split(",");
 		}
 	}

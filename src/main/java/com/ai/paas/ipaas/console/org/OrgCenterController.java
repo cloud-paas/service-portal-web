@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ai.paas.ipaas.PaasException;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.constants.Constants.RType;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IOrgnizeCenterSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IOrgnizeUserInfoSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
-import com.ai.paas.ipaas.user.dubbo.vo.OrgnizeCenterVo;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IOrgnizeCenterSv;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IOrgnizeUserInfoSv;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.ISysParamDubbo;
+import com.ai.paas.ipaas.vo.user.OrgnizeCenterVo;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 /**

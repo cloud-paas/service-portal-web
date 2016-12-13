@@ -24,19 +24,19 @@ import com.ai.paas.ipaas.PaasException;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.HttpClientUtil;
 import com.ai.paas.ipaas.system.util.UserUtil;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IDssConsoleDubboSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IProdProductDubboSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
-import com.ai.paas.ipaas.user.dubbo.vo.DocumentVo;
-import com.ai.paas.ipaas.user.dubbo.vo.ProdMenuVo;
-import com.ai.paas.ipaas.user.dubbo.vo.ProdProductVo;
-import com.ai.paas.ipaas.user.dubbo.vo.ResponseHeader;
-import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
-import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
-import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IDssConsoleDubboSv;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IProdProductDubboSv;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.CiperUtil;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.vo.user.DocumentVo;
+import com.ai.paas.ipaas.vo.user.ProdMenuVo;
+import com.ai.paas.ipaas.vo.user.ProdProductVo;
+import com.ai.paas.ipaas.vo.user.ResponseHeader;
+import com.ai.paas.ipaas.vo.user.SelectWithNoPageRequest;
+import com.ai.paas.ipaas.vo.user.SelectWithNoPageResponse;
+import com.ai.paas.ipaas.vo.user.UserProdInstVo;
 import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 
@@ -426,7 +426,7 @@ public class UserDssConsoleController {
 		String productType = req.getParameter("productType"); 
 		req.setAttribute("productType",productType);
 		String timeStamp = req.getParameter("timeStamp");
-		UserProdInstVo userProdInstVo = (com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo) req.getSession().getAttribute(timeStamp);
+		UserProdInstVo userProdInstVo = (com.ai.paas.ipaas.vo.user.UserProdInstVo) req.getSession().getAttribute(timeStamp);
 		req.setAttribute("userProdInstVo",userProdInstVo);	
 		return "console/dss/modifyServPwdSuccess";
 	}

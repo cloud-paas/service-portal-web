@@ -8,8 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -18,20 +16,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IMcsConsoleDubboSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IProdProductDubboSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
-import com.ai.paas.ipaas.user.dubbo.vo.ProdProductVo;
-import com.ai.paas.ipaas.user.dubbo.vo.ResponseHeader;
-import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
-import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
-import com.ai.paas.ipaas.user.dubbo.vo.SysParamVo;
-import com.ai.paas.ipaas.user.dubbo.vo.SysParmRequest;
-import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IMcsConsoleDubboSv;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IProdProductDubboSv;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.utils.gson.GsonUtil;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.CiperUtil;
+import com.ai.paas.ipaas.vo.user.ProdProductVo;
+import com.ai.paas.ipaas.vo.user.SelectWithNoPageRequest;
+import com.ai.paas.ipaas.vo.user.SelectWithNoPageResponse;
+import com.ai.paas.ipaas.vo.user.SysParamVo;
+import com.ai.paas.ipaas.vo.user.SysParmRequest;
+import com.ai.paas.ipaas.vo.user.UserProdInstVo;
+import com.ai.paas.ipaas.vo.user.ResponseHeader;
 import com.alibaba.dubbo.config.annotation.Reference;
+
+import net.sf.json.JSONObject;
 
 /**
  * Mcs用户控制台*
@@ -196,7 +196,7 @@ public class UserMcsConsoleController {
 		req.setAttribute("parentUrl", parentUrl);
 		String productType = req.getParameter("productType");
 		req.setAttribute("productType", productType);
-		UserProdInstVo userProdInstVo = (com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo) req
+		UserProdInstVo userProdInstVo = (com.ai.paas.ipaas.vo.user.UserProdInstVo) req
 				.getSession().getAttribute("userProdInstVo");
 		req.setAttribute("userProdInstVo", userProdInstVo);
 		return "console/modifyServPwdSuccess";
@@ -234,7 +234,7 @@ public class UserMcsConsoleController {
 		req.setAttribute("parentUrl", parentUrl);
 		String productType = req.getParameter("productType");
 		req.setAttribute("productType", productType);
-		UserProdInstVo userProdInstVo = (com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo) req
+		UserProdInstVo userProdInstVo = (com.ai.paas.ipaas.vo.user.UserProdInstVo) req
 				.getSession().getAttribute("userProdInstVo");
 		req.setAttribute("userProdInstVo", userProdInstVo);
 		return "console/mcs/expanseCapacitySuccess";

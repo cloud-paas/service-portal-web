@@ -1,26 +1,12 @@
 package com.ai.paas.ipaas.org.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ai.paas.ipaas.PaasException;
-import com.ai.paas.ipaas.system.constants.Constants;
-import com.ai.paas.ipaas.system.constants.Constants.RType;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IOrgnizeCenterSv;
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IOrgnizeCenterSv;
-import com.ai.paas.ipaas.user.dubbo.vo.OrgnizeCenterVo;
 
 @Controller
 @RequestMapping(value = "/org")

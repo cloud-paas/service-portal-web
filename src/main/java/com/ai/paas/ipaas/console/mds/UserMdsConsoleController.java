@@ -22,19 +22,18 @@ import com.ai.paas.ipaas.PaasException;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.HttpClientUtil;
 import com.ai.paas.ipaas.system.util.UserUtil;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IDssConsoleDubboSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IMdsConsoleDubboSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IaasConsoleDubboSv;
-import com.ai.paas.ipaas.user.dubbo.vo.MdsSearchMessageVo;
-import com.ai.paas.ipaas.user.dubbo.vo.MdsUserSubscribeVo;
-import com.ai.paas.ipaas.user.dubbo.vo.ResponseHeader;
-import com.ai.paas.ipaas.user.dubbo.vo.ResponseSubPathList;
-import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
-import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
-import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IDssConsoleDubboSv;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IMdsConsoleDubboSv;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.JSonUtil;
+import com.ai.paas.ipaas.vo.user.MdsSearchMessageVo;
+import com.ai.paas.ipaas.vo.user.MdsUserSubscribeVo;
+import com.ai.paas.ipaas.vo.user.ResponseHeader;
+import com.ai.paas.ipaas.vo.user.ResponseSubPathList;
+import com.ai.paas.ipaas.vo.user.SelectWithNoPageRequest;
+import com.ai.paas.ipaas.vo.user.SelectWithNoPageResponse;
+import com.ai.paas.ipaas.vo.user.UserProdInstVo;
 import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
@@ -52,9 +51,6 @@ public class UserMdsConsoleController {
 	private ISysParamDubbo iSysParam;
 
 	@Reference
-	private IaasConsoleDubboSv iaasConsoleDubboSv;
-	
-	@Reference
 	private IMdsConsoleDubboSv mdsConsoleDubboSv;
 
 	@Reference
@@ -69,7 +65,11 @@ public class UserMdsConsoleController {
 		selectRequestVo.setUserId(userId);
 		selectRequestVo.setUserServiceId(Constants.serviceType.MESSAGE_CENTER+"");
 		req.setSelectRequestVo(selectRequestVo);
-		SelectWithNoPageResponse<UserProdInstVo> res = iaasConsoleDubboSv.selectUserProdInsts(req);
+		
+		//TODO: 2016-12-13
+//		SelectWithNoPageResponse<UserProdInstVo> res = iaasConsoleDubboSv.selectUserProdInsts(req);
+		SelectWithNoPageResponse<UserProdInstVo> res = null;
+		
 		List<UserProdInstVo> list = res.getResultList();
 		
 		model.addAttribute("prodList", list);

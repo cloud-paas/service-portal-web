@@ -1,6 +1,6 @@
 package com.ai.paas.ipaas.apply.vo;
 
-import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailVo;
+import com.ai.paas.ipaas.vo.user.OrderDetailVo;
 
 public class OrderDetailLocalVo extends OrderDetailVo {
     private static final long serialVersionUID = 8823461567217438599L;

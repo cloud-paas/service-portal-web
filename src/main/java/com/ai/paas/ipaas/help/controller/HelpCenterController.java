@@ -10,9 +10,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ai.paas.ipaas.config.ftp.SFTPUtils;
-import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
-import com.ai.paas.ipaas.user.dubbo.vo.SysParamVo;
-import com.ai.paas.ipaas.user.dubbo.vo.SysParmRequest;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.ISysParamDubbo;
+import com.ai.paas.ipaas.vo.user.SysParamVo;
+import com.ai.paas.ipaas.vo.user.SysParmRequest;
 import com.alibaba.dubbo.config.annotation.Reference;
 
 @Controller

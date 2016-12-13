@@ -16,30 +16,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ai.paas.ipaas.database.controller.DatabaseController;
 import com.ai.paas.ipaas.email.EmailServiceImpl;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IOrder;
-import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
-import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
-import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailRequest;
-import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
-import com.ai.paas.ipaas.user.dubbo.vo.SysParamVo;
-import com.ai.paas.ipaas.user.dubbo.vo.SysParmRequest;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IOrder;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.StringUtil;
+import com.ai.paas.ipaas.vo.user.EmailDetail;
+import com.ai.paas.ipaas.vo.user.OrderDetailRequest;
+import com.ai.paas.ipaas.vo.user.OrderDetailResponse;
+import com.ai.paas.ipaas.vo.user.SysParamVo;
+import com.ai.paas.ipaas.vo.user.SysParmRequest;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 
 @Controller
 @RequestMapping(value = "/dss")
 public class DocumentStorageController {
-	private static final Logger logger = LogManager.getLogger(DatabaseController.class.getName());
-	
+	private static final Logger logger = LogManager.getLogger(DocumentStorageController.class.getName());
+
 	@Reference
 	private IOrder iOrder;
-	
+
 	@Reference
 	private ISysParamDubbo iSysParam;
 
@@ -47,8 +46,7 @@ public class DocumentStorageController {
 	private EmailServiceImpl emailSrv;
 
 	@RequestMapping(value = "/introduce")
-	public String toIndex(HttpServletRequest request,
-			HttpServletResponse response) {
+	public String toIndex(HttpServletRequest request, HttpServletResponse response) {
 		request.getSession().removeAttribute("list_index");
 		request.getSession().setAttribute("list_index", "list_8");
 		return "/document/introduce";
@@ -58,8 +56,7 @@ public class DocumentStorageController {
 	 * 准备开通分布式数据库服务
 	 */
 	@RequestMapping(value = "/toOpenDss")
-	public String toRegisterService(ModelMap model, HttpServletRequest request,
-			HttpServletResponse response) {
+	public String toRegisterService(ModelMap model, HttpServletRequest request, HttpServletResponse response) {
 		SysParmRequest req = new SysParmRequest();
 		req.setTypeCode(Constants.serviceName.DSS);
 		req.setParamCode("capacity");
@@ -77,24 +74,23 @@ public class DocumentStorageController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/openDss", method = RequestMethod.POST)
-	public Map<String, Object> applyDBSService(HttpServletRequest request,
-			HttpServletResponse response) {
+	public Map<String, Object> applyDBSService(HttpServletRequest request, HttpServletResponse response) {
 		UserInfoVo userVo = UserUtil.getUserSession(request.getSession());
 		String pwd = request.getParameter("servicePassword");
 		String capacity = request.getParameter("capacity");
 		String singleFileSize = request.getParameter("singleFileSize");
 		String serviceName = request.getParameter("serviceName");
 		String prodId = Constants.serviceType.DBCENTER_CENTER + "";
-		
+
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		
-		if (StringUtil.isBlank(pwd) || StringUtil.isBlank(capacity)
-				|| StringUtil.isBlank(singleFileSize) || StringUtil.isBlank(serviceName)) {
+
+		if (StringUtil.isBlank(pwd) || StringUtil.isBlank(capacity) || StringUtil.isBlank(singleFileSize)
+				|| StringUtil.isBlank(serviceName)) {
 			resultMap.put("resultCode", "10001");
 			resultMap.put("resultMessage", "系统获取参数不全,请重新输入！");
 			return resultMap;
 		}
-		
+
 		OrderDetailRequest orderDetail = new OrderDetailRequest();
 		orderDetail.setProdId(prodId);
 		orderDetail.setProdByname(Constants.serviceName.DSS);

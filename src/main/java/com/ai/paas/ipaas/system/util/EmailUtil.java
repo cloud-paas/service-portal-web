@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.ipaas.system.constants.Constants;
-import com.ai.paas.ipaas.user.dubbo.interfaces.ISysParamDubbo;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.util.CiperUtil;
 import com.ai.paas.ipaas.util.JSonUtil;
 import com.ai.paas.ipaas.zookeeper.SystemConfigHandler;

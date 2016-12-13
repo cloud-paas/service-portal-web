@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ai.paas.ipaas.email.EmailServiceImpl;
 import com.ai.paas.ipaas.system.constants.Constants;
 import com.ai.paas.ipaas.system.util.UserUtil;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IMcsConsoleDubboSv;
-import com.ai.paas.ipaas.user.dubbo.interfaces.IOrder;
-import com.ai.paas.ipaas.user.dubbo.vo.EmailDetail;
-import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailRequest;
-import com.ai.paas.ipaas.user.dubbo.vo.OrderDetailResponse;
-import com.ai.paas.ipaas.user.dubbo.vo.ResponseHeader;
-import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageRequest;
-import com.ai.paas.ipaas.user.dubbo.vo.SelectWithNoPageResponse;
-import com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IMcsConsoleDubboSv;
+import com.ai.paas.ipaas.user.manage.rest.interfaces.IOrder;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.CiperUtil;
+import com.ai.paas.ipaas.vo.user.EmailDetail;
+import com.ai.paas.ipaas.vo.user.OrderDetailRequest;
+import com.ai.paas.ipaas.vo.user.OrderDetailResponse;
+import com.ai.paas.ipaas.vo.user.ResponseHeader;
+import com.ai.paas.ipaas.vo.user.SelectWithNoPageRequest;
+import com.ai.paas.ipaas.vo.user.SelectWithNoPageResponse;
+import com.ai.paas.ipaas.vo.user.UserProdInstVo;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.google.gson.Gson;
 
@@ -185,7 +185,7 @@ public class ConfigController {
 		req.setAttribute("parentUrl", parentUrl);
 		String productType = req.getParameter("productType");
 		req.setAttribute("productType", productType);
-		UserProdInstVo userProdInstVo = (com.ai.paas.ipaas.user.dubbo.vo.UserProdInstVo) req
+		UserProdInstVo userProdInstVo = (com.ai.paas.ipaas.vo.user.UserProdInstVo) req
 				.getSession().getAttribute("userProdInstVo");
 		req.setAttribute("userProdInstVo", userProdInstVo);
 		
