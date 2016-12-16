@@ -2,7 +2,7 @@
 <%@page import="com.alibaba.dubbo.common.utils.StringUtils"%>
 <%@page import="com.ai.paas.ipaas.system.constants.ConstantsForSession"%>
 <%@page import="com.ai.paas.ipaas.user.vo.UserInfoVo"%>
-<%      
+<%  
 if (userInfo != null&& !StringUtils.isBlank(userInfo.getUserName())) {
 	String userId = userInfo.getUserId();
 	request.setAttribute("userId", userId);

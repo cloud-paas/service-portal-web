@@ -12,10 +12,6 @@
 					<A href="${_base}/apply/purchaseRecords?prodType=1&currentPage=1"><span
 						style="margin-top: 2px;">我的申请</span></A>
 				</p>
-				<p id="list_3">
-					<A href="${_base}/schemeConfirm/schemeConfirmList?currentpage=1&pageSize=2"><span
-						style="margin-top: 2px;">方案确认</span></A>
-				</p>
 				<p id="list_0">
 					<A href="${_base}/mds/messageDisplay"><span
 						style="margin-top: 2px;">消息中心</span></A>
