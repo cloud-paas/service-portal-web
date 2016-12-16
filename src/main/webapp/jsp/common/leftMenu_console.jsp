@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"   pageEncoding="UTF-8"%>
-<%@page import="com.ai.paas.ipaas.storm.sys.utils.StringUtils"%>
+<%@page import="com.alibaba.dubbo.common.utils.StringUtils"%>
 <%@page import="com.ai.paas.ipaas.system.constants.ConstantsForSession"%>
 <%@page import="com.ai.paas.ipaas.user.vo.UserInfoVo"%>
 <%      
