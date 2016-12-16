@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,6 @@ import com.ai.paas.ipaas.user.manage.rest.interfaces.ISysParamDubbo;
 import com.ai.paas.ipaas.user.vo.UserInfoVo;
 import com.ai.paas.ipaas.util.StringUtil;
 import com.ai.paas.ipaas.vo.user.CheckOrdersRequest;
-import com.ai.paas.ipaas.vo.user.CheckOrdersResponse;
 import com.ai.paas.ipaas.vo.user.EmailDetail;
 import com.ai.paas.ipaas.vo.user.OrderDetailResponse;
 import com.ai.paas.ipaas.vo.user.OrderDetailVo;
@@ -282,47 +280,4 @@ public class ApplyAuditController {
         return returnMap;
     }
     
-    /**
-	 * 审核通过或者不通过
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/iaasAudit")
-	public Map<String, Object> iaasAudit(HttpServletRequest request,
-			HttpServletResponse response) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		String applyIdList = request.getParameter("orderDetailIdList");		
-		String ip = request.getParameter("ip");
-		String userName = request.getParameter("userName");
-		String pwd = request.getParameter("pwd");
-		String checkResult = request.getParameter("checkResult");		
-		List<Long> idList = new ArrayList<Long>();
-		String[] applyIdListArr = applyIdList.split(",");
-		for (String id : applyIdListArr) {
-			idList.add(Long.parseLong(id));
-		}
-		JSONObject prodParam = new JSONObject();
-        prodParam.put("ip", ip);
-        prodParam.put("userName", userName);
-        prodParam.put("pwd", pwd);
-
-		try {
-			logger.info("Iaas资源申请审核：单号" + applyIdList);
-			CheckOrdersRequest checkOrdersRequest = new CheckOrdersRequest();
-			checkOrdersRequest.setIdlist(idList);
-			UserInfoVo userVo = UserUtil.getUserSession(request.getSession());
-			checkOrdersRequest.setUserId(userVo.getUserId());// userId
-			checkOrdersRequest.setCheckResult(checkResult);// 审批结果；1：通过，2：驳回
-			checkOrdersRequest.setUserServBackParam(prodParam.toString());
-			CheckOrdersResponse checkOrdersResponse = iOrder.checkIaasOrders(checkOrdersRequest);
-			resultMap.put("resultCode", checkOrdersResponse.getResponseHeader().getResultCode());
-			resultMap.put("resultMessage", checkOrdersResponse.getResponseHeader().getResultMessage());
-			logger.info("IAAS申请审核调用后场服务返回："	+ checkOrdersResponse.getResponseHeader().getResultCode());
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			resultMap.put("resultCode", Constants.OPERATE_CODE_FAIL);
-			resultMap.put("resultMessage", "系统异常，请联系管理员!");
-		}
-
-		return resultMap;
-	}
 }

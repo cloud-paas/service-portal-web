@@ -44,12 +44,14 @@ dependencies{
 	compile 'com.ai:ipaas-agent-client:0.1-SNAPSHOT'
 	compile 'com.ai:ipaas-rcs:0.2-SNAPSHOT'
 	compile 'com.ai:ipaas-common:0.1-SNAPSHOT'
+	compile 'com.ai:ipaas-service-dubbo-interfaces:0.3'
 	compile "jstl:jstl:1.2"
 	compile "org.springframework:spring-jdbc:4.1.6.RELEASE"
 	compile "org.springframework:spring-web:4.1.6.RELEASE"
 	compile "org.springframework:spring-webmvc:4.1.6.RELEASE"
 	compile "org.springframework:spring-context-support:4.1.6.RELEASE"
 	compile "javax.mail:javax.mail:1.4.4"
+	compile 'com.ai:dubbo-ext:0.3.1'
 	compile ("com.alibaba:dubbox:2.8.3") {
 		exclude group: 'org.springframework', module: 'spring'
 	}
@@ -69,7 +71,6 @@ dependencies{
 	
 	compile "javax.servlet:javax.servlet-api:3.1.0"
 	compile "javax.servlet.jsp:javax.servlet.jsp-api:2.3.1"
-	compile "com.ai:ipaas-service-dubbo-interfaces:0.3"
 	compile "org.springframework:spring-test:4.1.6.RELEASE"
    	compile "junit:junit:4.11"
 
