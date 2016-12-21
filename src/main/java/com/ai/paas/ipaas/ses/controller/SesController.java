@@ -157,7 +157,7 @@ public class SesController {
 		orderDetailRequest.setUserServIpaasPwd(request.getParameter("serivcePwd"));
 		
 		String data = JSonUtil.toJSon(orderDetailRequest);
-		String portalDubboUrl= SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
+		String portalDubboUrl= SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
 		String result = HttpClientUtil.sendPostRequest(portalDubboUrl
 				+ "/user/order/applyOrders", data);
 		OrderDetailResponse orderDetailResponse = JSonUtil.fromJSon(result,

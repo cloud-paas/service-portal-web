@@ -246,7 +246,7 @@ public class UserMdsConsoleController {
 		params.put("partition", request.getParameter("partition"));
 		String data=JSonUtil.toJSon(params);
 		
-		String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
+		String portalDubboUrl = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
 		String result = HttpClientUtil.sendPostRequest(portalDubboUrl+"/mds/console/resendMessage", data);
 		
 		JSONObject object=new JSONObject(result);
@@ -269,7 +269,7 @@ public class UserMdsConsoleController {
 		params.put("offset", request.getParameter("offset"));
 		String data=JSonUtil.toJSon(params);
 		
-		String portalDubboUrl = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
+		String portalDubboUrl = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
 		String result = HttpClientUtil.sendPostRequest(portalDubboUrl + "/mds/console/skipMessage", data);
 		
 		JSONObject object=new JSONObject(result);

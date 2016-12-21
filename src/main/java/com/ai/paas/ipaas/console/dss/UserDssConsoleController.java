@@ -494,7 +494,7 @@ public class UserDssConsoleController {
 		params.put("limitFileSize", request.getParameter("limitFileSize"));
 		String data=JSonUtil.toJSon(params);
 		String result="";
-		String address = SystemConfigHandler.configMap.get("CONTROLLER.CONTROLLER.url");
+		String address = SystemConfigHandler.configMap.get("PASS.SERVICE.IP_PORT_SERVICE");
 		result=HttpClientUtil.sendPostRequest(address+"/dss/console/modifyConfiguration", data);
 		
 		JSONObject object=new JSONObject(result);
