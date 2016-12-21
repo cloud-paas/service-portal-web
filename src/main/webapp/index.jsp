@@ -262,27 +262,49 @@ to{-o-transform:rotate(360deg)}
 			</div>
 			<div style="width: 100%; color: #fff; font-weight: 900; font-size: 25px; margin-top: 1%"
 				align="center">核心产品</div>
+				
 			<!--下部-产品选项-->
 			<div style="height: 40%; width: 100%; text-align: center; position: absolute;font-size:16px">
 				<div id="vertical" class="brand vertical" align="center">
 					<ul class="more_ul" style="text-align: center; position: absolute;">
 					
 						<li>
-							<a href="${_base }/virtualMachine/initapply" class="yi">
+							<a href="${_base }/ses/initapply" class="yi">
 								<img class="img1" src="${_base }/resources/images/v1.png" /> 
 								<img class="info" alt="" src="${_base }/resources/images/v2.png" />
 							</a>
 							<br/>
-							云虚拟机VM
+							云搜索服务SES
 						</li>
 					
 						<li>
-							<a href="${_base }/dbs/introduce" class="yi">
+							<a href="${_base }/rds/introduce" class="yi">
 								<img class="img1" src="${_base }/resources/images/pro1_a.png" /> 
 								<img class="info" alt="" src="${_base }/resources/images/pro1_b.png" />
 							</a>
 							<br/>
-							分布式数据库服务DBS
+							云数据库服务RDS
+						</li>
+						<li>
+							<a href="${_base }/mds/introduce" class="yi">
+								<img class="img1" src="${_base }/resources/images/pro3_a.png" /> 
+								<img class="info" alt="" src="${_base }/resources/images/pro3_b.png" />
+							</a>
+							<br/>
+								云消息服务MDS
+						</li>
+						<li>
+							<a href="${_base }/mcs/introduce" class="yi">
+								<img class="img1" src="${_base }/resources/images/pro4_a.png" /> 
+								<img class="info" alt="" src="${_base }/resources/images/pro4_b.png" />
+							</a>
+							<br/>
+								云缓存服务MCS
+						</li>
+						<li style=" position:absolute; right:-140px; top:146px;">
+							<a href="${_base }/ccs/introduce">
+								<img src="${_base }/resources/images/moreNotHover.png"  width=40% height=20% />
+							</a>
 						</li>
 						<%-- <li>
 							<a href="${_base }/rcs/introduce" class="yi">
@@ -292,31 +314,11 @@ to{-o-transform:rotate(360deg)}
 							<br/>
 							实时计算RCS
 						</li> --%>
-						<li>
-							<a href="${_base }/mds/introduce" class="yi">
-								<img class="img1" src="${_base }/resources/images/pro3_a.png" /> 
-								<img class="info" alt="" src="${_base }/resources/images/pro3_b.png" />
-							</a>
-							<br/>
-								消息中心MDS
-						</li>
-						<li>
-							<a href="${_base }/mcs/introduce" class="yi">
-								<img class="img1" src="${_base }/resources/images/pro4_a.png" /> 
-								<img class="info" alt="" src="${_base }/resources/images/pro4_b.png" />
-							</a>
-							<br/>
-								缓存中心MCS
-						</li>
-						<li style=" position:absolute; right:-140px; top:146px;">
-							<a href="${_base }/ccs/introduce">
-								<img src="${_base }/resources/images/moreNotHover.png"  width=40% height=20% />
-							</a>
-						</li>
 					</ul>
 				</div>
 			</div>
 			<!--切换按钮-->
+			<!--  屏蔽 2016-12-21
 			<div style="width: 100%; position: fixed; bottom: 0px;" align="center">
 				<div class="btn_td"
 						style="width: 5%; height: 5%;  text-align: center;">
@@ -324,6 +326,7 @@ to{-o-transform:rotate(360deg)}
 							style="padding-top: 10%"></a>
 					</div>
 			</div>
+			-->
 		</div>
 	</div>
 	
