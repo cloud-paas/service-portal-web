@@ -64,8 +64,7 @@
 			<ul>
 				<li><a id="active_index" href="${_base }"
 					style="color: #1699dc">首页</a></li>
-				<li class="product"><a id="active_prod" href="${_base }/virtualMachine/initapply" style="color: #7d7d7d">产品</a></li>
-				<%-- href="${_base }/ccs/introduce" --%>
+				<li class="product"><a id="active_prod" href="${_base }/ccs/introduce" style="color: #7d7d7d">产品</a></li>
 				<li><a id="active_download"
 					href="${_base}/jsp/user/sdkSelect.jsp" style="color: #7d7d7d">下载</a></li>
 				<li><a id="active_help"
@@ -73,22 +72,6 @@
 			</ul>
 		</div>
 		<div class="product-box">
-			<ul class="js-ul">
-				<li class="common-li-tittle">计算</li>
-				<!--  <li><a href="${_base }/iaas/applyPhysicalMachine">物理机</a></li>-->
-				<!--  <li><a href="${_base }/iaas/applyVirtalMachine">虚拟机</a></li>   -->
-				<li><a href="${_base }/virtualMachine/initapply">云虚拟机</a></li>
-				<li><a href="${_base }/rcs/introduce">实时计算RCS</a></li>
-				<li><a href="${_base }/des/initapply">实时增量数据获取服务DES</a></li>
-				<li><a href="${_base }/ses/initapply">搜索服务SES</a></li>
-			</ul>
-			<ul class="data-ul">
-				<li class="common-li-tittle">数据库服务</li>
-				<li><a href="${_base }/dbs/introduce">分布式数据库DBS服务</a></li>
-				<li><a href="${_base }/txs/introduce">事务保障服务TXS</a></li>
-				<li><a href="${_base }/ats/introduce">最终事务一致ATS</a></li>
-				<li><a href="${_base }/rds/introduce">云数据库服务RDS</a></li>
-			</ul>
 			<ul class="save-ul">
 				<li class="common-li-tittle">存储</li>
 				<li><a href="${_base }/ccs/introduce">配置中心CSS</a></li>
@@ -96,7 +79,22 @@
 				<li><a href="${_base }/mds/introduce">消息中心MDS</a></li>
 				<li><a href="${_base }/dss/introduce">文档存储服务DSS</a></li>
 				<li><a href="${_base }/idps/introduce">图片服务IDPS</a></li>
-	        </li>
+			</ul>
+			<ul class="js-ul">
+				<li class="common-li-tittle">计算</li>
+				<!--<li><a href="${_base }/iaas/applyPhysicalMachine">物理机</a></li>-->
+				<!--<li><a href="${_base }/iaas/applyVirtalMachine">虚拟机</a></li> -->
+				<!--<li><a href="${_base }/virtualMachine/initapply">云虚拟机</a></li> -->
+				<!--<li><a href="${_base }/rcs/introduce">实时计算RCS</a></li> -->
+				<!--<li><a href="${_base }/des/initapply">实时增量数据获取服务DES</a></li> -->
+				<li><a href="${_base }/ses/initapply">搜索服务SES</a></li>
+			</ul>
+			<ul class="data-ul">
+				<li class="common-li-tittle">数据库服务</li>
+				<!--<li><a href="${_base }/dbs/introduce">分布式数据库DBS服务</a></li> -->
+				<!--<li><a href="${_base }/txs/introduce">事务保障服务TXS</a></li> -->
+				<!--<li><a href="${_base }/ats/introduce">最终事务一致ATS</a></li> -->
+				<li><a href="${_base }/rds/introduce">云数据库服务RDS</a></li>
 			</ul>
 		</div>
 		<div class="mune_xinxi">

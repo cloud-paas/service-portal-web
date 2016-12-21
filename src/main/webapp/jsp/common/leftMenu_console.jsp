@@ -158,25 +158,6 @@ var productType = "${productType}";
              </ul>
                          
              
-
-		<%--        
-		 <ul>
-             <li class="biaot" style="background:rgb(22,154,219)"  onClick="turnit(6,2,this);">
-             <a href="#" style="color:#fff">
-             <p  id="img2">服务申请审核</p>
-             </a>
-             <li class="list_xinx"  id="content2" >
-             <p class="xuanz"><A href="${_base }/apply/applyAudit"><span style="margin-top:2px;">服务申请审核</span></A></p>
-
-             </li>
-             </li>
-           </ul> 
-             --%>
-             
-             
-             
-             
-             
              </div> 
     </div>
   
