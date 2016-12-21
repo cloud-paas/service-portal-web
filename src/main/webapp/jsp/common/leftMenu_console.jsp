@@ -1,20 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"   pageEncoding="UTF-8"%>
 <%@page import="com.alibaba.dubbo.common.utils.StringUtils"%>
 <%@page import="com.ai.paas.ipaas.system.constants.ConstantsForSession"%>
 <%@page import="com.ai.paas.ipaas.user.vo.UserInfoVo"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%  
-if (userInfo != null&& !StringUtils.isBlank(userInfo.getUserName())) {
-	String userId = userInfo.getUserId();
-	request.setAttribute("userId", userId);
-	//String indexFlag = request.getAttribute("indexFlag");
-}
+	/* if (userInfo != null&& !StringUtils.isBlank(userInfo.getUserName())) {
+		String userId = userInfo.getUserId();
+		request.setAttribute("userId", userId);
+	} */
 %>
 <script type="text/javascript">
 var indexFlag = "${indexFlag}";
 var parentUrl = "${parentUrl}";
 var productType = "${productType}";
-
-
 	$(document).ready(function() {
 		var userId = "${userId}";
 		// 页面初始化
@@ -52,7 +49,6 @@ var productType = "${productType}";
 				$('.fenye').css('display', 'none');
 			}
 		});
-		
 	});	
 	
 	function loadleftMenu(obj) {
@@ -101,13 +97,10 @@ var productType = "${productType}";
 	function changeUrl(consoleUrl) {
 		location.href="${_base}"+consoleUrl;
 	}
-	
-	
-	</script>
+</script>
 <div class="col-md-6 left_list" >
       <div class="list_groups">
              <div class="list_groups_none">             
-             
              <ul>
              	<li class="biaot" style="background:rgb(22,154,219)"   onClick="turnit(4,3,this);">
              		<a href="#" style="color:#fff">
@@ -156,9 +149,7 @@ var productType = "${productType}";
                 <p ><A href="${_base }/jsp/maintain/main.jsp?userId=${userId}"  id="leftmenu_16_1" onclick=changeUrl("${_base }/jsp/maintain/main.jsp?userId=${userId}");><span id="spanleftmenu_16" style="margin-top:2px;">配置管理详情</span></A></p>
                 </li>
              </ul>
-                         
-             
-             </div> 
+         </div> 
     </div>
   
   </div>
