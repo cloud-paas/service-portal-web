@@ -42,8 +42,9 @@ group = 'com.ai'
 dependencies{
 	compile 'com.ai:asiainfocasclient:1.0.4'
 	compile 'com.ai:ipaas-agent-client:0.1-SNAPSHOT'
-	compile 'com.ai:ipaas-rcs:0.2-SNAPSHOT'
-	compile 'com.ai:ipaas-common:0.1-SNAPSHOT'
+	compile 'com.ai:ipaas-common:0.3'
+	compile 'com.ai:ipaas-sdk:0.2.1'
+	compile 'com.ai:ipaas-idps:0.1-SNAPSHOT'
 	compile 'com.ai:ipaas-service-dubbo-interfaces:0.3'
 	compile "jstl:jstl:1.2"
 	compile "org.springframework:spring-jdbc:4.1.6.RELEASE"
@@ -52,7 +53,7 @@ dependencies{
 	compile "org.springframework:spring-context-support:4.1.6.RELEASE"
 	compile "javax.mail:javax.mail:1.4.4"
 	compile 'com.ai:dubbo-ext:0.3.1'
-	compile ("com.alibaba:dubbox:2.8.3") {
+	compile ("com.alibaba:dubbox:2.8.4") {
 		exclude group: 'org.springframework', module: 'spring'
 	}
 	compile ("com.101tec:zkclient:0.4") {
@@ -65,7 +66,6 @@ dependencies{
 	compile 'org.restlet.jee:org.restlet:2.2.1'
 	compile 'org.restlet.jse:org.restlet.ext.fileupload:2.2.1'
 	compile 'org.restlet.jse:org.restlet.ext.json:2.2.1'
-	compile 'commons-httpclient:commons-httpclient:3.0'
 	compile 'commons-codec:commons-codec:1.9'
 	compile 'commons-logging:commons-logging:1.2.1-SNAPSHOT'
 	
@@ -77,12 +77,11 @@ dependencies{
 	compile 'org.javassist:javassist:3.19.0-GA'
 
 	// restful
-	compile 'org.jboss.resteasy:resteasy-jaxrs:3.0.11.Final'
-	compile 'org.jboss.resteasy:resteasy-client:3.0.11.Final'
-	compile 'org.jboss.resteasy:resteasy-jackson-provider:3.0.11.Final'
+	compile 'org.jboss.resteasy:resteasy-jaxrs:3.1.0.Final'
+	compile 'org.jboss.resteasy:resteasy-client:3.1.0.Final'
+	compile 'org.jboss.resteasy:resteasy-jackson-provider:3.1.0.Final'
 	compile 'org.apache.tapestry:tapestry-kaptcha:5.4-SNAPSHOT'
 	compile 'com.jcraft:jsch:0.1.53'
-	compile 'org.apache.httpcomponents:httpclient:4.4.1'
     compile 'net.sf.json-lib:json-lib:2.4:jdk15'
     compile 'org.apache.velocity:velocity:1.7-SNAPSHOT'
     
@@ -93,9 +92,6 @@ dependencies{
 	
 	compile 'org.jasypt:jasypt:1.9.2'
 	compile 'org.jasypt:jasypt-spring31:1.9.2'
-	
-	compile 'com.ai:ipaas-sdk:0.2.1'
-	compile 'com.ai:ipaas-idps:0.1-SNAPSHOT'
 	
 	compile "org.mybatis:mybatis:3.1.1"
 	compile "org.mybatis:mybatis-spring:1.2.0"
